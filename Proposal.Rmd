@@ -2,7 +2,7 @@
 title: "Proposal"
 author: "David DeStephano dd2948, Connor Goldman cg3112, Sarah Munro sim2128, RuiJun Chen rc3179"
 date: "November 6, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}

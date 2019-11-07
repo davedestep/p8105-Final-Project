@@ -1,0 +1,41 @@
+Proposal
+================
+David DeStephano dd2948, Connor Goldman cg3112, Sarah Munro sim2128, RuiJun Chen rc3179
+November 6, 2019
+
+Meteorologic and Air Quality Data in Beijing From 2013 to 2017
+==============================================================
+
+### Motivation
+
+Governments should maintain tools for assessing dynamic health and environmental indicators over time. One such indicator is air quality data. The purpose of this project is to create an interactive tool and data source that integrates weather and pollution over time in such a way that could be utilized and disseminated by a government or health agency. We are interested in producing figures and analyses that explore the association between meteorological indicators and pollution. If time allows, we would like to combine this datasource with Beijing health records (permitting the availability of such data) to assess the association between air quality and acute events/morbidity/mortality. With these goals, we hope to synthesize our desire for a practical tool that is useful for the public, in the vein of governmental or private data dissemination, with our desire to examine environmental trends in a statistically rigorous manner that can be used for research.
+
+### Data Source
+
+<http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data>
+
+Hospitalization data in beijing by day/month/year?
+
+### Data Cleaning
+
+Add labels for the month, January, February, etc. Convert celcius to farenheit Stack the 15 datasets in R, so there is one datasets with all the necessary data for each sight Potentially lists in columns? \#\#\# Final Products:
+
+##### Graphs/charts
+
+Temperature and precipitation variability by year and month Interactive dashboard with PM2.5, PM10, O3, NO2, SO2, CO, Temp, Pressure, Humidity and Wind levels by hour of a selected day Map with site location and levels for any given day of the year
+
+##### Analyses
+
+Regression model predicting air quality using meteorological data Hierarchical clustering algorithm? We would like to find a dataset with hospitalizations, instances, rate of morbidity and mortality and run a poisson regression with air quality as independent variable and hospitalization count or rate of lung cancer, etc as the dependent variable. This may be difficult to find for the specific sites/locations, but could be available for Beijing as a whole. If we find the data, we could join it to the aggregated air quality data for specific days, and regress on the outcome.
+
+##### Deliverable
+
+A functioning website that could feasibly be maintained by a government organization and distributed to the public. It will include both a dashboard (created using shiny), and relevant analyses.
+
+### Team Timeline
+
+#### November 7-15: Data cleaning and exploratory analysis
+
+#### November 15-30: work on report and the website
+
+#### November 20-December 5: work on analyses and visualizations

@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: github_document
+---
+
+
+
+```{r}
+library(tidyverse)
+
+setwd("./PRSA_Data_20130301-20170228")
+files = list.files()
+all<-map(files, read_csv) %>% 
+  bind_rows() %>% 
+  janitor::clean_names()
+```
+
+
+```{r}
+#Why is this not working?
+all %>%  
+  group_by(year) %>% 
+  summarize(avg_pm25=mean(pm2_5)) %>% 
+  ggplot(aes(x=year, y=avg_pm25))
+```
+

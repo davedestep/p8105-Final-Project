@@ -2,12 +2,13 @@
 title: "R Notebook"
 output: github_document
 ---
-
-
-
 ```{r}
 library(tidyverse)
+```
 
+
+
+```{r message = FALSE}
 setwd("./PRSA_Data_20130301-20170228")
 files = list.files()
 all<-map(files, read_csv) %>% 
@@ -15,7 +16,7 @@ all<-map(files, read_csv) %>%
   janitor::clean_names()
 ```
 
-
+Average PM 25 by year for all stations
 ```{r}
 all %>%  
   group_by(year) %>% 
@@ -24,3 +25,12 @@ all %>%
   geom_line()
 ```
 
+
+Average PM 25 by year for each station
+```{r}
+all %>%  
+  group_by(year, station) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %>% 
+  ggplot(aes(x=year, y=avg_pm25, color=station, group=station)) +
+  geom_line()
+```

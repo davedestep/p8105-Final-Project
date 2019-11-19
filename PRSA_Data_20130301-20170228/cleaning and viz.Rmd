@@ -17,10 +17,10 @@ all<-map(files, read_csv) %>%
 
 
 ```{r}
-#Why is this not working?
 all %>%  
   group_by(year) %>% 
-  summarize(avg_pm25=mean(pm2_5)) %>% 
-  ggplot(aes(x=year, y=avg_pm25))
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %>% 
+  ggplot(aes(x=year, y=avg_pm25)) +
+  geom_line()
 ```
 

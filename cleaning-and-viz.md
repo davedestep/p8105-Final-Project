@@ -6,9 +6,10 @@ library(tidyverse)
 ```
 
 ``` r
-setwd("./PRSA_Data_20130301-20170228")
-files = list.files()
-all<-map(files, read_csv) %>% 
+#setwd("./PRSA_Data_20130301-20170228")
+files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
+
+all<-map_df(files, read_csv) %>% 
   bind_rows() %>% 
   janitor::clean_names()
 ```

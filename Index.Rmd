@@ -7,4 +7,3 @@ output:
 ---
 
 # Welcome to our project website!
-

@@ -3,6 +3,7 @@ title: "R Notebook"
 output: github_document
 ---
 ```{r}
+library(wesanderson)
 library(tidyverse)
 ```
 
@@ -46,3 +47,21 @@ all %>%
   ggplot(aes(x=no, y=pm2_5, color=station, group=station)) +
   geom_line()
 ```
+
+
+```{r}
+#need to change wspm to CUMULATIVE wind speed for month or direction
+all %>%  
+  filter(station=="Dingling") %>% 
+  ggplot(aes(x=dewp, y=wspm, color=pm2_5)) +
+  geom_point(alpha=0.10) +
+  scale_color_gradient(low="blue", high="red")
+
+```
+#Compare years for dew point (boxplot), frequency of wind direction (stacked bar), and cumulative windspeed.
+
+#Facet Grid for each year: monthly or seasonal change in carbon monoxide, No2, pm25 
+
+# Mixed model code:
+
+

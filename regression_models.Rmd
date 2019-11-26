@@ -1,0 +1,28 @@
+---
+title: "regression_models"
+author: "David DeStephano"
+date: "November 25, 2019"
+output: github_document
+---
+```{r}
+library(tidyverse)
+library(lme4)
+```
+
+
+```{r}
+files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
+
+all<-map_df(files, read_csv) %>% 
+  bind_rows() %>% 
+  janitor::clean_names()
+
+read_csv("./patient_mi_data/patients_mi.csv")
+```
+
+```{r}
+lmewind<-all %>% 
+  lme4::lmer(pm2_5 ~ wspm + rain + (1 + wspm | station), data = .) %>% 
+  broom::tidy()
+```
+

@@ -4,25 +4,88 @@ author: "David DeStephano"
 date: "November 25, 2019"
 output: github_document
 ---
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(lme4)
+library(lubridate)
 ```
 
 
-```{r}
+```{r message=FALSE}
 files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
 
 all<-map_df(files, read_csv) %>% 
   bind_rows() %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  select(-no) %>% 
+  mutate(
+    wd = as.factor(wd),
+    # station = as.factor(station),
+    date = as.Date(str_c(year, '-', month, '-', day)),
+    datetime = as.POSIXct(str_c(year, '-', month, '-', day, ' ', "00:", hour,":00")),
+    season = case_when(
+      (month < 3) ~ "winter", #start of Spring is 3/20
+      (month == 3 & day < 20) ~ "winter",
+      (month < 6) ~ "spring", #start of Summer is 6/21
+      (month == 6 & day < 21) ~ "spring",
+      (month < 9) ~ "summer", #start of Fall is 9/22
+      (month == 9 & day < 22) ~ "summer",
+      (month < 12) ~ "fall", #start of Winter is 12/21
+      (month == 12 & day < 21) ~ "fall",
+      (month == 12 & day >= 21) ~ "winter"
+    ) )
+```
 
+
+#What meteorological variables influence PM 2.5?
+##Even though predictors are not independent, will model using linear regression before a longitudinal model  
+```{r}
+###Remove timeseries variables:
+reg<-all %>% select(-date,-datetime, -month,-day,-hour)
+
+full <- lm(pm2_5 ~ ., data = reg)
+
+tab<-full %>% broom::tidy()
+knitr::kable(tab, digits = 3)
+
+```
+
+
+###Mixed Model
+```{r}
+all %>% 
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + (1 | station), data = .) %>% 
+  broom::tidy() %>% 
+  knitr::kable(digits = 3)
+
+```
+
+
+### Mixed Model for Longitudinal Continuous Data
+```{r}
+mixed<-all %>% 
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + datetime + (1 | station), data = .) 
+
+mixed %>% broom::tidy() %>% knitr::kable(digits = 3)
+
+```
+
+
+
+
+
+
+
+
+####################################################
+####################################################
+#Linking to health data
+####################################################
+####################################################
+
+```{r}
 read_csv("./patient_mi_data/patients_mi.csv")
 ```
 
-```{r}
-lmewind<-all %>% 
-  lme4::lmer(pm2_5 ~ wspm + rain + (1 + wspm | station), data = .) %>% 
-  broom::tidy()
-```
+
 

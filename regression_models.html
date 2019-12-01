@@ -304,279 +304,835 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.2.1     v purrr   0.3.3
-## v tibble  2.1.3     v dplyr   0.8.3
-## v tidyr   1.0.0     v stringr 1.4.0
-## v readr   1.3.1     v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(lme4)</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Matrix&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
-## 
-##     expand, pack, unpack</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(lme4)
+library(lubridate)</code></pre>
 <pre class="r"><code>files = list.files(&quot;./PRSA_Data_20130301-20170228&quot;, full.names = TRUE)
 
 all&lt;-map_df(files, read_csv) %&gt;% 
   bind_rows() %&gt;% 
-  janitor::clean_names()</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )</code></pre>
+  janitor::clean_names() %&gt;% 
+  select(-no) %&gt;% 
+  mutate(
+    wd = as.factor(wd),
+    # station = as.factor(station),
+    date = as.Date(str_c(year, &#39;-&#39;, month, &#39;-&#39;, day)),
+    datetime = as.POSIXct(str_c(year, &#39;-&#39;, month, &#39;-&#39;, day, &#39; &#39;, &quot;00:&quot;, hour,&quot;:00&quot;)),
+    season = case_when(
+      (month &lt; 3) ~ &quot;winter&quot;, #start of Spring is 3/20
+      (month == 3 &amp; day &lt; 20) ~ &quot;winter&quot;,
+      (month &lt; 6) ~ &quot;spring&quot;, #start of Summer is 6/21
+      (month == 6 &amp; day &lt; 21) ~ &quot;spring&quot;,
+      (month &lt; 9) ~ &quot;summer&quot;, #start of Fall is 9/22
+      (month == 9 &amp; day &lt; 22) ~ &quot;summer&quot;,
+      (month &lt; 12) ~ &quot;fall&quot;, #start of Winter is 12/21
+      (month == 12 &amp; day &lt; 21) ~ &quot;fall&quot;,
+      (month == 12 &amp; day &gt;= 21) ~ &quot;winter&quot;
+    ) )</code></pre>
+<div id="what-meteorological-variables-influence-pm-2.5" class="section level1">
+<h1>What meteorological variables influence PM 2.5?</h1>
+<div id="even-though-predictors-are-not-independent-will-model-using-linear-regression-before-a-longitudinal-model" class="section level2">
+<h2>Even though predictors are not independent, will model using linear regression before a longitudinal model</h2>
+<pre class="r"><code>###Remove timeseries variables:
+reg&lt;-all %&gt;% select(-date,-datetime, -month,-day,-hour)
+
+full &lt;- lm(pm2_5 ~ ., data = reg)
+
+tab&lt;-full %&gt;% broom::tidy()
+knitr::kable(tab, digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-973.783</td>
+<td align="right">92.404</td>
+<td align="right">-10.538</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0.334</td>
+<td align="right">0.046</td>
+<td align="right">7.243</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">pm10</td>
+<td align="right">0.535</td>
+<td align="right">0.001</td>
+<td align="right">616.952</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">so2</td>
+<td align="right">0.109</td>
+<td align="right">0.003</td>
+<td align="right">33.828</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">no2</td>
+<td align="right">0.117</td>
+<td align="right">0.003</td>
+<td align="right">43.964</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">co</td>
+<td align="right">0.019</td>
+<td align="right">0.000</td>
+<td align="right">258.661</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">o3</td>
+<td align="right">0.104</td>
+<td align="right">0.001</td>
+<td align="right">76.280</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.706</td>
+<td align="right">0.013</td>
+<td align="right">-55.014</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">pres</td>
+<td align="right">0.292</td>
+<td align="right">0.010</td>
+<td align="right">30.156</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">dewp</td>
+<td align="right">1.593</td>
+<td align="right">0.009</td>
+<td align="right">170.757</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">rain</td>
+<td align="right">-0.381</td>
+<td align="right">0.060</td>
+<td align="right">-6.393</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdENE</td>
+<td align="right">-0.351</td>
+<td align="right">0.249</td>
+<td align="right">-1.410</td>
+<td align="right">0.158</td>
+</tr>
+<tr class="odd">
+<td align="left">wdESE</td>
+<td align="right">1.197</td>
+<td align="right">0.271</td>
+<td align="right">4.416</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdN</td>
+<td align="right">0.508</td>
+<td align="right">0.259</td>
+<td align="right">1.960</td>
+<td align="right">0.050</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNE</td>
+<td align="right">0.224</td>
+<td align="right">0.238</td>
+<td align="right">0.942</td>
+<td align="right">0.346</td>
+</tr>
+<tr class="even">
+<td align="left">wdNNE</td>
+<td align="right">0.001</td>
+<td align="right">0.264</td>
+<td align="right">0.004</td>
+<td align="right">0.997</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNNW</td>
+<td align="right">0.536</td>
+<td align="right">0.274</td>
+<td align="right">1.954</td>
+<td align="right">0.051</td>
+</tr>
+<tr class="even">
+<td align="left">wdNW</td>
+<td align="right">-0.246</td>
+<td align="right">0.259</td>
+<td align="right">-0.947</td>
+<td align="right">0.344</td>
+</tr>
+<tr class="odd">
+<td align="left">wdS</td>
+<td align="right">0.139</td>
+<td align="right">0.294</td>
+<td align="right">0.474</td>
+<td align="right">0.636</td>
+</tr>
+<tr class="even">
+<td align="left">wdSE</td>
+<td align="right">-0.514</td>
+<td align="right">0.288</td>
+<td align="right">-1.785</td>
+<td align="right">0.074</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSSE</td>
+<td align="right">-0.097</td>
+<td align="right">0.302</td>
+<td align="right">-0.322</td>
+<td align="right">0.748</td>
+</tr>
+<tr class="even">
+<td align="left">wdSSW</td>
+<td align="right">0.115</td>
+<td align="right">0.281</td>
+<td align="right">0.410</td>
+<td align="right">0.682</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSW</td>
+<td align="right">-1.525</td>
+<td align="right">0.264</td>
+<td align="right">-5.775</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdW</td>
+<td align="right">-2.501</td>
+<td align="right">0.301</td>
+<td align="right">-8.302</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">wdWNW</td>
+<td align="right">-1.505</td>
+<td align="right">0.280</td>
+<td align="right">-5.374</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdWSW</td>
+<td align="right">-1.640</td>
+<td align="right">0.289</td>
+<td align="right">-5.673</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">wspm</td>
+<td align="right">-0.416</td>
+<td align="right">0.052</td>
+<td align="right">-8.015</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationChangping</td>
+<td align="right">4.278</td>
+<td align="right">0.244</td>
+<td align="right">17.508</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationDingling</td>
+<td align="right">11.103</td>
+<td align="right">0.253</td>
+<td align="right">43.968</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationDongsi</td>
+<td align="right">2.507</td>
+<td align="right">0.241</td>
+<td align="right">10.395</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationGuanyuan</td>
+<td align="right">1.197</td>
+<td align="right">0.237</td>
+<td align="right">5.060</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationGucheng</td>
+<td align="right">-2.416</td>
+<td align="right">0.241</td>
+<td align="right">-10.028</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationHuairou</td>
+<td align="right">6.752</td>
+<td align="right">0.252</td>
+<td align="right">26.804</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationNongzhanguan</td>
+<td align="right">1.958</td>
+<td align="right">0.236</td>
+<td align="right">8.313</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationShunyi</td>
+<td align="right">6.716</td>
+<td align="right">0.245</td>
+<td align="right">27.414</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationTiantan</td>
+<td align="right">2.831</td>
+<td align="right">0.237</td>
+<td align="right">11.968</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationWanliu</td>
+<td align="right">-0.675</td>
+<td align="right">0.241</td>
+<td align="right">-2.803</td>
+<td align="right">0.005</td>
+</tr>
+<tr class="even">
+<td align="left">stationWanshouxigong</td>
+<td align="right">0.558</td>
+<td align="right">0.237</td>
+<td align="right">2.357</td>
+<td align="right">0.018</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonspring</td>
+<td align="right">-10.438</td>
+<td align="right">0.171</td>
+<td align="right">-60.897</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">seasonsummer</td>
+<td align="right">-14.534</td>
+<td align="right">0.210</td>
+<td align="right">-69.115</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonwinter</td>
+<td align="right">8.303</td>
+<td align="right">0.176</td>
+<td align="right">47.160</td>
+<td align="right">0.000</td>
+</tr>
+</tbody>
+</table>
+<div id="mixed-model" class="section level3">
+<h3>Mixed Model</h3>
+<pre class="r"><code>all %&gt;% 
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + (1 | station), data = .) %&gt;% 
+  broom::tidy() %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider
+## rescaling</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding factor and character vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="left">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-1571.860</td>
+<td align="right">131.345</td>
+<td align="right">-11.967</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0.772</td>
+<td align="right">0.065</td>
+<td align="right">11.843</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonspring</td>
+<td align="right">-8.107</td>
+<td align="right">0.230</td>
+<td align="right">-35.256</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">seasonsummer</td>
+<td align="right">-28.170</td>
+<td align="right">0.294</td>
+<td align="right">-95.755</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonwinter</td>
+<td align="right">8.444</td>
+<td align="right">0.245</td>
+<td align="right">34.490</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">so2</td>
+<td align="right">0.305</td>
+<td align="right">0.005</td>
+<td align="right">67.163</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">no2</td>
+<td align="right">0.728</td>
+<td align="right">0.004</td>
+<td align="right">207.127</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">co</td>
+<td align="right">0.038</td>
+<td align="right">0.000</td>
+<td align="right">390.292</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">o3</td>
+<td align="right">0.250</td>
+<td align="right">0.002</td>
+<td align="right">130.725</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.866</td>
+<td align="right">0.017</td>
+<td align="right">-51.273</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">dewp</td>
+<td align="right">2.241</td>
+<td align="right">0.013</td>
+<td align="right">175.111</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">rain</td>
+<td align="right">-1.190</td>
+<td align="right">0.085</td>
+<td align="right">-14.077</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdENE</td>
+<td align="right">-2.723</td>
+<td align="right">0.354</td>
+<td align="right">-7.685</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdESE</td>
+<td align="right">2.526</td>
+<td align="right">0.386</td>
+<td align="right">6.550</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdN</td>
+<td align="right">1.053</td>
+<td align="right">0.368</td>
+<td align="right">2.858</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNE</td>
+<td align="right">-1.944</td>
+<td align="right">0.339</td>
+<td align="right">-5.737</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNNE</td>
+<td align="right">-2.277</td>
+<td align="right">0.375</td>
+<td align="right">-6.075</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNNW</td>
+<td align="right">1.923</td>
+<td align="right">0.390</td>
+<td align="right">4.933</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNW</td>
+<td align="right">2.151</td>
+<td align="right">0.368</td>
+<td align="right">5.839</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdS</td>
+<td align="right">0.739</td>
+<td align="right">0.418</td>
+<td align="right">1.767</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSE</td>
+<td align="right">1.815</td>
+<td align="right">0.409</td>
+<td align="right">4.434</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSSE</td>
+<td align="right">1.990</td>
+<td align="right">0.430</td>
+<td align="right">4.631</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSSW</td>
+<td align="right">1.100</td>
+<td align="right">0.400</td>
+<td align="right">2.749</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSW</td>
+<td align="right">-1.142</td>
+<td align="right">0.376</td>
+<td align="right">-3.038</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdW</td>
+<td align="right">-3.741</td>
+<td align="right">0.428</td>
+<td align="right">-8.738</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdWNW</td>
+<td align="right">-0.615</td>
+<td align="right">0.398</td>
+<td align="right">-1.546</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdWSW</td>
+<td align="right">-2.385</td>
+<td align="right">0.411</td>
+<td align="right">-5.799</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wspm</td>
+<td align="right">4.219</td>
+<td align="right">0.073</td>
+<td align="right">57.781</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">sd_(Intercept).station</td>
+<td align="right">7.310</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">station</td>
+</tr>
+<tr class="even">
+<td align="left">sd_Observation.Residual</td>
+<td align="right">42.580</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">Residual</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="mixed-model-for-longitudinal-continuous-data" class="section level3">
+<h3>Mixed Model for Longitudinal Continuous Data</h3>
+<pre class="r"><code>mixed&lt;-all %&gt;% 
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + datetime + (1 | station), data = .) </code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider
+## rescaling</code></pre>
+<pre class="r"><code>mixed %&gt;% broom::tidy() %&gt;% knitr::kable(digits = 3)</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding factor and character vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="left">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-50701.822</td>
+<td align="right">861.052</td>
+<td align="right">-58.884</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">25.734</td>
+<td align="right">0.437</td>
+<td align="right">58.854</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonspring</td>
+<td align="right">-20.355</td>
+<td align="right">0.312</td>
+<td align="right">-65.209</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">seasonsummer</td>
+<td align="right">-33.817</td>
+<td align="right">0.309</td>
+<td align="right">-109.505</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonwinter</td>
+<td align="right">-7.326</td>
+<td align="right">0.366</td>
+<td align="right">-20.010</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">so2</td>
+<td align="right">0.276</td>
+<td align="right">0.005</td>
+<td align="right">60.756</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">no2</td>
+<td align="right">0.729</td>
+<td align="right">0.004</td>
+<td align="right">208.209</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">co</td>
+<td align="right">0.038</td>
+<td align="right">0.000</td>
+<td align="right">396.177</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">o3</td>
+<td align="right">0.252</td>
+<td align="right">0.002</td>
+<td align="right">132.171</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.892</td>
+<td align="right">0.017</td>
+<td align="right">-52.972</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">dewp</td>
+<td align="right">2.234</td>
+<td align="right">0.013</td>
+<td align="right">175.342</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">rain</td>
+<td align="right">-1.224</td>
+<td align="right">0.084</td>
+<td align="right">-14.535</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdENE</td>
+<td align="right">-2.557</td>
+<td align="right">0.353</td>
+<td align="right">-7.248</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdESE</td>
+<td align="right">2.392</td>
+<td align="right">0.384</td>
+<td align="right">6.229</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdN</td>
+<td align="right">1.125</td>
+<td align="right">0.367</td>
+<td align="right">3.069</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNE</td>
+<td align="right">-1.945</td>
+<td align="right">0.337</td>
+<td align="right">-5.764</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNNE</td>
+<td align="right">-2.045</td>
+<td align="right">0.373</td>
+<td align="right">-5.480</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNNW</td>
+<td align="right">2.130</td>
+<td align="right">0.388</td>
+<td align="right">5.487</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNW</td>
+<td align="right">2.283</td>
+<td align="right">0.367</td>
+<td align="right">6.226</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdS</td>
+<td align="right">0.760</td>
+<td align="right">0.416</td>
+<td align="right">1.827</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSE</td>
+<td align="right">1.550</td>
+<td align="right">0.408</td>
+<td align="right">3.802</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSSE</td>
+<td align="right">1.945</td>
+<td align="right">0.428</td>
+<td align="right">4.546</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSSW</td>
+<td align="right">1.083</td>
+<td align="right">0.398</td>
+<td align="right">2.719</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSW</td>
+<td align="right">-1.242</td>
+<td align="right">0.374</td>
+<td align="right">-3.319</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdW</td>
+<td align="right">-3.541</td>
+<td align="right">0.426</td>
+<td align="right">-8.305</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdWNW</td>
+<td align="right">-0.271</td>
+<td align="right">0.396</td>
+<td align="right">-0.684</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdWSW</td>
+<td align="right">-2.137</td>
+<td align="right">0.409</td>
+<td align="right">-5.220</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wspm</td>
+<td align="right">4.256</td>
+<td align="right">0.073</td>
+<td align="right">58.546</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">datetime</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-57.728</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">sd_(Intercept).station</td>
+<td align="right">7.346</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">station</td>
+</tr>
+<tr class="odd">
+<td align="left">sd_Observation.Residual</td>
+<td align="right">42.396</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">Residual</td>
+</tr>
+</tbody>
+</table>
+<div id="section" class="section level52">
+<p></p>
+</div>
+<div id="section-1" class="section level52">
+<p></p>
+</div>
+</div>
+</div>
+</div>
+<div id="linking-to-health-data" class="section level1">
+<h1>Linking to health data</h1>
+<div id="section-2" class="section level52">
+<p></p>
+</div>
+<div id="section-3" class="section level52">
+<p></p>
 <pre class="r"><code>read_csv(&quot;./patient_mi_data/patients_mi.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -599,28 +1155,8 @@ all&lt;-map_df(files, read_csv) %&gt;%
 ##  9 female                 2013                     2 I21.207               
 ## 10 female                 2013                     1 I21.403               
 ## # ... with 81,019 more rows</code></pre>
-<pre class="r"><code>all %&gt;% 
-  lme4::lmer(pm2_5 ~ wspm + rain + (1 + wspm | station), data = .) %&gt;% 
-  broom::tidy()</code></pre>
-<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl =
-## control$checkConv, : unable to evaluate scaled gradient</code></pre>
-<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl =
-## control$checkConv, : Model failed to converge: degenerate Hessian with 1
-## negative eigenvalues</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): binding factor and character vector,
-## coercing into character vector</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
-## coercing into character vector</code></pre>
-<pre><code>## # A tibble: 7 x 5
-##   term                         estimate std.error statistic group   
-##   &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   
-## 1 (Intercept)                   111.       25.2        4.39 fixed   
-## 2 wspm                          -17.8       5.65      -3.16 fixed   
-## 3 rain                           -0.834     0.148     -5.65 fixed   
-## 4 sd_(Intercept).station         87.4      NA         NA    station 
-## 5 sd_wspm.station                19.6      NA         NA    station 
-## 6 cor_(Intercept).wspm.station   -1.000    NA         NA    station 
-## 7 sd_Observation.Residual        77.4      NA         NA    Residual</code></pre>
+</div>
+</div>
 
 
 

@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: github_document
+---
+```{r}
+#library(wesanderson)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(ggrepel)
+library(tidyverse)
+library(haven)
+```
+```{r}
+
+
+
+
+```
+
+```{r}
+stats <- all %>%
+  select(station) %>%
+  group_by(station) %>%
+  summarise(
+    n = n()
+  )
+
+a <- stats$station
+latitude <- c(40.00, 40.228599, 40.288817, 39.931018, 39.927513, 39.912014, 40.316977, 39.945236, 40.131396, 
+39.877853, 39.976773, 39.880519)
+
+
+longitude <- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.189908, 116.631309, 116.474969, 116.658160, 116.423179, 116.292343, 116.368263)
+
+
+
+maps <- tibble( station = a, latitude = latitude, longitude = longitude)
+
+mapss <- all_avg %>%
+  left_join(maps, by = "station")
+  
+  
+
+library(leaflet)
+
+by_stat <- all %>%
+  group_by(station)
+
+try <- maps %>%
+leaflet() %>% 
+  addTiles() %>% 
+  addCircleMarkers(~longitude, ~latitude, radius = .1, popup = )
+
+```
+
+
+```{r message = FALSE, warning=FALSE}
+#setwd("./PRSA_Data_20130301-20170228")
+files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
+
+all<-map_df(files, read_csv) %>% 
+  bind_rows() %>% 
+  janitor::clean_names()
+```
+
+Average PM 25 by year for all stations
+```{r}
+avg <- all %>%  
+  group_by(year) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) 
+
+
+avg %>% 
+  ggplot(aes(x=year, y=avg_pm25)) +
+  geom_line()
+```
+
+
+Average PM 25 by year for each station
+```{r}
+all_avg <- all %>%  
+  group_by(year, station) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) 
+  
+all_avg %>%
+  ggplot(aes(x=year, y=avg_pm25, color=station, group=station)) +
+  geom_line()
+```
+
+
+
+
+Average PM 25 by year for each station
+```{r}
+all %>%  
+  filter(year==2015) %>% 
+  ggplot(aes(x=no, y=pm2_5, color=station, group=station)) +
+  geom_line()
+```
+
+
+```{r}
+#need to change wspm to CUMULATIVE wind speed for month or direction
+all %>%  
+  filter(station=="Dingling") %>% 
+  ggplot(aes(x=dewp, y=wspm, color=pm2_5)) +
+  geom_point(alpha=0.10) +
+  scale_color_gradient(low="blue", high="red")
+
+```
+#Compare years for dew point (boxplot), frequency of wind direction (stacked bar), and cumulative windspeed.
+
+#Facet Grid for each year: monthly or seasonal change in carbon monoxide, No2, pm25 
+
+# Mixed model code:
+
+

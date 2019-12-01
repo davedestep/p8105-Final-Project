@@ -38,20 +38,34 @@ longitude <- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.18990
 
 maps <- tibble( station = a, latitude = latitude, longitude = longitude)
 
-mapss <- all_avg %>%
-  left_join(maps, by = "station")
-  
+
   
 
 library(leaflet)
 
-by_stat <- all %>%
-  group_by(station)
+map_type <- factor(mapss$type) 
 
-try <- maps %>%
+new = c("red", "yellow")[map_type]
+
+mapss <- all_avg %>%
+  left_join(maps, by = "station") %>%
+  mutate(
+    type = ifelse(avg_pm25 < 100, 1, 0),
+    color = ifelse(type == 1, "yellow", "red")
+  )
+
+pal <- colorFactor(c("red", "yellow"),
+                   domain = unique(mapss$type))
+
+  
+
+try <- mapss %>%
+  filter(
+    year == 2017
+  ) %>%
 leaflet() %>% 
   addTiles() %>% 
-  addCircleMarkers(~longitude, ~latitude, radius = .1, popup = )
+  addCircleMarkers(~longitude, ~latitude, label = paste0(mapss$station," ", mapss$avg_pm25), color = ~pal(type))
 
 ```
 

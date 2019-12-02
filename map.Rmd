@@ -1,5 +1,5 @@
 ---
-title: "Map"
+title: "Map of Average PM 2.5 in Beijing 2017"
 output: 
   html_document:
     toc: true
@@ -24,8 +24,7 @@ library(tidyverse)
 library(haven)
 ```
 
-# Our map!
-```{r}
+```{r message=FALSE}
 
 files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
 
@@ -74,8 +73,6 @@ latitude <- c(40.00, 40.228599, 40.288817, 39.931018, 39.927513, 39.912014, 40.3
 
 longitude <- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.189908, 116.631309, 116.474969, 116.658160, 116.423179, 116.292343, 116.368263)
 
-
-
 maps <- tibble( station = a, latitude = latitude, longitude = longitude)
 
 mapss <- all_avg %>%
@@ -88,14 +85,23 @@ mapss <- all_avg %>%
 
 pal <- colorFactor(c("red", "yellow"),
                    domain = unique(mapss$type))
+nums <- c("<100", ">=100")
 
 try <- mapss %>%
   filter(
     year == 2017
-  ) %>%
+ ) %>%
 leaflet() %>% 
   addTiles() %>% 
-  addCircleMarkers(~longitude, ~latitude, label = paste0(mapss$station," Average pm2.5: ", mapss$avg_pm25), color = ~pal(type))
+  #addLayersControl(
+   # baseGroups = c(mapss$year),
+  #  options = layersControlOptions(collapsed = FALSE)
+  #) %>%
+  addCircleMarkers(~longitude, ~latitude, label = paste(mapss$station," Average PM 2.5: ", mapss$avg_pm25), color = ~pal(type)) %>%
+  addLegend("bottomright", colors = c("yellow", "red"), labels = nums, 
+            title = "Average PM 2.5 for 2017", 
+            opacity = 1) 
+  
 
 try
 ```

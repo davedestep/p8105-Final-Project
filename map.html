@@ -12,7 +12,7 @@
 
 
 
-<title>Map</title>
+<title>Map of Average PM 2.5 in Beijing 2017</title>
 
 <script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -402,13 +402,11 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Map</h1>
+<h1 class="title toc-ignore">Map of Average PM 2.5 in Beijing 2017</h1>
 
 </div>
 
 
-<div id="our-map" class="section level1">
-<h1>Our map!</h1>
 <pre class="r"><code>files = list.files(&quot;./PRSA_Data_20130301-20170228&quot;, full.names = TRUE)
 
 all &lt;- map_df(files, read_csv) %&gt;% 
@@ -436,260 +434,9 @@ all &lt;- map_df(files, read_csv) %&gt;%
                            if_else(month &lt; 4 &amp; season==&quot;winter&quot; &amp; year ==2016, 2015,
                             if_else(month &lt; 4 &amp; season==&quot;winter&quot; &amp; year ==2017, 2016, year)))),
     season_and= paste(season, &quot; &quot;, seasonal_year)
-  )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )
-## Parsed with column specification:
-## cols(
-##   No = col_double(),
-##   year = col_double(),
-##   month = col_double(),
-##   day = col_double(),
-##   hour = col_double(),
-##   PM2.5 = col_double(),
-##   PM10 = col_double(),
-##   SO2 = col_double(),
-##   NO2 = col_double(),
-##   CO = col_double(),
-##   O3 = col_double(),
-##   TEMP = col_double(),
-##   PRES = col_double(),
-##   DEWP = col_double(),
-##   RAIN = col_double(),
-##   wd = col_character(),
-##   WSPM = col_double(),
-##   station = col_character()
-## )</code></pre>
-<pre class="r"><code>all_avg &lt;- all %&gt;%  
+  )
+
+all_avg &lt;- all %&gt;%  
   group_by(year, station) %&gt;% 
   summarize(avg_pm25=mean(pm2_5, na.rm = TRUE))
 
@@ -707,32 +454,39 @@ latitude &lt;- c(40.00, 40.228599, 40.288817, 39.931018, 39.927513, 39.912014, 4
 
 longitude &lt;- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.189908, 116.631309, 116.474969, 116.658160, 116.423179, 116.292343, 116.368263)
 
-
-
 maps &lt;- tibble( station = a, latitude = latitude, longitude = longitude)
 
 mapss &lt;- all_avg %&gt;%
   left_join(maps, by = &quot;station&quot;) %&gt;%
   mutate(
     type = ifelse(avg_pm25 &lt; 100, 1, 0),
-    color = ifelse(type == 1, &quot;yellow&quot;, &quot;red&quot;)
+    color = ifelse(type == 1, &quot;yellow&quot;, &quot;red&quot;),
+    avg_pm25 = round(avg_pm25, digits = 3)
   )
 
 pal &lt;- colorFactor(c(&quot;red&quot;, &quot;yellow&quot;),
                    domain = unique(mapss$type))
+nums &lt;- c(&quot;&lt;100&quot;, &quot;&gt;=100&quot;)
 
 try &lt;- mapss %&gt;%
   filter(
     year == 2017
-  ) %&gt;%
+ ) %&gt;%
 leaflet() %&gt;% 
   addTiles() %&gt;% 
-  addCircleMarkers(~longitude, ~latitude, label = paste0(mapss$station,&quot; Average pm2.5: &quot;, mapss$avg_pm25), color = ~pal(type))
+  #addLayersControl(
+   # baseGroups = c(mapss$year),
+  #  options = layersControlOptions(collapsed = FALSE)
+  #) %&gt;%
+  addCircleMarkers(~longitude, ~latitude, label = paste(mapss$station,&quot; Average PM 2.5: &quot;, mapss$avg_pm25), color = ~pal(type)) %&gt;%
+  addLegend(&quot;bottomright&quot;, colors = c(&quot;yellow&quot;, &quot;red&quot;), labels = nums, 
+            title = &quot;Average PM 2.5 for 2017&quot;, 
+            opacity = 1) 
+  
 
 try</code></pre>
-<div id="htmlwidget-e84cd1ac977988071bb2" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e84cd1ac977988071bb2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[40,40.228599,40.288817,39.931018,39.927513,39.912014,40.316977,39.945236,40.131396,39.877853,39.976773,39.880519],[116.41,116.216502,116.239659,116.424922,116.357205,116.189908,116.631309,116.474969,116.65816,116.423179,116.292343,116.368263],10,null,null,{"interactive":true,"className":"","stroke":true,"color":["#FFFF00","#FFFF00","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FFFF00","#FFFF00","#FF0000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FFFF00","#FFFF00","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FFFF00","#FFFF00","#FF0000"],"fillOpacity":0.2},null,null,null,null,["Aotizhongxin Average pm2.5: 82.3924723851084","Changping Average pm2.5: 72.6445082752017","Dingling Average pm2.5: 64.7549237170596","Dongsi Average pm2.5: 86.940286071379","Guanyuan Average pm2.5: 82.1293841480254","Gucheng Average pm2.5: 82.0008324084351","Huairou Average pm2.5: 68.6775382870108","Nongzhanguan Average pm2.5: 84.3475701574264","Shunyi Average pm2.5: 77.1982490821802","Tiantan Average pm2.5: 83.2000818889041","Wanliu Average pm2.5: 91.5956575174109","Wanshouxigong Average pm2.5: 84.028276050938","Aotizhongxin Average pm2.5: 90.796062992126","Changping Average pm2.5: 79.4108149545937","Dingling Average pm2.5: 74.1555919896943","Dongsi Average pm2.5: 87.4696063719266","Guanyuan Average pm2.5: 88.3826320710612","Gucheng Average pm2.5: 89.2501223633609","Huairou Average pm2.5: 77.3005456702254","Nongzhanguan Average pm2.5: 90.3034301715086","Shunyi Average pm2.5: 84.5837437273894","Tiantan Average pm2.5: 86.6165495892368","Wanliu Average pm2.5: 89.4751817237799","Wanshouxigong Average pm2.5: 89.0770903987838","Aotizhongxin Average pm2.5: 82.1184222846442","Changping Average pm2.5: 69.6159112482202","Dingling Average pm2.5: 64.6103687434979","Dongsi Average pm2.5: 87.3430904668134","Guanyuan Average pm2.5: 82.4118940182807","Gucheng Average pm2.5: 83.6269373981848","Huairou Average pm2.5: 70.6546215556331","Nongzhanguan Average pm2.5: 85.9650011756407","Shunyi Average pm2.5: 81.2753126447429","Tiantan Average pm2.5: 82.6081106204973","Wanliu Average pm2.5: 80.5383141762452","Wanshouxigong Average pm2.5: 84.7144296088077","Aotizhongxin Average pm2.5: 74.1043336818868","Changping Average pm2.5: 61.655940023068","Dingling Average pm2.5: 59.827553668318","Dongsi Average pm2.5: 80.2259518443838","Guanyuan Average pm2.5: 77.1361638130495","Gucheng Average pm2.5: 77.4253472222222","Huairou Average pm2.5: 61.1261010662958","Nongzhanguan Average pm2.5: 76.0345146023318","Shunyi Average pm2.5: 71.7692307692308","Tiantan Average pm2.5: 73.9170709170709","Wanliu Average pm2.5: 71.4217256076489","Wanshouxigong Average pm2.5: 78.5420353982301","Aotizhongxin Average pm2.5: 94.7621428571429","Changping Average pm2.5: 80.1012838801712","Dingling Average pm2.5: 68.365316275764","Dongsi Average pm2.5: 103.497113997114","Guanyuan Average pm2.5: 93.070432868672","Gucheng Average pm2.5: 101.404301075269","Huairou Average pm2.5: 74.265","Nongzhanguan Average pm2.5: 101.684399712437","Shunyi Average pm2.5: 95.5924339757316","Tiantan Average pm2.5: 98.3579098067287","Wanliu Average pm2.5: 94.189556509299","Wanshouxigong Average pm2.5: 107.306916426513"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[39.877853,40.316977],"lng":[116.189908,116.65816]}},"evals":[],"jsHooks":[]}</script>
-</div>
+<div id="htmlwidget-7795bebc15fe09e6fcbf" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7795bebc15fe09e6fcbf">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[40,40.228599,40.288817,39.931018,39.927513,39.912014,40.316977,39.945236,40.131396,39.877853,39.976773,39.880519],[116.41,116.216502,116.239659,116.424922,116.357205,116.189908,116.631309,116.474969,116.65816,116.423179,116.292343,116.368263],10,null,null,{"interactive":true,"className":"","stroke":true,"color":["#FFFF00","#FFFF00","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FFFF00","#FFFF00","#FF0000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FFFF00","#FFFF00","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FFFF00","#FFFF00","#FF0000"],"fillOpacity":0.2},null,null,null,null,["Aotizhongxin  Average PM 2.5:  82.392","Changping  Average PM 2.5:  72.645","Dingling  Average PM 2.5:  64.755","Dongsi  Average PM 2.5:  86.94","Guanyuan  Average PM 2.5:  82.129","Gucheng  Average PM 2.5:  82.001","Huairou  Average PM 2.5:  68.678","Nongzhanguan  Average PM 2.5:  84.348","Shunyi  Average PM 2.5:  77.198","Tiantan  Average PM 2.5:  83.2","Wanliu  Average PM 2.5:  91.596","Wanshouxigong  Average PM 2.5:  84.028","Aotizhongxin  Average PM 2.5:  90.796","Changping  Average PM 2.5:  79.411","Dingling  Average PM 2.5:  74.156","Dongsi  Average PM 2.5:  87.47","Guanyuan  Average PM 2.5:  88.383","Gucheng  Average PM 2.5:  89.25","Huairou  Average PM 2.5:  77.301","Nongzhanguan  Average PM 2.5:  90.303","Shunyi  Average PM 2.5:  84.584","Tiantan  Average PM 2.5:  86.617","Wanliu  Average PM 2.5:  89.475","Wanshouxigong  Average PM 2.5:  89.077","Aotizhongxin  Average PM 2.5:  82.118","Changping  Average PM 2.5:  69.616","Dingling  Average PM 2.5:  64.61","Dongsi  Average PM 2.5:  87.343","Guanyuan  Average PM 2.5:  82.412","Gucheng  Average PM 2.5:  83.627","Huairou  Average PM 2.5:  70.655","Nongzhanguan  Average PM 2.5:  85.965","Shunyi  Average PM 2.5:  81.275","Tiantan  Average PM 2.5:  82.608","Wanliu  Average PM 2.5:  80.538","Wanshouxigong  Average PM 2.5:  84.714","Aotizhongxin  Average PM 2.5:  74.104","Changping  Average PM 2.5:  61.656","Dingling  Average PM 2.5:  59.828","Dongsi  Average PM 2.5:  80.226","Guanyuan  Average PM 2.5:  77.136","Gucheng  Average PM 2.5:  77.425","Huairou  Average PM 2.5:  61.126","Nongzhanguan  Average PM 2.5:  76.035","Shunyi  Average PM 2.5:  71.769","Tiantan  Average PM 2.5:  73.917","Wanliu  Average PM 2.5:  71.422","Wanshouxigong  Average PM 2.5:  78.542","Aotizhongxin  Average PM 2.5:  94.762","Changping  Average PM 2.5:  80.101","Dingling  Average PM 2.5:  68.365","Dongsi  Average PM 2.5:  103.497","Guanyuan  Average PM 2.5:  93.07","Gucheng  Average PM 2.5:  101.404","Huairou  Average PM 2.5:  74.265","Nongzhanguan  Average PM 2.5:  101.684","Shunyi  Average PM 2.5:  95.592","Tiantan  Average PM 2.5:  98.358","Wanliu  Average PM 2.5:  94.19","Wanshouxigong  Average PM 2.5:  107.307"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["yellow","red"],"labels":["<100",">=100"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomright","type":"unknown","title":"Average PM 2.5 for 2017","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[39.877853,40.316977],"lng":[116.189908,116.65816]}},"evals":[],"jsHooks":[]}</script>
 
 
 

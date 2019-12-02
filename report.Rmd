@@ -30,8 +30,11 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 *David DeStephano dd2948, Connor Goldman cg3112, Sarah Munro sim2128, RuiJun Chen rc3179*
 *Dec 5, 2019*
+
 <br>
+
 # Motivation
+
 Human health is inextricably linked to the quality of the air we breath we every day. Outdoor air comprises a significant portion of our lifetime air exposure, and the quality of that air has been declining for some time. Air pollution is increasingly recognized as a factor contributing to global morbidity and mortality, particularly with respect to cardiovascular and respiratory health. In 2018, The World Health Organization released a report stating that:
 	→ 91% of the world population lived in places where WHO air quality guidelines were not met 
 	→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 2016
@@ -75,7 +78,8 @@ station: name of the air-quality monitoring site
 # Exploratory Analysis
 ### Loading and tidying the data
 We loaded the data from csv files obtained from the data archive listed above
-```{r, results='hide'}
+
+```{r, results='hide', message=FALSE}
 files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
 
 all_df = map_df(files, read_csv) %>% 

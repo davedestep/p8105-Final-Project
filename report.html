@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Project Report</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown-header">Screencast</li>
+<li>
+  <a href="www.youtube.com"></a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="report.html">Project Report</a>
+</li>
+<li>
+  <a href="https://davdestep.shinyapps.io/two_panel_dashboard">Shiny Dashboard</a>
+</li>
+<li>
+  <a href="map.html">Pollution Map</a>
+</li>
+<li>
+  <a href="https://github.com/davedestep/p8105-Final-Project">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="mailto:&lt;***@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Project Report</h1>
+
+</div>
+
+
+<p><em>David DeStephano dd2948, Connor Goldman cg3112, Sarah Munro sim2128, RuiJun Chen rc3179</em> <em>Dec 5, 2019</em> <br> # Motivation Human health is inextricably linked to the quality of the air we breath we every day. Outdoor air comprises a significant portion of our lifetime air exposure, and the quality of that air has been declining for some time. Air pollution is increasingly recognized as a factor contributing to global morbidity and mortality, particularly with respect to cardiovascular and respiratory health. In 2018, The World Health Organization released a report stating that: → 91% of the world population lived in places where WHO air quality guidelines were not met → Air pollution was estimated to cause 4.2 million premature deaths worldwide in 2016 → Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases **From <a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health" class="uri">https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health</a></p>
+<div id="goals" class="section level1">
+<h1>Goals</h1>
+<p>There is a long way to go in improving ambient air quality, but there is a lot to be gained in doing so. Improved monitoring of factors that influence pollution, and increased awareness of associated health risks can advance the road to recovery. Through this project we strive to: → Replicate an air quality monitoring system that could be utilized by a government or health entity → Assess meteorological data as a predictor of air quality → Identify temporal trends, if any → Look for associations between air quality and cardiovascular health</p>
+</div>
+<div id="related-work" class="section level1">
+<h1>Related Work</h1>
+<p>After finding the dataset, we performed a literature review and were inspired by several studies to examine predictors of PM 2.5 and whether pollutants affect CVD hospitalizations.</p>
+</div>
+<div id="initial-questions" class="section level1">
+<h1>Initial Questions</h1>
+</div>
+<div id="our-data" class="section level1">
+<h1>Our Data</h1>
+<p>Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from x sites in Beijing China over the years xxxx - xxxx. This data comes from ________. Air quality was measured as a concentration of particulate matter 2.5 (PM2,5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (&lt;2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (<a href="https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf" class="uri">https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf</a>). For our secondary analyses, we sought to isolate any associations between air quality and health outcomes in Beijing. We modeled cardiovascular disease as the outcome, using data from _______. The data can also be downloaded on <a href="http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data" class="uri">http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data</a> No: row number year: year of data in this row month: month of data in this row day: day of data in this row hour: hour of data in this row PM2.5: PM2.5 concentration (ug/m^3) PM10: PM10 concentration (ug/m^3) SO2: SO2 concentration (ug/m^3) NO2: NO2 concentration (ug/m^3) CO: CO concentration (ug/m^3) O3: O3 concentration (ug/m^3) TEMP: temperature (degree Celsius) PRES: pressure (hPa) DEWP: dew point temperature (degree Celsius) RAIN: precipitation (mm) wd: wind direction WSPM: wind speed (m/s) station: name of the air-quality monitoring site</p>
+</div>
+<div id="exploratory-analysis" class="section level1">
+<h1>Exploratory Analysis</h1>
+<div id="loading-and-tidying-the-data" class="section level3">
+<h3>Loading and tidying the data</h3>
+<p>We loaded the data from csv files obtained from the data archive listed above</p>
+<pre class="r"><code>files = list.files(&quot;./PRSA_Data_20130301-20170228&quot;, full.names = TRUE)
+
+all_df = map_df(files, read_csv) %&gt;% 
+  bind_rows() %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )
+## Parsed with column specification:
+## cols(
+##   No = col_double(),
+##   year = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   hour = col_double(),
+##   PM2.5 = col_double(),
+##   PM10 = col_double(),
+##   SO2 = col_double(),
+##   NO2 = col_double(),
+##   CO = col_double(),
+##   O3 = col_double(),
+##   TEMP = col_double(),
+##   PRES = col_double(),
+##   DEWP = col_double(),
+##   RAIN = col_double(),
+##   wd = col_character(),
+##   WSPM = col_double(),
+##   station = col_character()
+## )</code></pre>
+<p>We identified a total of 420768 rows/observations, and a total of 18 variables or columns which include the following: no, year, month, day, hour, pm2_5, pm10, so2, no2, co, o3, temp, pres, dewp, rain, wd, wspm, station. We then wanted to characterize the amount of data present and missing for each variable:</p>
+<p>Total amount of data:</p>
+<pre class="r"><code>colSums(!is.na(all_df))</code></pre>
+<pre><code>##      no    year   month     day    hour   pm2_5    pm10     so2     no2 
+##  420768  420768  420768  420768  420768  412029  414319  411747  408652 
+##      co      o3    temp    pres    dewp    rain      wd    wspm station 
+##  400067  407491  420370  420375  420365  420378  418946  420450  420768</code></pre>
+<p>Amount of missing data for each variable:</p>
+<pre class="r"><code>colSums(is.na(all_df))</code></pre>
+<pre><code>##      no    year   month     day    hour   pm2_5    pm10     so2     no2 
+##       0       0       0       0       0    8739    6449    9021   12116 
+##      co      o3    temp    pres    dewp    rain      wd    wspm station 
+##   20701   13277     398     393     403     390    1822     318       0</code></pre>
+<p>From this, it appears that all observations(rows) have date, time, and station information. The number of complete observations with all variables filled in is 382168 which represents the vast majority of the observations.</p>
+<p>In tidying the data, we found there is a column/variable ‘no’ which just seems to count rows, which is not needed and removed. We also changed wd and station into factors, added seasons, and created a variable for seasonal years (since winter spans over two years, this variable was created to only be coded as the year in which winter began). Date and datetime variables were also created.</p>
+<pre class="r"><code>all_df = 
+  all_df %&gt;% 
+  select(-no) %&gt;% 
+  mutate(
+    wd = as.factor(wd),
+    station = as.factor(station),
+    date = as.Date(str_c(year, &#39;-&#39;, month, &#39;-&#39;, day)),
+    datetime = as.POSIXct(str_c(year, &#39;-&#39;, month, &#39;-&#39;, day, &#39; &#39;, &quot;00:&quot;, hour,&quot;:00&quot;)),
+    season = case_when(
+      (month &lt; 3) ~ &quot;winter&quot;, #start of Spring is 3/20
+      (month == 3 &amp; day &lt; 20) ~ &quot;winter&quot;,
+      (month &lt; 6) ~ &quot;spring&quot;, #start of Summer is 6/21
+      (month == 6 &amp; day &lt; 21) ~ &quot;spring&quot;,
+      (month &lt; 9) ~ &quot;summer&quot;, #start of Fall is 9/22
+      (month == 9 &amp; day &lt; 22) ~ &quot;summer&quot;,
+      (month &lt; 12) ~ &quot;fall&quot;, #start of Winter is 12/21
+      (month == 12 &amp; day &lt; 21) ~ &quot;fall&quot;,
+      (month == 12 &amp; day &gt;= 21) ~ &quot;winter&quot;
+    ),
+    seasonal_year=if_else(month&lt;4 &amp; season==&quot;winter&quot; &amp; year ==2014, 2013,
+                          if_else(month &lt; 4 &amp; season==&quot;winter&quot; &amp; year ==2015, 2014,
+                           if_else(month &lt; 4 &amp; season==&quot;winter&quot; &amp; year ==2016, 2015,
+                            if_else(month &lt; 4 &amp; season==&quot;winter&quot; &amp; year ==2017, 2016, year)))),
+    season_and= paste(season, &quot; &quot;, seasonal_year)
+  )</code></pre>
+<p>Visualizing the missing data over time</p>
+<pre class="r"><code>missing = all_df %&gt;% 
+  select(-year, -season, -seasonal_year, -season_and, -datetime, -month, -day, -hour) %&gt;% #the original data except the ones we know are complete
+  is.na() %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(
+    date = all_df$date,
+    station = all_df$station
+  ) %&gt;% 
+  pivot_longer(
+    cols = pm2_5:wspm
+  ) 
+
+missing %&gt;% 
+  ggplot(aes(x =date, y = name, fill = value)) + 
+  geom_raster(alpha=0.8) + 
+  scale_fill_discrete(name = &quot;&quot;, labels = c(&quot;Present&quot;, &quot;Missing&quot;)) +
+  labs(x = &quot;Variable&quot;,y = &quot;Date&quot;, title = &quot;Missing values over time&quot;) +
+  coord_flip() </code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p>And now visualizing missing data over time across stations:</p>
+<pre class="r"><code>missing %&gt;% 
+  ggplot(aes(x =date, y = name, fill = value)) + 
+  geom_raster(alpha=0.8) + 
+  scale_fill_discrete(name = &quot;&quot;, labels = c(&quot;Missing&quot;, &quot;Present&quot;)) +
+  labs(x = &quot;Time&quot;,y = &quot;Variable&quot;, title = &quot;Missing values over time by station&quot;) +
+  facet_grid(station~.) </code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p>Our primary outcome of interest is PM2.5, and can be summarized as follows: 2, 20, 55, 79.7934281, 111, 999, 8739</p>
+<p>Looking at PM2.5 over time:</p>
+<pre class="r"><code>all_df %&gt;% 
+  ggplot(aes(x = date, y = pm2_5)) +
+  geom_point() +
+  geom_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<p>Looking at PM2.5 over time by station:</p>
+<pre class="r"><code>all_df %&gt;% 
+  ggplot(aes(x = date, y = pm2_5)) +
+  geom_point() +
+  geom_smooth() +
+  facet_grid(~station)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
+<p>Looking at PM2.5 by seasons:</p>
+<pre class="r"><code>all_df %&gt;% 
+  mutate(
+    fct_reorder(season, pm2_5)
+  ) %&gt;% 
+  ggplot(aes(x = season, y = pm2_5)) + 
+  geom_boxplot()</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
+<p>Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot</p>
+<pre class="r"><code>all_df %&gt;% 
+  mutate(
+    fct_reorder(season, pm2_5)
+  ) %&gt;% 
+  ggplot(aes(x = season, y = pm2_5)) + 
+  geom_boxplot() + 
+  ylim(0, 250)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
+<pre class="r"><code>all_df %&gt;% 
+  mutate(
+    fct_reorder(season, pm2_5)
+  ) %&gt;% 
+  ggplot(aes(x = season, y = pm2_5)) + 
+  geom_violin() + 
+  ylim(0, 250)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-10-2.png" width="90%" /> Overall seems fairly similar across seasons, but technically highest in the winter with a number of very high outlier values as well</p>
+<p>Average PM 25 by year for all stations</p>
+<pre class="r"><code>all_df %&gt;%  
+  group_by(year) %&gt;% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(x=year, y=avg_pm25)) +
+  geom_line()</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<p>Average PM 25 by year for each station</p>
+<pre class="r"><code>all_df %&gt;%  
+  group_by(year, station) %&gt;% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(x=year, y=avg_pm25, color=station, group=station)) +
+  geom_line()</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
+<p>Average PM 25 by year and season for each station</p>
+<pre class="r"><code>all_df %&gt;%  
+  group_by(season, seasonal_year, station) %&gt;% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(x=season, y=avg_pm25, color=station, group=station)) +
+  geom_line()+
+  facet_wrap(seasonal_year~.) +
+  ggtitle(&quot;Average PM2.5 by Seasonal Years&quot;)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
+<p>Average PM 25 by year and season for each station</p>
+<pre class="r"><code>all_df %&gt;%  
+  mutate(season_and=factor(season_and, levels = c(&quot;spring   2013&quot;, &quot;summer   2013&quot;, &quot;fall   2013&quot;, &quot;winter   2013&quot;,
+                                                  &quot;spring   2014&quot;, &quot;summer   2014&quot;, &quot;fall   2014&quot;, &quot;winter   2014&quot;,
+                                                  &quot;spring   2015&quot;, &quot;summer   2015&quot;, &quot;fall   2015&quot;, &quot;winter   2015&quot;,
+                                                  &quot;spring   2016&quot;, &quot;summer   2016&quot;, &quot;fall   2016&quot;, &quot;winter   2016&quot;))) %&gt;% 
+  group_by(season_and, station) %&gt;% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(x=season_and, y=avg_pm25, color=station, group=station)) +
+  geom_line()+
+  ggtitle(&quot;Average PM2.5 by Seasonal Years&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-14-1.png" width="90%" /></p>
+<pre class="r"><code>#need to change wspm to CUMULATIVE wind speed for month or direction
+all_df %&gt;%  
+  filter(station==&quot;Dingling&quot;) %&gt;% 
+  ggplot(aes(x=dewp, y=wspm, color=pm2_5)) +
+  geom_point(alpha=0.10) +
+  scale_color_gradient(low=&quot;blue&quot;, high=&quot;red&quot;)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
+</div>
+<div id="motherload-of-all-scatterplots-plotting-everything" class="section level2">
+<h2>Motherload of all scatterplots (Plotting everything )</h2>
+<p>Looking at scatter plots of every variable against PM2.5 to look for potential correlation</p>
+<pre class="r"><code>## Just FYI, this takes a long time to run. And the plots will take up 900MB of memory
+#So for now I&#39;ve set eval=false, but I&#39;m pushing the image it generated, called all_variables_plot.png
+par(mfrow = c(4, 5))
+
+vars = all_df %&gt;% select(-pm2_5, -year, -month, -day, -date, -season) %&gt;% colnames()
+plots = list()
+for (i in 1:length(vars)) {
+  plots[[i]] = ggplot(all_df, aes_string(x = vars[i], y = &quot;pm2_5&quot;)) + geom_point()
+}
+do.call(grid.arrange, plots)</code></pre>
+<div class="figure">
+<img src="all_variables_plot.png" alt="all variables scatterplots" width="600" />
+<p class="caption">all variables scatterplots</p>
+</div>
+<p>Variables which seem correlated with PM2.5 include (not surprisingly) PM10, but also rain, wind speed, o3 all seem to be strongly correlated. In addition, no2, so2, and possibly temperature, pressure and dew point but in a non-linear fashion</p>
+</div>
+<div id="findings" class="section level2">
+<h2>Findings</h2>
+<p>We looked at correlations between PM2.5 and the meteorological variables, including dewpoint, windspeed… Correlations.. Scatterplots Spearman’s correlation coefficients to evaluate the inter-relations between air pollutants and weather conditions Ray</p>
+</div>
+</div>
+<div id="additional-analysis" class="section level1">
+<h1>Additional Analysis</h1>
+<p>Three models were developed for analysis of weather conditions and their association with PM2.5. A multivariable linear regression, a mixed model, and a Mixed Model for Longitudinal Continuous Data were developed to examine the variables of interest.</p>
+<p>Almost every variable is significant, however, station, windspeed, season, and windspeed all have high effect sizes. Rain, dewpoint, temp also have moderate effect sizes</p>
+<p>CVD model… whatever we decide on IS pm 2.5, season, and CO associated with CVD? Poisson regression.. Use the following articles: <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706</a> <a href="https://www.nature.com/articles/7500453.pdf?origin=ppub" class="uri">https://www.nature.com/articles/7500453.pdf?origin=ppub</a></p>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>Insights</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

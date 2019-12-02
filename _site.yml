@@ -1,16 +1,23 @@
-name: "Yay internet!"
+name: "Beijing Air Quality"
 output_dir: "."
 navbar:
   title: "Home"
+  left:
+    - text: "Screencast"
+    - href: www.youtube.com
   right:
     - text: "About"
       href: about.html
-    - text: Examples
-#      menu:
-#      - text: "Dashboard"
-#        href: dashboard.html
+    - text: "Project Report"
+      href: report.html
+    - text: "Shiny Dashboard"
+      href: https://davdestep.shinyapps.io/two_panel_dashboard
+    - text: "Pollution Map"
+      href: map.html
     - icon: fa-github fa-lg
-      href: https://github.com/davedestep/
+      href: https://github.com/davedestep/p8105-Final-Project 
+    - icon: fa-envelope fa-lg
+      href: mailto:<***@cumc.columbia.edu>
 output:
   html_document:
-    theme: journal
+    theme: sandstone

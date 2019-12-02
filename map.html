@@ -12,7 +12,7 @@
 
 
 
-<title>P8105 Final Project Website</title>
+<title>Map</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,6 +24,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -250,6 +251,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -380,35 +384,23 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
-
-
-<h1 class="title toc-ignore">P8105 Final Project Website</h1>
-
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
 </div>
 
 
-<div id="we-ball-air-qual-beijing-air-pollution-patrol" class="section level2">
-<h2>We ball air qual– Beijing Air Pollution Patrol</h2>
-<p></br></p>
-<div id="project-team" class="section level3">
-<h3>Project Team:</h3>
-<div id="david-destephano-dd2948-connor-goldman-cg3112-sarah-munro-sim2128-ruijun-chen-rc3179" class="section level4">
-<h4><em>David DeStephano dd2948, Connor Goldman cg3112, Sarah Munro sim2128, RuiJun Chen rc3179</em></h4>
-<p></br></p>
-<div class="figure">
-<img src="beijing_smog.jpg" alt="Beijing, China (on a clear vs smoggy day)" width="550" />
-<p class="caption">Beijing, China (on a clear vs smoggy day)</p>
+
+<h1 class="title toc-ignore">Map</h1>
+
 </div>
-</div>
-</div>
-<div id="introduction" class="section level3">
-<h3>Introduction</h3>
-<p>With the rise of industrialization, air pollution has become an increasingly important (and visible) factor influencing our environment and human health. Beijing, the capital of China and its second-largest city, is home to over 21 million people and has historically struggled with air pollution as the city and surrounding areas rapidly industrialized in recent decades. Beijing has frequently been affected by heavy smog, as seen above, which stems from the burning of fossil fuels, industrial plants, cars, as well as its proximity to the Gobi desert and intermittent sandstorms. In preparation for the global spotlight on Beijing for the 2008 Summer Olympics, China began making large strides in both measuring and improving air quality, which started with the public reporting of fine particulate matter (PM)10, followed by PM2.5. <br></p>
-</div>
-<div id="project-overview" class="section level3">
-<h3>Project Overview</h3>
-<p>As our team is made up of public health students and physicians, we have a vested interest in understanding and improving the health of populations. We believe that governments should maintain tools for assessing dynamic health and environmental indicators over time, including air quality data. The purpose of this project is to create an interactive tool and data source that integrates weather and pollution over time in such a way that could be utilized and disseminated by a government or health agency. We sought to develop analyses that explore the association between meteorological indicators and pollution, as well as with health outcomes such as cardiovascular disease.</p>
-</div>
+
+
+<div id="our-map" class="section level1">
+<h1>Our map!</h1>
 </div>
 
 
@@ -446,6 +438,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

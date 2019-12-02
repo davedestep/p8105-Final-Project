@@ -82,7 +82,8 @@ mapss <- all_avg %>%
   left_join(maps, by = "station") %>%
   mutate(
     type = ifelse(avg_pm25 < 100, 1, 0),
-    color = ifelse(type == 1, "yellow", "red")
+    color = ifelse(type == 1, "yellow", "red"),
+    avg_pm25 = round(avg_pm25, digits = 3)
   )
 
 pal <- colorFactor(c("red", "yellow"),

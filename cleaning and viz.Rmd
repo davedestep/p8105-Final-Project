@@ -7,6 +7,15 @@ library(tidyverse)
 library(lubridate)
 library(modelr)
 library(gridExtra)
+library(leaflet)
+library(wesanderson)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(ggrepel)
+library(tidyverse)
+library(haven)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -70,9 +79,11 @@ all %>%
 
 Average PM 25 by year for each station
 ```{r}
-all %>%  
+all_avg <- all %>%  
   group_by(year, station) %>% 
-  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE))
+
+all_avg %>% 
   ggplot(aes(x=year, y=avg_pm25, color=station, group=station)) +
   geom_line()
 ```
@@ -107,6 +118,54 @@ all %>%
 ```
 
 
+```{r}
+stats <- all %>%
+  select(station) %>%
+  group_by(station) %>%
+  summarise(
+    n = n()
+  )
+
+a <- stats$station
+latitude <- c(40.00, 40.228599, 40.288817, 39.931018, 39.927513, 39.912014, 40.316977, 39.945236, 40.131396, 
+39.877853, 39.976773, 39.880519)
+
+
+longitude <- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.189908, 116.631309, 116.474969, 116.658160, 116.423179, 116.292343, 116.368263)
+
+
+
+maps <- tibble( station = a, latitude = latitude, longitude = longitude)
+
+
+  
+
+
+
+#map_type <- factor(mapss$type) 
+
+#new = c("red", "yellow")[map_type]
+
+mapss <- all_avg %>%
+  left_join(maps, by = "station") %>%
+  mutate(
+    type = ifelse(avg_pm25 < 100, 1, 0),
+    color = ifelse(type == 1, "yellow", "red")
+  )
+
+pal <- colorFactor(c("red", "yellow"),
+                   domain = unique(mapss$type))
+
+try <- mapss %>%
+  filter(
+    year == 2017
+  ) %>%
+leaflet() %>% 
+  addTiles() %>% 
+  addCircleMarkers(~longitude, ~latitude, label = paste0(mapss$station," Average pm2.5: ", mapss$avg_pm25), color = ~pal(type))
+
+try
+```
 
 
 

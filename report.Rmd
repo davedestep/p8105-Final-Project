@@ -36,13 +36,16 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 # Motivation
 
 Human health is inextricably linked to the quality of the air we breath we every day. Outdoor air comprises a significant portion of our lifetime air exposure, and the quality of that air has been declining for some time. Air pollution is increasingly recognized as a factor contributing to global morbidity and mortality, particularly with respect to cardiovascular and respiratory health. In 2018, The World Health Organization released a report stating that:
+
 	→ 91% of the world population lived in places where WHO air quality guidelines were not met 
-	→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 2016
-→ Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases 
-**From https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health
+	→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 201
+  → Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases 
+
+**From [WHO](https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health)
 
 # Goals
 There is a long way to go in improving ambient air quality, but there is a lot to be gained in doing so. Improved monitoring of factors that influence pollution, and increased awareness of associated health risks can advance the road to recovery. Through this project we strive to:
+
 	→ Replicate an air quality monitoring system that could be utilized by a government or health entity 
 	→ Assess meteorological data as a predictor of air quality
 	→ Identify temporal trends, if any 
@@ -53,8 +56,10 @@ After finding the dataset, we performed a literature review and were inspired by
 
 # Initial Questions
 
+
+
 # Our Data
-Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from x sites in Beijing China over the years xxxx - xxxx. This data comes from ________. Air quality was measured as a concentration of particulate matter 2.5 (PM2,5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (<2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf). For our secondary analyses, we sought to isolate any associations between air quality and health outcomes in Beijing. We modeled cardiovascular disease as the outcome, using data from _______. 
+Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from 12 sites in Beijing, China over the years 2013 - 2017. This data comes from ________. Air quality was measured as a concentration of particulate matter 2.5 (PM2,5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (<2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf). For our secondary analyses, we sought to isolate any associations between air quality and health outcomes in Beijing. We modeled cardiovascular disease as the outcome, using data from _______. 
 The data can also be downloaded on http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data
 No: row number
 year: year of data in this row

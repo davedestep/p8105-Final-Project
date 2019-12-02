@@ -14,15 +14,23 @@
 
 <title>R Notebook</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.0.3.9000/leaflet.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -273,16 +281,33 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
+        <li class="dropdown-header">Screencast</li>
+<li>
+  <a href="www.youtube.com"></a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="about.html">About</a>
 </li>
-<li class="dropdown-header">Examples</li>
 <li>
-  <a href="https://github.com/davedestep/">
+  <a href="report.html">Project Report</a>
+</li>
+<li>
+  <a href="https://davdestep.shinyapps.io/two_panel_dashboard">Shiny Dashboard</a>
+</li>
+<li>
+  <a href="map.html">Pollution Map</a>
+</li>
+<li>
+  <a href="https://github.com/davedestep/p8105-Final-Project">
     <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="mailto:&lt;***@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
      
   </a>
 </li>
@@ -301,12 +326,12 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages ---------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.2.1     v purrr   0.3.3
+<pre><code>## -- Attaching packages ------------------ tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.2.1     v purrr   0.3.2
 ## v tibble  2.1.3     v dplyr   0.8.3
 ## v tidyr   1.0.0     v stringr 1.4.0
 ## v readr   1.3.1     v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+<pre><code>## -- Conflicts --------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(lubridate)</code></pre>
@@ -322,7 +347,29 @@ library(gridExtra)</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     combine</code></pre>
-<pre class="r"><code>knitr::opts_chunk$set(
+<pre class="r"><code>library(leaflet)
+library(wesanderson)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(data.table)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday,
+##     week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     transpose</code></pre>
+<pre class="r"><code>library(ggrepel)
+library(tidyverse)
+library(haven)
+
+knitr::opts_chunk$set(
     echo = TRUE,
     warning = FALSE,
     fig.width = 8, 
@@ -341,14 +388,13 @@ files = list.files(&quot;./PRSA_Data_20130301-20170228&quot;, full.names = TRUE)
 
 all&lt;-map_df(files, read_csv) %&gt;% 
   bind_rows() %&gt;% 
-  janitor::clean_names()</code></pre>
-<pre class="r"><code>all = 
-  all %&gt;% 
+  janitor::clean_names() %&gt;% 
   select(-no) %&gt;% 
   mutate(
     wd = as.factor(wd),
     station = as.factor(station),
     date = as.Date(str_c(year, &#39;-&#39;, month, &#39;-&#39;, day)),
+    datetime = as.POSIXct(str_c(year, &#39;-&#39;, month, &#39;-&#39;, day, &#39; &#39;, &quot;00:&quot;, hour,&quot;:00&quot;)),
     season = case_when(
       (month &lt; 3) ~ &quot;winter&quot;, #start of Spring is 3/20
       (month == 3 &amp; day &lt; 20) ~ &quot;winter&quot;,
@@ -372,14 +418,16 @@ all&lt;-map_df(files, read_csv) %&gt;%
   summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
   ggplot(aes(x=year, y=avg_pm25)) +
   geom_line()</code></pre>
-<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
+<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 <p>Average PM 25 by year for each station</p>
-<pre class="r"><code>all %&gt;%  
+<pre class="r"><code>all_avg &lt;- all %&gt;%  
   group_by(year, station) %&gt;% 
-  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE))
+
+all_avg %&gt;% 
   ggplot(aes(x=year, y=avg_pm25, color=station, group=station)) +
   geom_line()</code></pre>
-<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 <p>Average PM 25 by year and season for each station</p>
 <pre class="r"><code>all %&gt;%  
   group_by(season, seasonal_year, station) %&gt;% 
@@ -388,7 +436,7 @@ all&lt;-map_df(files, read_csv) %&gt;%
   geom_line()+
   facet_wrap(seasonal_year~.) +
   ggtitle(&quot;Average PM2.5 by Seasonal Years&quot;)</code></pre>
-<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
 <p>Average PM 25 by year and season for each station</p>
 <pre class="r"><code>all %&gt;%  
   mutate(season_and=factor(season_and, levels = c(&quot;spring   2013&quot;, &quot;summer   2013&quot;, &quot;fall   2013&quot;, &quot;winter   2013&quot;,
@@ -401,7 +449,55 @@ all&lt;-map_df(files, read_csv) %&gt;%
   geom_line()+
   ggtitle(&quot;Average PM2.5 by Seasonal Years&quot;) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<p><img src="cleaning-and-viz_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<pre class="r"><code>stats &lt;- all %&gt;%
+  select(station) %&gt;%
+  group_by(station) %&gt;%
+  summarise(
+    n = n()
+  )
+
+a &lt;- stats$station
+latitude &lt;- c(40.00, 40.228599, 40.288817, 39.931018, 39.927513, 39.912014, 40.316977, 39.945236, 40.131396, 
+39.877853, 39.976773, 39.880519)
+
+
+longitude &lt;- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.189908, 116.631309, 116.474969, 116.658160, 116.423179, 116.292343, 116.368263)
+
+
+
+maps &lt;- tibble( station = a, latitude = latitude, longitude = longitude)
+
+
+  
+
+
+
+#map_type &lt;- factor(mapss$type) 
+
+#new = c(&quot;red&quot;, &quot;yellow&quot;)[map_type]
+
+mapss &lt;- all_avg %&gt;%
+  left_join(maps, by = &quot;station&quot;) %&gt;%
+  mutate(
+    type = ifelse(avg_pm25 &lt; 100, 1, 0),
+    color = ifelse(type == 1, &quot;yellow&quot;, &quot;red&quot;)
+  )
+
+pal &lt;- colorFactor(c(&quot;red&quot;, &quot;yellow&quot;),
+                   domain = unique(mapss$type))
+
+try &lt;- mapss %&gt;%
+  filter(
+    year == 2017
+  ) %&gt;%
+leaflet() %&gt;% 
+  addTiles() %&gt;% 
+  addCircleMarkers(~longitude, ~latitude, label = paste0(mapss$station,&quot; Average pm2.5: &quot;, mapss$avg_pm25), color = ~pal(type))
+
+try</code></pre>
+<div id="htmlwidget-3f944098a85c3c9872d5" style="width:90%;height:576px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3f944098a85c3c9872d5">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[40,40.228599,40.288817,39.931018,39.927513,39.912014,40.316977,39.945236,40.131396,39.877853,39.976773,39.880519],[116.41,116.216502,116.239659,116.424922,116.357205,116.189908,116.631309,116.474969,116.65816,116.423179,116.292343,116.368263],10,null,null,{"interactive":true,"className":"","stroke":true,"color":["#FFFF00","#FFFF00","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FFFF00","#FFFF00","#FF0000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FFFF00","#FFFF00","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FF0000","#FFFF00","#FFFF00","#FFFF00","#FF0000"],"fillOpacity":0.2},null,null,null,null,["Aotizhongxin Average pm2.5: 82.3924723851084","Changping Average pm2.5: 72.6445082752017","Dingling Average pm2.5: 64.7549237170596","Dongsi Average pm2.5: 86.940286071379","Guanyuan Average pm2.5: 82.1293841480254","Gucheng Average pm2.5: 82.0008324084351","Huairou Average pm2.5: 68.6775382870108","Nongzhanguan Average pm2.5: 84.3475701574264","Shunyi Average pm2.5: 77.1982490821802","Tiantan Average pm2.5: 83.2000818889041","Wanliu Average pm2.5: 91.5956575174109","Wanshouxigong Average pm2.5: 84.028276050938","Aotizhongxin Average pm2.5: 90.796062992126","Changping Average pm2.5: 79.4108149545937","Dingling Average pm2.5: 74.1555919896943","Dongsi Average pm2.5: 87.4696063719266","Guanyuan Average pm2.5: 88.3826320710612","Gucheng Average pm2.5: 89.2501223633609","Huairou Average pm2.5: 77.3005456702254","Nongzhanguan Average pm2.5: 90.3034301715086","Shunyi Average pm2.5: 84.5837437273894","Tiantan Average pm2.5: 86.6165495892368","Wanliu Average pm2.5: 89.4751817237799","Wanshouxigong Average pm2.5: 89.0770903987838","Aotizhongxin Average pm2.5: 82.1184222846442","Changping Average pm2.5: 69.6159112482202","Dingling Average pm2.5: 64.6103687434979","Dongsi Average pm2.5: 87.3430904668134","Guanyuan Average pm2.5: 82.4118940182807","Gucheng Average pm2.5: 83.6269373981848","Huairou Average pm2.5: 70.6546215556331","Nongzhanguan Average pm2.5: 85.9650011756407","Shunyi Average pm2.5: 81.2753126447429","Tiantan Average pm2.5: 82.6081106204973","Wanliu Average pm2.5: 80.5383141762452","Wanshouxigong Average pm2.5: 84.7144296088077","Aotizhongxin Average pm2.5: 74.1043336818868","Changping Average pm2.5: 61.655940023068","Dingling Average pm2.5: 59.827553668318","Dongsi Average pm2.5: 80.2259518443838","Guanyuan Average pm2.5: 77.1361638130495","Gucheng Average pm2.5: 77.4253472222222","Huairou Average pm2.5: 61.1261010662958","Nongzhanguan Average pm2.5: 76.0345146023318","Shunyi Average pm2.5: 71.7692307692308","Tiantan Average pm2.5: 73.9170709170709","Wanliu Average pm2.5: 71.4217256076489","Wanshouxigong Average pm2.5: 78.5420353982301","Aotizhongxin Average pm2.5: 94.7621428571429","Changping Average pm2.5: 80.1012838801712","Dingling Average pm2.5: 68.365316275764","Dongsi Average pm2.5: 103.497113997114","Guanyuan Average pm2.5: 93.070432868672","Gucheng Average pm2.5: 101.404301075269","Huairou Average pm2.5: 74.265","Nongzhanguan Average pm2.5: 101.684399712437","Shunyi Average pm2.5: 95.5924339757316","Tiantan Average pm2.5: 98.3579098067287","Wanliu Average pm2.5: 94.189556509299","Wanshouxigong Average pm2.5: 107.306916426513"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[39.877853,40.316977],"lng":[116.189908,116.65816]}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#need to change wspm to CUMULATIVE wind speed for month or direction
 all %&gt;%  
   filter(station==&quot;Dingling&quot;) %&gt;% 

@@ -8,7 +8,23 @@ output: github_document
 library(tidyverse)
 library(lme4)
 library(lubridate)
+library(wesanderson)
+library(viridis)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
 ```
+
+```{r}
+pal <- wes_palette("Zissou1", 100, type = "continuous")
+```
+
 
 
 ```{r message=FALSE}
@@ -84,7 +100,129 @@ mixed %>% broom::tidy() %>% knitr::kable(digits = 3)
 ####################################################
 
 ```{r}
-read_csv("./patient_mi_data/patients_mi.csv")
+cvd<-read_csv("./patient_mi_data/patients_mi.csv") %>% janitor::clean_names()
+
+cvd2<- cvd %>% 
+  group_by(admission_date_year, admission_date_month, gender) %>% 
+  summarise(n = n()) %>% 
+  rename(year=admission_date_year) %>%
+  rename(month=admission_date_month)
+
+pollution<-all %>%
+  group_by(year, month) %>% 
+  summarize(avg_pm2_5=mean(pm2_5, na.rm=TRUE),
+            avg_co=mean(co, na.rm=TRUE),
+            avg_temp=mean(temp, na.rm=TRUE))
+
+model_data <- left_join(pollution, cvd2, by=c("year", "month")) %>% 
+  na.omit() 
+```
+
+```{r}
+model_data %>%  
+  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  geom_line()+
+  geom_point(aes(size = avg_co))+
+  scale_color_viridis(option = "B")+
+  facet_wrap(year~.) +
+  ggtitle("Number of MI's by PM2.5 and Year/Month") 
+
+
+```
+
+
+
+```{r}
+model_data %>%  
+  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = "B")+
+  facet_wrap(year~.) +
+  ggtitle("Average PM2.5 by Years")
+```
+
+```{r}
+model_data %>%  
+  ggplot(aes(x=month, y=n, color=avg_co, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = "B")+
+  facet_wrap(year~.) +
+  ggtitle("Number of MI's by Carbon Monoxide and Year/Month")
+```
+
+
+
+
+It does appear the hospitalizations are higher in winter months. Unfortunately, we will not be able to draw strong conclusions about the effect pollution on heart attacks since it is so strongly correlated with the month/season. We can try to control for temperature instead of month?
+
+```{r}
+model_data %>%  
+  ggplot(aes(x=month, y=n, color=avg_temp, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = "B")+
+  facet_wrap(year~.) +
+  ggtitle("Number of MI's by Temperature and Year/Month")
+```
+
+
+
+
+We have to use month because we have no data on days of the month to separate analysis into seasons.
+
+The count data we are using is the number of people admitted for MI per month.
+
+We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
+[Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
+```{r}
+model_data<-model_data%>% 
+  mutate(month=factor(month))
+
+summary(m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + month + year + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data))
+
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 3)
+
+```
+
+
+#Remove month and year
+```{r}
+m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp, family="poisson", data=model_data)
+
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 6)
+
+
+
+m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data)
+
+tab<-m2 %>% broom::tidy()
+knitr::kable(tab, digits = 6)
+
+```
+
+
+#Could it be that 2016 was an outlier and had a huge number of MI's?
+```{r}
+model_data2<-model_data %>% 
+  filter(year!=2016)
+
+m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp, family="poisson", data=model_data2)
+
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 6)
+
+
+
+
+m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data2)
+
+tab<-m2 %>% broom::tidy()
+knitr::kable(tab, digits = 6)
+
 ```
 
 

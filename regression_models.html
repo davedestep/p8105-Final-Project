@@ -306,7 +306,18 @@ $(document).ready(function () {
 
 <pre class="r"><code>library(tidyverse)
 library(lme4)
-library(lubridate)</code></pre>
+library(lubridate)
+library(wesanderson)
+library(viridis)
+
+knitr::opts_chunk$set(
+    echo = TRUE,
+    warning = FALSE,
+    fig.width = 8, 
+  fig.height = 6,
+  out.width = &quot;90%&quot;
+)</code></pre>
+<pre class="r"><code>pal &lt;- wes_palette(&quot;Zissou1&quot;, 100, type = &quot;continuous&quot;)</code></pre>
 <pre class="r"><code>files = list.files(&quot;./PRSA_Data_20130301-20170228&quot;, full.names = TRUE)
 
 all&lt;-map_df(files, read_csv) %&gt;% 
@@ -646,12 +657,6 @@ knitr::kable(tab, digits = 3)</code></pre>
   lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + (1 | station), data = .) %&gt;% 
   broom::tidy() %&gt;% 
   knitr::kable(digits = 3)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider
-## rescaling</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): binding factor and character vector,
-## coercing into character vector</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
-## coercing into character vector</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -879,14 +884,9 @@ knitr::kable(tab, digits = 3)</code></pre>
 <div id="mixed-model-for-longitudinal-continuous-data" class="section level3">
 <h3>Mixed Model for Longitudinal Continuous Data</h3>
 <pre class="r"><code>mixed&lt;-all %&gt;% 
-  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + datetime + (1 | station), data = .) </code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider
-## rescaling</code></pre>
-<pre class="r"><code>mixed %&gt;% broom::tidy() %&gt;% knitr::kable(digits = 3)</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): binding factor and character vector,
-## coercing into character vector</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
-## coercing into character vector</code></pre>
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + datetime + (1 | station), data = .) 
+
+mixed %&gt;% broom::tidy() %&gt;% knitr::kable(digits = 3)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1133,7 +1133,7 @@ knitr::kable(tab, digits = 3)</code></pre>
 </div>
 <div id="section-3" class="section level52">
 <p></p>
-<pre class="r"><code>read_csv(&quot;./patient_mi_data/patients_mi.csv&quot;)</code></pre>
+<pre class="r"><code>cvd&lt;-read_csv(&quot;./patient_mi_data/patients_mi.csv&quot;) %&gt;% janitor::clean_names()</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   gender = col_character(),
@@ -1141,21 +1141,459 @@ knitr::kable(tab, digits = 3)</code></pre>
 ##   `admission date(month)` = col_double(),
 ##   `main discharge diagnosis` = col_character()
 ## )</code></pre>
-<pre><code>## # A tibble: 81,029 x 4
-##    gender `admission date(yea~ `admission date(mont~ `main discharge diagn~
-##    &lt;chr&gt;                 &lt;dbl&gt;                 &lt;dbl&gt; &lt;chr&gt;                 
-##  1 male                   2013                     1 I21.403               
-##  2 male                   2013                     1 I21.403               
-##  3 male                   2013                     1 I21.103               
-##  4 female                 2013                     1 I21.103               
-##  5 male                   2013                     1 I21.002               
-##  6 male                   2013                     1 I21.103               
-##  7 male                   2013                     1 I21.103               
-##  8 female                 2013                     2 I21.002               
-##  9 female                 2013                     2 I21.207               
-## 10 female                 2013                     1 I21.403               
-## # ... with 81,019 more rows</code></pre>
+<pre class="r"><code>cvd2&lt;- cvd %&gt;% 
+  group_by(admission_date_year, admission_date_month, gender) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  rename(year=admission_date_year) %&gt;%
+  rename(month=admission_date_month)
+
+pollution&lt;-all %&gt;%
+  group_by(year, month) %&gt;% 
+  summarize(avg_pm2_5=mean(pm2_5, na.rm=TRUE),
+            avg_co=mean(co, na.rm=TRUE),
+            avg_temp=mean(temp, na.rm=TRUE))
+
+model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&quot;)) %&gt;% 
+  na.omit() </code></pre>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  geom_line()+
+  geom_point(aes(size = avg_co))+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Number of MI&#39;s by PM2.5 and Year/Month&quot;) </code></pre>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Average PM2.5 by Years&quot;)</code></pre>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_co, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Number of MI&#39;s by Carbon Monoxide and Year/Month&quot;)</code></pre>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
+<p>It does appear the hospitalizations are higher in winter months. Unfortunately, we will not be able to draw strong conclusions about the effect pollution on heart attacks since it is so strongly correlated with the month/season. We can try to control for temperature instead of month?</p>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_temp, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Number of MI&#39;s by Temperature and Year/Month&quot;)</code></pre>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<p>We have to use month because we have no data on days of the month to separate analysis into seasons.</p>
+<p>The count data we are using is the number of people admitted for MI per month.</p>
+<p>We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing’s population peaked at 21.73 million residents in 2016. <a href="https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth">Source</a>. For this reason (population numbers have been fairly flat) we decided to just use pure count data.</p>
+<pre class="r"><code>model_data&lt;-model_data%&gt;% 
+  mutate(month=factor(month))
+
+summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + month + year + avg_pm2_5*avg_temp + avg_co*avg_temp, family=&quot;poisson&quot;, data=model_data))</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = n ~ avg_pm2_5 + avg_co + avg_temp + month + year + 
+##     avg_pm2_5 * avg_temp + avg_co * avg_temp, family = &quot;poisson&quot;, 
+##     data = model_data)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -17.1244  -11.6150   -0.4644    9.9971   25.1126  
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -1.575e+02  8.135e+00 -19.355  &lt; 2e-16 ***
+## avg_pm2_5          -2.881e-04  1.755e-03  -0.164 0.869619    
+## avg_co              1.996e-05  1.449e-04   0.138 0.890477    
+## avg_temp           -8.745e-03  5.345e-03  -1.636 0.101822    
+## month10             1.856e-01  8.592e-02   2.160 0.030749 *  
+## month11             1.396e-01  4.661e-02   2.995 0.002745 ** 
+## month12             5.000e-02  2.644e-02   1.891 0.058602 .  
+## month2             -4.234e-02  6.524e-02  -0.649 0.516362    
+## month3              1.176e-01  7.971e-02   1.476 0.139971    
+## month4              2.365e-01  8.854e-02   2.671 0.007558 ** 
+## month5              3.499e-01  9.420e-02   3.715 0.000203 ***
+## month6              1.121e-01  1.023e-01   1.096 0.273077    
+## month7              2.075e-01  1.079e-01   1.923 0.054540 .  
+## month8              2.260e-01  1.086e-01   2.080 0.037506 *  
+## month9              1.480e-01  9.269e-02   1.597 0.110360    
+## year                8.150e-02  4.048e-03  20.136  &lt; 2e-16 ***
+## avg_pm2_5:avg_temp -8.245e-06  7.709e-05  -0.107 0.914832    
+## avg_co:avg_temp    -2.238e-06  6.560e-06  -0.341 0.733036    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 12952  on 91  degrees of freedom
+## Residual deviance: 11752  on 74  degrees of freedom
+## AIC: 12570
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-157.450</td>
+<td align="right">8.135</td>
+<td align="right">-19.355</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.000</td>
+<td align="right">0.002</td>
+<td align="right">-0.164</td>
+<td align="right">0.870</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.138</td>
+<td align="right">0.890</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.009</td>
+<td align="right">0.005</td>
+<td align="right">-1.636</td>
+<td align="right">0.102</td>
+</tr>
+<tr class="odd">
+<td align="left">month10</td>
+<td align="right">0.186</td>
+<td align="right">0.086</td>
+<td align="right">2.160</td>
+<td align="right">0.031</td>
+</tr>
+<tr class="even">
+<td align="left">month11</td>
+<td align="right">0.140</td>
+<td align="right">0.047</td>
+<td align="right">2.995</td>
+<td align="right">0.003</td>
+</tr>
+<tr class="odd">
+<td align="left">month12</td>
+<td align="right">0.050</td>
+<td align="right">0.026</td>
+<td align="right">1.891</td>
+<td align="right">0.059</td>
+</tr>
+<tr class="even">
+<td align="left">month2</td>
+<td align="right">-0.042</td>
+<td align="right">0.065</td>
+<td align="right">-0.649</td>
+<td align="right">0.516</td>
+</tr>
+<tr class="odd">
+<td align="left">month3</td>
+<td align="right">0.118</td>
+<td align="right">0.080</td>
+<td align="right">1.476</td>
+<td align="right">0.140</td>
+</tr>
+<tr class="even">
+<td align="left">month4</td>
+<td align="right">0.236</td>
+<td align="right">0.089</td>
+<td align="right">2.671</td>
+<td align="right">0.008</td>
+</tr>
+<tr class="odd">
+<td align="left">month5</td>
+<td align="right">0.350</td>
+<td align="right">0.094</td>
+<td align="right">3.715</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">month6</td>
+<td align="right">0.112</td>
+<td align="right">0.102</td>
+<td align="right">1.096</td>
+<td align="right">0.273</td>
+</tr>
+<tr class="odd">
+<td align="left">month7</td>
+<td align="right">0.208</td>
+<td align="right">0.108</td>
+<td align="right">1.923</td>
+<td align="right">0.055</td>
+</tr>
+<tr class="even">
+<td align="left">month8</td>
+<td align="right">0.226</td>
+<td align="right">0.109</td>
+<td align="right">2.080</td>
+<td align="right">0.038</td>
+</tr>
+<tr class="odd">
+<td align="left">month9</td>
+<td align="right">0.148</td>
+<td align="right">0.093</td>
+<td align="right">1.597</td>
+<td align="right">0.110</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0.082</td>
+<td align="right">0.004</td>
+<td align="right">20.136</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-0.107</td>
+<td align="right">0.915</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-0.341</td>
+<td align="right">0.733</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<div id="remove-month-and-year" class="section level1">
+<h1>Remove month and year</h1>
+<pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp, family=&quot;poisson&quot;, data=model_data)
+
+tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.985401</td>
+<td align="right">0.021342</td>
+<td align="right">327.308312</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">-0.000162</td>
+<td align="right">0.000261</td>
+<td align="right">-0.620408</td>
+<td align="right">0.534989</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000092</td>
+<td align="right">0.000018</td>
+<td align="right">-5.001428</td>
+<td align="right">0.000001</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.008677</td>
+<td align="right">0.000591</td>
+<td align="right">-14.693867</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>m2 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + avg_pm2_5*avg_temp + avg_co*avg_temp, family=&quot;poisson&quot;, data=model_data)
+
+tab&lt;-m2 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.902755</td>
+<td align="right">0.022113</td>
+<td align="right">312.164914</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.001552</td>
+<td align="right">0.000348</td>
+<td align="right">4.454747</td>
+<td align="right">0.000008</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000128</td>
+<td align="right">0.000022</td>
+<td align="right">-5.860567</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">0.008882</td>
+<td align="right">0.001377</td>
+<td align="right">6.447817</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">-0.000030</td>
+<td align="right">0.000026</td>
+<td align="right">-1.124952</td>
+<td align="right">0.260610</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">-0.000017</td>
+<td align="right">0.000002</td>
+<td align="right">-8.798771</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="could-it-be-that-2016-was-an-outlier-and-had-a-huge-number-of-mis" class="section level1">
+<h1>Could it be that 2016 was an outlier and had a huge number of MI’s?</h1>
+<pre class="r"><code>model_data2&lt;-model_data %&gt;% 
+  filter(year!=2016)
+
+m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp, family=&quot;poisson&quot;, data=model_data2)
+
+tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.834170</td>
+<td align="right">0.029405</td>
+<td align="right">232.415346</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">-0.000147</td>
+<td align="right">0.000293</td>
+<td align="right">-0.501233</td>
+<td align="right">0.616207</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000024</td>
+<td align="right">0.000022</td>
+<td align="right">-1.102190</td>
+<td align="right">0.270379</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.007442</td>
+<td align="right">0.000775</td>
+<td align="right">-9.606038</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>m2 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + avg_pm2_5*avg_temp + avg_co*avg_temp, family=&quot;poisson&quot;, data=model_data2)
+
+tab&lt;-m2 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.795907</td>
+<td align="right">0.030242</td>
+<td align="right">224.718643</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.000349</td>
+<td align="right">0.000392</td>
+<td align="right">0.891380</td>
+<td align="right">0.372725</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000026</td>
+<td align="right">0.000025</td>
+<td align="right">-1.016487</td>
+<td align="right">0.309398</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">0.000351</td>
+<td align="right">0.001699</td>
+<td align="right">0.206354</td>
+<td align="right">0.836514</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">0.000005</td>
+<td align="right">0.000030</td>
+<td align="right">0.176713</td>
+<td align="right">0.859734</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">-0.000008</td>
+<td align="right">0.000002</td>
+<td align="right">-3.612010</td>
+<td align="right">0.000304</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

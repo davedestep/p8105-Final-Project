@@ -1,0 +1,108 @@
+---
+title: "Pollution Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: row
+    source_code: embed
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(janitor)
+library(stringr)
+library(forcats)
+library(viridis)
+library(plotly)
+library(shiny)
+```
+
+```{r import_data}
+all<-read_csv("./PRSA_Data_20130301-20170228/all_stations.csv")
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+This `flexdashboard` with Shiny was made for [Jeff Goldsmith's Data Science I class](http://jeffgoldsmith.com/DSI/index.html) in the Department of Biostatistics at Columbia University. The data come from [UCI](http://archive.ics.uci.edu/ml/index.php), which provides open datasets, and this dashboard focuses on airpollution in Beijing. Download the data used for this app [here](http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data).
+
+```{r}
+stations = all %>% distinct(station) %>% pull()
+
+# selectInput widget
+selectInput(
+  "station_choice", 
+  label = h3("Select station"),
+  choices = stations, selected = "Dongsi")
+
+hr()
+
+```
+
+```{r}
+#Year
+years = all %>% distinct(year) %>% pull()
+
+selectInput(
+  "year_choice", 
+  label = h3("Select Year"),
+  choices = years, selected = "2016")
+
+hr()
+
+```
+
+```{r}
+#Month
+months = all %>% distinct(month) %>% pull()
+
+selectInput(
+  "month_choice", 
+  label = h3("Select Month"),
+  choices = months, selected = "1")
+
+hr()
+```
+
+Row 
+-----------------------------------------------------------------------
+
+### Pm 2.5 by day and precipitation level
+
+```{r}
+renderPlotly({
+  all %>%
+  filter(
+    station == input$station_choice,
+    year == input$year_choice,
+    month == input$month_choice) %>%
+  plot_ly(x = ~day, y = ~pm2_5, type = "scatter", mode = "markers", 
+    hoverinfo="text", 
+    text = ~paste('PM 2.5: ', pm2_5,
+                  '<br> Day: ', day,
+                  '<br> Hour: ', hour),
+    alpha = 0.5, color = ~rain)
+})
+
+```
+
+Row {.tabset .tabset-fade } 
+-----------------------------------------------------------------------
+
+### Pm 2.5 by hour and windspeed
+
+```{r}
+renderPlotly({
+  all %>%
+  filter(
+    station == input$station_choice,
+    year == input$year_choice,
+    month == input$month_choice) %>%
+  plot_ly(
+    x = ~no, y = ~pm2_5, type = "scatter", mode = "markers",    hoverinfo="text", 
+    text = ~paste('PM 2.5: ', pm2_5,
+                  '<br> Day: ', day,
+                  '<br> Hour: ', hour),
+    alpha = 0.5, color = ~wspm)
+})
+```

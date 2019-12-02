@@ -11,8 +11,8 @@ runtime: shiny
 library(flexdashboard)
 library(tidyverse)
 library(viridis)
-library(p8105.datasets)
 library(plotly)
+library(shiny)
 ```
 
 
@@ -23,16 +23,6 @@ all<-map_df(files, read_csv) %>%
   bind_rows() %>% 
   janitor::clean_names()
 ```
-
-
-
-```{r}
-# all %>% 
-#   select(year, month, pm2_5, station) %>% 
-#   filter(year==2016,
-#          !is.na(pm2_5))
-```
-
 
 
 
@@ -48,6 +38,8 @@ selectInput(
   label = h3("Select station"),
   choices = stations, selected = "Dongsi")
 
+hr()
+
 #Year
 years = all %>% distinct(year) %>% pull()
 
@@ -56,6 +48,8 @@ selectInput(
   label = h3("Select Year"),
   choices = years, selected = "2016")
 
+hr()
+
 #Month
 months = all %>% distinct(month) %>% pull()
 
@@ -63,6 +57,8 @@ selectInput(
   "month_choice", 
   label = h3("Select Month"),
   choices = months, selected = "1")
+
+hr()
 ```
 
 ```

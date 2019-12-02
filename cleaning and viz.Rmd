@@ -38,6 +38,7 @@ all<-map_df(files, read_csv) %>%
     wd = as.factor(wd),
     station = as.factor(station),
     date = as.Date(str_c(year, '-', month, '-', day)),
+    datetime = as.POSIXct(str_c(year, '-', month, '-', day, ' ', "00:", hour,":00")),
     season = case_when(
       (month < 3) ~ "winter", #start of Spring is 3/20
       (month == 3 & day < 20) ~ "winter",

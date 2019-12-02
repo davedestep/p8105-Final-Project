@@ -1,0 +1,180 @@
+---
+title: "RC_exploratory_analyses"
+author: "Ray Chen"
+date: "11/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(modelr)
+library(gridExtra)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+## Initial data loading
+
+```{r}
+files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
+
+all_df = map_df(files, read_csv) %>% 
+  bind_rows() %>% 
+  janitor::clean_names()
+```
+
+## Characterizing amount of data and missing data
+
+There are a total of `r all_df %>% nrow()` rows/observations, and a total of `r all_df %>% ncol()` variables or columns which include the following: `r all_df %>% tbl_vars()`.
+
+Total amount of data:
+```{r}
+colSums(!is.na(all_df))
+```
+
+Amount of missing data for each variable:
+```{r}
+colSums(is.na(all_df))
+```
+
+Appears that all rows have date, time, and station information. The number of complete rows/observations with all rows filled in is `r all_df %>% complete.cases() %>% sum` which represents the vast majority of the observations. 
+
+## Some cleaning
+There is a column/variable 'no' which just seems to count rows, which is not needed so we are removing this. We will also change wd and station into factors, and create new variables called date (which combines month, day, year) and season.
+```{r}
+all_df = 
+  all_df %>% 
+  select(-no) %>% 
+  mutate(
+    wd = as.factor(wd),
+    station = as.factor(station),
+    date = as.Date(str_c(year, '-', month, '-', day)),
+    season = case_when(
+      (month < 3) ~ "winter", #start of Spring is 3/20
+      (month == 3 & day < 20) ~ "winter",
+      (month < 6) ~ "spring", #start of Summer is 6/21
+      (month == 6 & day < 21) ~ "spring",
+      (month < 9) ~ "summer", #start of Fall is 9/22
+      (month == 9 & day < 22) ~ "summer",
+      (month < 12) ~ "fall", #start of Winter is 12/21
+      (month == 12 & day < 21) ~ "fall",
+      (month == 12 & day >= 21) ~ "winter"
+    )
+  )
+```
+
+## Missing data visualization
+
+Visualizing the missing data over time
+```{r}
+missing = all_df %>% 
+  select(-season) %>% 
+  is.na() %>% 
+  as_tibble() %>% 
+  mutate(
+    date = all_df$date,
+    station = all_df$station
+  ) %>% 
+  pivot_longer(
+    cols = year:wspm
+  ) 
+
+missing %>% 
+  ggplot(aes(x =date, y = name, fill = value)) + 
+  geom_raster(alpha=0.8) + 
+  scale_fill_discrete(name = "", labels = c("Present", "Missing")) +
+  labs(x = "Variable",y = "Date", title = "Missing values over time by station") +
+  coord_flip() 
+```
+
+And now visualizing missing data over time across stations:
+```{r}
+missing %>% 
+  ggplot(aes(x =date, y = name, fill = value)) + 
+  geom_raster(alpha=0.8) + 
+  scale_fill_discrete(name = "", labels = c("Missing", "Present")) +
+  labs(x = "Variable",y = "Date", title = "Missing values over time by station") +
+  facet_grid(station~.) 
+```
+
+## Looking at outcomes
+
+Our primary outcome of interest is PM2.5, and can be summarized as follows:
+`r all_df %>% pull(pm2_5) %>% summary`
+
+Looking at PM2.5 over time:
+```{r}
+all_df %>% 
+  ggplot(aes(x = date, y = pm2_5)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Looking at PM2.5 over time by station:
+```{r}
+all_df %>% 
+  ggplot(aes(x = date, y = pm2_5)) +
+  geom_point() +
+  geom_smooth() +
+  facet_grid(~station)
+```
+
+Looking at PM2.5 by seasons:
+```{r}
+all_df %>% 
+  mutate(
+    fct_reorder(season, pm2_5)
+  ) %>% 
+  ggplot(aes(x = season, y = pm2_5)) + 
+  geom_boxplot()
+```
+
+Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot
+```{r}
+all_df %>% 
+  mutate(
+    fct_reorder(season, pm2_5)
+  ) %>% 
+  ggplot(aes(x = season, y = pm2_5)) + 
+  geom_boxplot() + 
+  ylim(0, 250)
+
+all_df %>% 
+  mutate(
+    fct_reorder(season, pm2_5)
+  ) %>% 
+  ggplot(aes(x = season, y = pm2_5)) + 
+  geom_violin() + 
+  ylim(0, 250)
+```
+Overall seems fairly similar across seasons, but technically highest in the winter with a number of very high outlier values as well
+
+## Plotting everything 
+Looking at scatter plots of every variable against PM2.5 to look for potential correlation
+```{r, eval=FALSE} 
+## Just FYI, this takes a long time to run. And the plots will take up 900MB of memory
+#So for now I've set eval=false, but I'm pushing the image it generated, called all_variables_plot.png
+par(mfrow = c(4, 5))
+
+vars = all_df %>% select(-pm2_5, -year, -month, -day, -date, -season) %>% colnames()
+plots = list()
+for (i in 1:length(vars)) {
+  plots[[i]] = ggplot(all_df, aes_string(x = vars[i], y = "pm2_5")) + geom_point()
+}
+do.call(grid.arrange, plots)
+```
+
+Variables which seem correlated with PM2.5 include (not surprisingly) PM10, but also rain, wind speed, o3 all seem to be strongly correlated. In addition, no2, so2, and possibly temperature, pressure and dew point but in a non-linear fashion

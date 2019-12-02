@@ -3,8 +3,25 @@ title: "R Notebook"
 output: github_document
 ---
 ```{r}
-library(wesanderson)
 library(tidyverse)
+library(lubridate)
+library(modelr)
+library(gridExtra)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 
@@ -15,7 +32,30 @@ files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
 
 all<-map_df(files, read_csv) %>% 
   bind_rows() %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  select(-no) %>% 
+  mutate(
+    wd = as.factor(wd),
+    station = as.factor(station),
+    date = as.Date(str_c(year, '-', month, '-', day)),
+    datetime = as.POSIXct(str_c(year, '-', month, '-', day, ' ', "00:", hour,":00")),
+    season = case_when(
+      (month < 3) ~ "winter", #start of Spring is 3/20
+      (month == 3 & day < 20) ~ "winter",
+      (month < 6) ~ "spring", #start of Summer is 6/21
+      (month == 6 & day < 21) ~ "spring",
+      (month < 9) ~ "summer", #start of Fall is 9/22
+      (month == 9 & day < 22) ~ "summer",
+      (month < 12) ~ "fall", #start of Winter is 12/21
+      (month == 12 & day < 21) ~ "fall",
+      (month == 12 & day >= 21) ~ "winter"
+    ),
+    seasonal_year=if_else(month<4 & season=="winter" & year ==2014, 2013,
+                          if_else(month < 4 & season=="winter" & year ==2015, 2014,
+                           if_else(month < 4 & season=="winter" & year ==2016, 2015,
+                            if_else(month < 4 & season=="winter" & year ==2017, 2016, year)))),
+    season_and= paste(season, " ", seasonal_year)
+  )
 ```
 
 Average PM 25 by year for all stations
@@ -40,13 +80,34 @@ all %>%
 
 
 
-Average PM 25 by year for each station
+Average PM 25 by year and season for each station
 ```{r}
 all %>%  
-  filter(year==2015) %>% 
-  ggplot(aes(x=no, y=pm2_5, color=station, group=station)) +
-  geom_line()
+  group_by(season, seasonal_year, station) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %>% 
+  ggplot(aes(x=season, y=avg_pm25, color=station, group=station)) +
+  geom_line()+
+  facet_wrap(seasonal_year~.) +
+  ggtitle("Average PM2.5 by Seasonal Years")
 ```
+
+Average PM 25 by year and season for each station
+```{r}
+all %>%  
+  mutate(season_and=factor(season_and, levels = c("spring   2013", "summer   2013", "fall   2013", "winter   2013",
+                                                  "spring   2014", "summer   2014", "fall   2014", "winter   2014",
+                                                  "spring   2015", "summer   2015", "fall   2015", "winter   2015",
+                                                  "spring   2016", "summer   2016", "fall   2016", "winter   2016"))) %>% 
+  group_by(season_and, station) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %>% 
+  ggplot(aes(x=season_and, y=avg_pm25, color=station, group=station)) +
+  geom_line()+
+  ggtitle("Average PM2.5 by Seasonal Years") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
 
 
 ```{r}

@@ -405,24 +405,59 @@ div.tocify {
 <h1>Motivation</h1>
 <p>Human health is inextricably linked to the quality of the air we breath we every day. Outdoor air comprises a significant portion of our lifetime air exposure, and the quality of that air has been declining for some time. Air pollution is increasingly recognized as a factor contributing to global morbidity and mortality, particularly with respect to cardiovascular and respiratory health. In 2018, The World Health Organization released a report stating that:</p>
 <pre><code>→ 91% of the world population lived in places where WHO air quality guidelines were not met 
-
-→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 2016</code></pre>
-<p>→ Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases **From <a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health">WHO</a></p>
+→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 201</code></pre>
+<p>→ Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases</p>
+<p>**From <a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health">WHO</a></p>
 </div>
 <div id="goals" class="section level1">
 <h1>Goals</h1>
-<p>There is a long way to go in improving ambient air quality, but there is a lot to be gained in doing so. Improved monitoring of factors that influence pollution, and increased awareness of associated health risks can advance the road to recovery. Through this project we strive to: → Replicate an air quality monitoring system that could be utilized by a government or health entity → Assess meteorological data as a predictor of air quality → Identify temporal trends, if any → Look for associations between air quality and cardiovascular health</p>
+<p>There is a long way to go in improving ambient air quality, but there is a lot to be gained in doing so. Improved monitoring of factors that influence pollution, and increased awareness of associated health risks can advance the road to recovery. Through this project we strive to:</p>
+<pre><code>→ Replicate an air quality monitoring system that could be utilized by a government or health entity 
+→ Assess meteorological data as a predictor of air quality
+→ Identify temporal trends, if any 
+→ Look for associations between air quality and cardiovascular health </code></pre>
 </div>
 <div id="related-work" class="section level1">
 <h1>Related Work</h1>
-<p>After finding the dataset, we performed a literature review and were inspired by several studies to examine predictors of PM 2.5 and whether pollutants affect CVD hospitalizations.</p>
+<p>After finding the dataset, we performed a literature review and were inspired by several studies to examine predictors of PM 2.5 and whether pollutants affect CVD hospitalizations. There has been some evidence that air pollutants such as PM10, nitroden diaxide (NO2), and carbon monoxide (CO) contribute to cardiovascular disease and related deaths <a href="https://www.nature.com/articles/jes201621.pdf?origin=ppub">Nature</a>. We wanted to examine this relationship when taking into account meteorological and temporal factors, as there has been a link between time of year and temperature with the occurence of heart attack.</p>
 </div>
 <div id="initial-questions" class="section level1">
 <h1>Initial Questions</h1>
 </div>
 <div id="our-data" class="section level1">
 <h1>Our Data</h1>
-<p>Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from x sites in Beijing China over the years xxxx - xxxx. This data comes from ________. Air quality was measured as a concentration of particulate matter 2.5 (PM2,5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (&lt;2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (<a href="https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf" class="uri">https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf</a>). For our secondary analyses, we sought to isolate any associations between air quality and health outcomes in Beijing. We modeled cardiovascular disease as the outcome, using data from _______. The data can also be downloaded on <a href="http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data" class="uri">http://archive.ics.uci.edu/ml/datasets/Beijing+Multi-Site+Air-Quality+Data</a> No: row number year: year of data in this row month: month of data in this row day: day of data in this row hour: hour of data in this row PM2.5: PM2.5 concentration (ug/m^3) PM10: PM10 concentration (ug/m^3) SO2: SO2 concentration (ug/m^3) NO2: NO2 concentration (ug/m^3) CO: CO concentration (ug/m^3) O3: O3 concentration (ug/m^3) TEMP: temperature (degree Celsius) PRES: pressure (hPa) DEWP: dew point temperature (degree Celsius) RAIN: precipitation (mm) wd: wind direction WSPM: wind speed (m/s) station: name of the air-quality monitoring site</p>
+<p>Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from 12 sites in Beijing, China over the years 2013 - 2017. This data comes from <a href="http://archive.ics.uci.edu/ml/index.php">The UCI Machine Learning Repository</a>. Air quality was measured as a concentration of particulate matter 2.5 (PM2,5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (&lt;2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (<a href="https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf" class="uri">https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf</a>).</p>
+<p>Our air pollution dataset included the following variables:</p>
+<ul>
+<li>No: row number</li>
+<li>year: year of data in this row</li>
+<li>month: month of data in this row</li>
+<li>day: day of data in this row</li>
+<li>hour: hour of data in this row</li>
+<li>PM2.5: PM2.5 concentration (ug/m^3)</li>
+<li>PM10: PM10 concentration (ug/m^3)</li>
+<li>SO2: SO2 concentration (ug/m^3)</li>
+<li>NO2: NO2 concentration (ug/m^3)</li>
+<li>CO: CO concentration (ug/m^3)</li>
+<li>O3: O3 concentration (ug/m^3)</li>
+<li>TEMP: temperature (degree Celsius)</li>
+<li>PRES: pressure (hPa)</li>
+<li>DEWP: dew point temperature (degree Celsius)</li>
+<li>RAIN: precipitation (mm)</li>
+<li>wd: wind direction</li>
+<li>WSPM: wind speed (m/s)</li>
+<li>station: name of the air-quality monitoring site</li>
+</ul>
+<p>For our secondary analyses, we sought to isolate any associations between air quality and health outcomes in Beijing. We modeled acute myocardial infarction (AMI) as the outcome using the dataset from <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706">Liu et al.</a>. The data was collected by the public health information center of Beijing, and includes AMI hospital admissions in Beijing for each month between January 1, 2013 and December 31, 2016.</p>
+<p>The following variables were included:</p>
+<ul>
+<li>Gender<br />
+</li>
+<li>Admission date(year)<br />
+</li>
+<li>Admission date(month)</li>
+<li>Main discharge diagnosis</li>
+</ul>
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory Analysis</h1>
@@ -604,6 +639,19 @@ do.call(grid.arrange, plots)</code></pre>
 <img src="all_variables_plot.png" alt="all variables scatterplots" width="600" />
 <p class="caption">all variables scatterplots</p>
 </div>
+</div>
+<div id="pearson-correlation-coefficients" class="section level2">
+<h2>Pearson Correlation Coefficients:</h2>
+<pre class="r"><code>all_df %&gt;% 
+  select(-wd, -station, -date, -datetime, -season, -seasonal_year, -season_and, -hour, -year, -month, -day) %&gt;% 
+  map(as.numeric) %&gt;% 
+  as.data.frame() %&gt;% 
+  cor(use = &quot;complete.obs&quot;) %&gt;% 
+  corrplot(method = &quot;square&quot;, addCoef.col = &quot;black&quot;, tl.col=&quot;black&quot;, tl.srt=45, insig = &quot;blank&quot;, 
+         # hide correlation coefficient on the principal diagonal
+         diag=FALSE, number.cex = .7)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
+<p>Temperature is correlated with our pollutant concentration, which are all also correlated with eachother, while windspeed has the most effect on decreasing the concentration of these pollutants.</p>
 <p>Variables which seem correlated with PM2.5 include (not surprisingly) PM10, but also rain, wind speed, o3 all seem to be strongly correlated. In addition, no2, so2, and possibly temperature, pressure and dew point but in a non-linear fashion</p>
 </div>
 <div id="findings" class="section level2">
@@ -614,8 +662,1387 @@ do.call(grid.arrange, plots)</code></pre>
 <div id="additional-analysis" class="section level1">
 <h1>Additional Analysis</h1>
 <p>Three models were developed for analysis of weather conditions and their association with PM2.5. A multivariable linear regression, a mixed model, and a Mixed Model for Longitudinal Continuous Data were developed to examine the variables of interest.</p>
-<p>Almost every variable is significant, however, station, windspeed, season, and windspeed all have high effect sizes. Rain, dewpoint, temp also have moderate effect sizes</p>
-<p>CVD model… whatever we decide on IS pm 2.5, season, and CO associated with CVD? Poisson regression.. Use the following articles: <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706</a> <a href="https://www.nature.com/articles/7500453.pdf?origin=ppub" class="uri">https://www.nature.com/articles/7500453.pdf?origin=ppub</a></p>
+<p>Almost every variable is significant, however, station, windspeed, season, and windspeed all have high effect sizes. Rain, dewpoint, temp also have moderate effect sizes.</p>
+<p>CVD model… whatever we decide on</p>
+<div id="is-pm-2.5-season-no2-or-co-associated-with-cvd" class="section level2">
+<h2>Is pm 2.5, season, NO2, or CO associated with CVD?</h2>
+<p>Poisson regression.. Use the following articles: <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706</a> <a href="https://www.nature.com/articles/7500453.pdf?origin=ppub" class="uri">https://www.nature.com/articles/7500453.pdf?origin=ppub</a></p>
+</div>
+<div id="what-meteorological-variables-influence-pm-2.5" class="section level2">
+<h2>What meteorological variables influence PM 2.5?</h2>
+<div id="even-though-predictors-are-not-independent-will-model-using-linear-regression-before-a-longitudinal-model" class="section level3">
+<h3>Even though predictors are not independent, will model using linear regression before a longitudinal model</h3>
+<pre class="r"><code>###Remove timeseries variables:
+reg&lt;-all_df %&gt;% select(-date,-datetime, -month,-day,-hour)
+
+full &lt;- lm(pm2_5 ~ ., data = reg)
+
+tab&lt;-full %&gt;% broom::tidy()
+knitr::kable(tab, digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-2976.035</td>
+<td align="right">582.399</td>
+<td align="right">-5.110</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">5.810</td>
+<td align="right">0.263</td>
+<td align="right">22.091</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">pm10</td>
+<td align="right">0.536</td>
+<td align="right">0.001</td>
+<td align="right">616.900</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">so2</td>
+<td align="right">0.110</td>
+<td align="right">0.003</td>
+<td align="right">32.611</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">no2</td>
+<td align="right">0.123</td>
+<td align="right">0.003</td>
+<td align="right">46.056</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">co</td>
+<td align="right">0.019</td>
+<td align="right">0.000</td>
+<td align="right">256.446</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">o3</td>
+<td align="right">0.106</td>
+<td align="right">0.001</td>
+<td align="right">77.453</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.677</td>
+<td align="right">0.013</td>
+<td align="right">-52.532</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">pres</td>
+<td align="right">0.299</td>
+<td align="right">0.010</td>
+<td align="right">30.721</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">dewp</td>
+<td align="right">1.587</td>
+<td align="right">0.009</td>
+<td align="right">168.552</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">rain</td>
+<td align="right">-0.335</td>
+<td align="right">0.059</td>
+<td align="right">-5.641</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdENE</td>
+<td align="right">-0.385</td>
+<td align="right">0.248</td>
+<td align="right">-1.550</td>
+<td align="right">0.121</td>
+</tr>
+<tr class="odd">
+<td align="left">wdESE</td>
+<td align="right">1.117</td>
+<td align="right">0.270</td>
+<td align="right">4.136</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdN</td>
+<td align="right">0.547</td>
+<td align="right">0.258</td>
+<td align="right">2.118</td>
+<td align="right">0.034</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNE</td>
+<td align="right">0.125</td>
+<td align="right">0.238</td>
+<td align="right">0.523</td>
+<td align="right">0.601</td>
+</tr>
+<tr class="even">
+<td align="left">wdNNE</td>
+<td align="right">0.045</td>
+<td align="right">0.263</td>
+<td align="right">0.172</td>
+<td align="right">0.863</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNNW</td>
+<td align="right">0.653</td>
+<td align="right">0.274</td>
+<td align="right">2.389</td>
+<td align="right">0.017</td>
+</tr>
+<tr class="even">
+<td align="left">wdNW</td>
+<td align="right">-0.278</td>
+<td align="right">0.259</td>
+<td align="right">-1.076</td>
+<td align="right">0.282</td>
+</tr>
+<tr class="odd">
+<td align="left">wdS</td>
+<td align="right">-0.091</td>
+<td align="right">0.293</td>
+<td align="right">-0.312</td>
+<td align="right">0.755</td>
+</tr>
+<tr class="even">
+<td align="left">wdSE</td>
+<td align="right">-0.696</td>
+<td align="right">0.287</td>
+<td align="right">-2.425</td>
+<td align="right">0.015</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSSE</td>
+<td align="right">-0.276</td>
+<td align="right">0.301</td>
+<td align="right">-0.916</td>
+<td align="right">0.360</td>
+</tr>
+<tr class="even">
+<td align="left">wdSSW</td>
+<td align="right">-0.147</td>
+<td align="right">0.281</td>
+<td align="right">-0.523</td>
+<td align="right">0.601</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSW</td>
+<td align="right">-1.690</td>
+<td align="right">0.264</td>
+<td align="right">-6.414</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdW</td>
+<td align="right">-2.462</td>
+<td align="right">0.300</td>
+<td align="right">-8.199</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">wdWNW</td>
+<td align="right">-1.394</td>
+<td align="right">0.279</td>
+<td align="right">-4.993</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">wdWSW</td>
+<td align="right">-1.639</td>
+<td align="right">0.288</td>
+<td align="right">-5.687</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">wspm</td>
+<td align="right">-0.443</td>
+<td align="right">0.052</td>
+<td align="right">-8.541</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationChangping</td>
+<td align="right">4.431</td>
+<td align="right">0.244</td>
+<td align="right">18.196</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationDingling</td>
+<td align="right">11.372</td>
+<td align="right">0.252</td>
+<td align="right">45.135</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationDongsi</td>
+<td align="right">2.663</td>
+<td align="right">0.240</td>
+<td align="right">11.077</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationGuanyuan</td>
+<td align="right">1.314</td>
+<td align="right">0.236</td>
+<td align="right">5.576</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationGucheng</td>
+<td align="right">-2.366</td>
+<td align="right">0.240</td>
+<td align="right">-9.856</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationHuairou</td>
+<td align="right">7.018</td>
+<td align="right">0.251</td>
+<td align="right">27.939</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationNongzhanguan</td>
+<td align="right">1.994</td>
+<td align="right">0.235</td>
+<td align="right">8.496</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationShunyi</td>
+<td align="right">6.851</td>
+<td align="right">0.244</td>
+<td align="right">28.064</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">stationTiantan</td>
+<td align="right">2.868</td>
+<td align="right">0.236</td>
+<td align="right">12.169</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">stationWanliu</td>
+<td align="right">-0.696</td>
+<td align="right">0.240</td>
+<td align="right">-2.902</td>
+<td align="right">0.004</td>
+</tr>
+<tr class="even">
+<td align="left">stationWanshouxigong</td>
+<td align="right">0.614</td>
+<td align="right">0.236</td>
+<td align="right">2.604</td>
+<td align="right">0.009</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonspring</td>
+<td align="right">-13.535</td>
+<td align="right">0.922</td>
+<td align="right">-14.687</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">seasonsummer</td>
+<td align="right">-19.795</td>
+<td align="right">0.930</td>
+<td align="right">-21.291</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonwinter</td>
+<td align="right">1.082</td>
+<td align="right">0.797</td>
+<td align="right">1.358</td>
+<td align="right">0.175</td>
+</tr>
+<tr class="even">
+<td align="left">seasonal_year</td>
+<td align="right">-4.484</td>
+<td align="right">0.386</td>
+<td align="right">-11.625</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">season_andfall 2014</td>
+<td align="right">-5.734</td>
+<td align="right">0.410</td>
+<td align="right">-13.982</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">season_andfall 2015</td>
+<td align="right">-1.082</td>
+<td align="right">0.648</td>
+<td align="right">-1.670</td>
+<td align="right">0.095</td>
+</tr>
+<tr class="odd">
+<td align="left">season_andfall 2016</td>
+<td align="right">-6.890</td>
+<td align="right">0.914</td>
+<td align="right">-7.536</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">season_andspring 2013</td>
+<td align="right">5.622</td>
+<td align="right">0.910</td>
+<td align="right">6.178</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">season_andspring 2014</td>
+<td align="right">-1.564</td>
+<td align="right">0.639</td>
+<td align="right">-2.448</td>
+<td align="right">0.014</td>
+</tr>
+<tr class="even">
+<td align="left">season_andspring 2015</td>
+<td align="right">-6.313</td>
+<td align="right">0.394</td>
+<td align="right">-16.025</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">season_andsummer 2013</td>
+<td align="right">4.266</td>
+<td align="right">0.911</td>
+<td align="right">4.682</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">season_andsummer 2014</td>
+<td align="right">2.532</td>
+<td align="right">0.639</td>
+<td align="right">3.962</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">season_andsummer 2015</td>
+<td align="right">-0.799</td>
+<td align="right">0.395</td>
+<td align="right">-2.023</td>
+<td align="right">0.043</td>
+</tr>
+<tr class="even">
+<td align="left">season_andwinter 2013</td>
+<td align="right">-0.960</td>
+<td align="right">0.747</td>
+<td align="right">-1.284</td>
+<td align="right">0.199</td>
+</tr>
+<tr class="odd">
+<td align="left">season_andwinter 2014</td>
+<td align="right">-1.359</td>
+<td align="right">0.478</td>
+<td align="right">-2.843</td>
+<td align="right">0.004</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="mixed-model" class="section level3">
+<h3>Mixed Model</h3>
+<pre class="r"><code>all_df %&gt;% 
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + (1 | station), data = .) %&gt;% 
+  broom::tidy() %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="left">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-1571.860</td>
+<td align="right">131.345</td>
+<td align="right">-11.967</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0.772</td>
+<td align="right">0.065</td>
+<td align="right">11.843</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonspring</td>
+<td align="right">-8.107</td>
+<td align="right">0.230</td>
+<td align="right">-35.256</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">seasonsummer</td>
+<td align="right">-28.170</td>
+<td align="right">0.294</td>
+<td align="right">-95.755</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonwinter</td>
+<td align="right">8.444</td>
+<td align="right">0.245</td>
+<td align="right">34.490</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">so2</td>
+<td align="right">0.305</td>
+<td align="right">0.005</td>
+<td align="right">67.163</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">no2</td>
+<td align="right">0.728</td>
+<td align="right">0.004</td>
+<td align="right">207.127</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">co</td>
+<td align="right">0.038</td>
+<td align="right">0.000</td>
+<td align="right">390.292</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">o3</td>
+<td align="right">0.250</td>
+<td align="right">0.002</td>
+<td align="right">130.725</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.866</td>
+<td align="right">0.017</td>
+<td align="right">-51.273</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">dewp</td>
+<td align="right">2.241</td>
+<td align="right">0.013</td>
+<td align="right">175.111</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">rain</td>
+<td align="right">-1.190</td>
+<td align="right">0.085</td>
+<td align="right">-14.077</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdENE</td>
+<td align="right">-2.723</td>
+<td align="right">0.354</td>
+<td align="right">-7.685</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdESE</td>
+<td align="right">2.526</td>
+<td align="right">0.386</td>
+<td align="right">6.550</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdN</td>
+<td align="right">1.053</td>
+<td align="right">0.368</td>
+<td align="right">2.858</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNE</td>
+<td align="right">-1.944</td>
+<td align="right">0.339</td>
+<td align="right">-5.737</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNNE</td>
+<td align="right">-2.277</td>
+<td align="right">0.375</td>
+<td align="right">-6.075</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNNW</td>
+<td align="right">1.923</td>
+<td align="right">0.390</td>
+<td align="right">4.933</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNW</td>
+<td align="right">2.151</td>
+<td align="right">0.368</td>
+<td align="right">5.839</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdS</td>
+<td align="right">0.739</td>
+<td align="right">0.418</td>
+<td align="right">1.767</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSE</td>
+<td align="right">1.815</td>
+<td align="right">0.409</td>
+<td align="right">4.434</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSSE</td>
+<td align="right">1.990</td>
+<td align="right">0.430</td>
+<td align="right">4.631</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSSW</td>
+<td align="right">1.100</td>
+<td align="right">0.400</td>
+<td align="right">2.749</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSW</td>
+<td align="right">-1.142</td>
+<td align="right">0.376</td>
+<td align="right">-3.038</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdW</td>
+<td align="right">-3.741</td>
+<td align="right">0.428</td>
+<td align="right">-8.738</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdWNW</td>
+<td align="right">-0.615</td>
+<td align="right">0.398</td>
+<td align="right">-1.546</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdWSW</td>
+<td align="right">-2.385</td>
+<td align="right">0.411</td>
+<td align="right">-5.799</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wspm</td>
+<td align="right">4.219</td>
+<td align="right">0.073</td>
+<td align="right">57.781</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">sd_(Intercept).station</td>
+<td align="right">7.310</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">station</td>
+</tr>
+<tr class="even">
+<td align="left">sd_Observation.Residual</td>
+<td align="right">42.580</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">Residual</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="mixed-model-for-longitudinal-continuous-data" class="section level3">
+<h3>Mixed Model for Longitudinal Continuous Data</h3>
+<pre class="r"><code>mixed&lt;-all_df %&gt;% 
+  lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + datetime + (1 | station), data = .) 
+
+mixed %&gt;% broom::tidy() %&gt;% knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="left">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-50701.822</td>
+<td align="right">861.052</td>
+<td align="right">-58.884</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">25.734</td>
+<td align="right">0.437</td>
+<td align="right">58.854</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonspring</td>
+<td align="right">-20.355</td>
+<td align="right">0.312</td>
+<td align="right">-65.209</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">seasonsummer</td>
+<td align="right">-33.817</td>
+<td align="right">0.309</td>
+<td align="right">-109.505</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">seasonwinter</td>
+<td align="right">-7.326</td>
+<td align="right">0.366</td>
+<td align="right">-20.010</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">so2</td>
+<td align="right">0.276</td>
+<td align="right">0.005</td>
+<td align="right">60.756</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">no2</td>
+<td align="right">0.729</td>
+<td align="right">0.004</td>
+<td align="right">208.209</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">co</td>
+<td align="right">0.038</td>
+<td align="right">0.000</td>
+<td align="right">396.177</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">o3</td>
+<td align="right">0.252</td>
+<td align="right">0.002</td>
+<td align="right">132.171</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.892</td>
+<td align="right">0.017</td>
+<td align="right">-52.972</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">dewp</td>
+<td align="right">2.234</td>
+<td align="right">0.013</td>
+<td align="right">175.342</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">rain</td>
+<td align="right">-1.224</td>
+<td align="right">0.084</td>
+<td align="right">-14.535</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdENE</td>
+<td align="right">-2.557</td>
+<td align="right">0.353</td>
+<td align="right">-7.248</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdESE</td>
+<td align="right">2.392</td>
+<td align="right">0.384</td>
+<td align="right">6.229</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdN</td>
+<td align="right">1.125</td>
+<td align="right">0.367</td>
+<td align="right">3.069</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNE</td>
+<td align="right">-1.945</td>
+<td align="right">0.337</td>
+<td align="right">-5.764</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNNE</td>
+<td align="right">-2.045</td>
+<td align="right">0.373</td>
+<td align="right">-5.480</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdNNW</td>
+<td align="right">2.130</td>
+<td align="right">0.388</td>
+<td align="right">5.487</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdNW</td>
+<td align="right">2.283</td>
+<td align="right">0.367</td>
+<td align="right">6.226</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdS</td>
+<td align="right">0.760</td>
+<td align="right">0.416</td>
+<td align="right">1.827</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSE</td>
+<td align="right">1.550</td>
+<td align="right">0.408</td>
+<td align="right">3.802</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSSE</td>
+<td align="right">1.945</td>
+<td align="right">0.428</td>
+<td align="right">4.546</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdSSW</td>
+<td align="right">1.083</td>
+<td align="right">0.398</td>
+<td align="right">2.719</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdSW</td>
+<td align="right">-1.242</td>
+<td align="right">0.374</td>
+<td align="right">-3.319</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdW</td>
+<td align="right">-3.541</td>
+<td align="right">0.426</td>
+<td align="right">-8.305</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wdWNW</td>
+<td align="right">-0.271</td>
+<td align="right">0.396</td>
+<td align="right">-0.684</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">wdWSW</td>
+<td align="right">-2.137</td>
+<td align="right">0.409</td>
+<td align="right">-5.220</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">wspm</td>
+<td align="right">4.256</td>
+<td align="right">0.073</td>
+<td align="right">58.546</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="odd">
+<td align="left">datetime</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-57.728</td>
+<td align="left">fixed</td>
+</tr>
+<tr class="even">
+<td align="left">sd_(Intercept).station</td>
+<td align="right">7.346</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">station</td>
+</tr>
+<tr class="odd">
+<td align="left">sd_Observation.Residual</td>
+<td align="right">42.396</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">Residual</td>
+</tr>
+</tbody>
+</table>
+<div id="section" class="section level52">
+<p></p>
+</div>
+<div id="section-1" class="section level52">
+<p></p>
+</div>
+</div>
+</div>
+</div>
+<div id="linking-to-health-data" class="section level1">
+<h1>Linking to health data</h1>
+<div id="section-2" class="section level52">
+<p></p>
+</div>
+<div id="section-3" class="section level52">
+<p></p>
+<pre class="r"><code>cvd&lt;-read_csv(&quot;./patient_mi_data/patients_mi.csv&quot;) %&gt;% janitor::clean_names()</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   gender = col_character(),
+##   `admission date(year)` = col_double(),
+##   `admission date(month)` = col_double(),
+##   `main discharge diagnosis` = col_character()
+## )</code></pre>
+<pre class="r"><code>cvd2&lt;- cvd %&gt;% 
+  group_by(admission_date_year, admission_date_month, gender) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  rename(year=admission_date_year) %&gt;%
+  rename(month=admission_date_month)
+
+pollution&lt;-all_df %&gt;%
+  group_by(year, month) %&gt;% 
+  summarize(avg_pm2_5=mean(pm2_5, na.rm=TRUE),
+            avg_co=mean(co, na.rm=TRUE),
+            avg_temp=mean(temp, na.rm=TRUE))
+
+model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&quot;)) %&gt;% 
+  na.omit() </code></pre>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  geom_line()+
+  geom_point(aes(size = avg_co))+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Number of MI&#39;s by PM2.5 and Year/Month&quot;) </code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-22-1.png" width="90%" /></p>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Average PM2.5 by Years&quot;)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-23-1.png" width="90%" /></p>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_co, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Number of MI&#39;s by Carbon Monoxide and Year/Month&quot;)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-24-1.png" width="90%" /></p>
+<p>It does appear the hospitalizations are higher in winter months. Unfortunately, we will not be able to draw strong conclusions about the effect pollution on heart attacks since it is so strongly correlated with the month/season. We can try to control for temperature instead of month?</p>
+<pre class="r"><code>model_data %&gt;%  
+  ggplot(aes(x=month, y=n, color=avg_temp, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = &quot;B&quot;)+
+  facet_wrap(year~.) +
+  ggtitle(&quot;Number of MI&#39;s by Temperature and Year/Month&quot;)</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-25-1.png" width="90%" /></p>
+<p>We have to use month because we have no data on days of the month to separate analysis into seasons.</p>
+<p>The count data we are using is the number of people admitted for MI per month.</p>
+<p>We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing’s population peaked at 21.73 million residents in 2016. <a href="https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth">Source</a>. For this reason (population numbers have been fairly flat) we decided to just use pure count data.</p>
+<pre class="r"><code>model_data&lt;-model_data%&gt;% 
+  mutate(month=factor(month))
+
+summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + month + year + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family=&quot;poisson&quot;, data=model_data))</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = n ~ avg_pm2_5 + avg_co + avg_temp + month + year + 
+##     gender + avg_pm2_5 * avg_temp + avg_co * avg_temp, family = &quot;poisson&quot;, 
+##     data = model_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -5.4799  -1.1922  -0.0896   0.8181  12.8275  
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -1.579e+02  8.135e+00 -19.413  &lt; 2e-16 ***
+## avg_pm2_5          -2.881e-04  1.755e-03  -0.164 0.869620    
+## avg_co              1.996e-05  1.449e-04   0.138 0.890477    
+## avg_temp           -8.745e-03  5.345e-03  -1.636 0.101823    
+## month10             1.856e-01  8.592e-02   2.160 0.030750 *  
+## month11             1.396e-01  4.661e-02   2.995 0.002745 ** 
+## month12             5.000e-02  2.644e-02   1.891 0.058602 .  
+## month2             -4.234e-02  6.524e-02  -0.649 0.516363    
+## month3              1.176e-01  7.971e-02   1.476 0.139972    
+## month4              2.365e-01  8.854e-02   2.671 0.007558 ** 
+## month5              3.499e-01  9.420e-02   3.715 0.000203 ***
+## month6              1.121e-01  1.023e-01   1.096 0.273078    
+## month7              2.075e-01  1.079e-01   1.923 0.054541 .  
+## month8              2.260e-01  1.086e-01   2.080 0.037506 *  
+## month9              1.480e-01  9.270e-02   1.597 0.110361    
+## year                8.150e-02  4.048e-03  20.136  &lt; 2e-16 ***
+## gendermale          7.893e-01  7.736e-03 102.027  &lt; 2e-16 ***
+## avg_pm2_5:avg_temp -8.245e-06  7.709e-05  -0.107 0.914832    
+## avg_co:avg_temp    -2.238e-06  6.560e-06  -0.341 0.733036    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 12951.60  on 91  degrees of freedom
+## Residual deviance:   518.02  on 73  degrees of freedom
+## AIC: 1337.2
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-157.921</td>
+<td align="right">8.135</td>
+<td align="right">-19.413</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.000</td>
+<td align="right">0.002</td>
+<td align="right">-0.164</td>
+<td align="right">0.870</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.138</td>
+<td align="right">0.890</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.009</td>
+<td align="right">0.005</td>
+<td align="right">-1.636</td>
+<td align="right">0.102</td>
+</tr>
+<tr class="odd">
+<td align="left">month10</td>
+<td align="right">0.186</td>
+<td align="right">0.086</td>
+<td align="right">2.160</td>
+<td align="right">0.031</td>
+</tr>
+<tr class="even">
+<td align="left">month11</td>
+<td align="right">0.140</td>
+<td align="right">0.047</td>
+<td align="right">2.995</td>
+<td align="right">0.003</td>
+</tr>
+<tr class="odd">
+<td align="left">month12</td>
+<td align="right">0.050</td>
+<td align="right">0.026</td>
+<td align="right">1.891</td>
+<td align="right">0.059</td>
+</tr>
+<tr class="even">
+<td align="left">month2</td>
+<td align="right">-0.042</td>
+<td align="right">0.065</td>
+<td align="right">-0.649</td>
+<td align="right">0.516</td>
+</tr>
+<tr class="odd">
+<td align="left">month3</td>
+<td align="right">0.118</td>
+<td align="right">0.080</td>
+<td align="right">1.476</td>
+<td align="right">0.140</td>
+</tr>
+<tr class="even">
+<td align="left">month4</td>
+<td align="right">0.236</td>
+<td align="right">0.089</td>
+<td align="right">2.671</td>
+<td align="right">0.008</td>
+</tr>
+<tr class="odd">
+<td align="left">month5</td>
+<td align="right">0.350</td>
+<td align="right">0.094</td>
+<td align="right">3.715</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">month6</td>
+<td align="right">0.112</td>
+<td align="right">0.102</td>
+<td align="right">1.096</td>
+<td align="right">0.273</td>
+</tr>
+<tr class="odd">
+<td align="left">month7</td>
+<td align="right">0.208</td>
+<td align="right">0.108</td>
+<td align="right">1.923</td>
+<td align="right">0.055</td>
+</tr>
+<tr class="even">
+<td align="left">month8</td>
+<td align="right">0.226</td>
+<td align="right">0.109</td>
+<td align="right">2.080</td>
+<td align="right">0.038</td>
+</tr>
+<tr class="odd">
+<td align="left">month9</td>
+<td align="right">0.148</td>
+<td align="right">0.093</td>
+<td align="right">1.597</td>
+<td align="right">0.110</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0.082</td>
+<td align="right">0.004</td>
+<td align="right">20.136</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.789</td>
+<td align="right">0.008</td>
+<td align="right">102.027</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-0.107</td>
+<td align="right">0.915</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-0.341</td>
+<td align="right">0.733</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="remove-month-and-year" class="section level1">
+<h1>Remove month and year</h1>
+<pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family=&quot;poisson&quot;, data=model_data)
+
+tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.514827</td>
+<td align="right">0.021995</td>
+<td align="right">296.194854</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">-0.000162</td>
+<td align="right">0.000261</td>
+<td align="right">-0.620407</td>
+<td align="right">0.534990</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000092</td>
+<td align="right">0.000018</td>
+<td align="right">-5.001416</td>
+<td align="right">0.000001</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.008677</td>
+<td align="right">0.000591</td>
+<td align="right">-14.693828</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.789288</td>
+<td align="right">0.007736</td>
+<td align="right">102.026556</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>m2 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family=&quot;poisson&quot;, data=model_data)
+
+tab&lt;-m2 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.432180</td>
+<td align="right">0.022744</td>
+<td align="right">282.813752</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.001552</td>
+<td align="right">0.000348</td>
+<td align="right">4.454737</td>
+<td align="right">0.000008</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000128</td>
+<td align="right">0.000022</td>
+<td align="right">-5.860554</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">0.008882</td>
+<td align="right">0.001378</td>
+<td align="right">6.447802</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.789288</td>
+<td align="right">0.007736</td>
+<td align="right">102.026556</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">-0.000030</td>
+<td align="right">0.000026</td>
+<td align="right">-1.124949</td>
+<td align="right">0.260611</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">-0.000017</td>
+<td align="right">0.000002</td>
+<td align="right">-8.798749</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="could-it-be-that-2016-was-an-outlier-and-had-a-huge-number-of-mis" class="section level1">
+<h1>Could it be that 2016 was an outlier and had a huge number of MI’s?</h1>
+<pre class="r"><code>model_data2&lt;-model_data %&gt;% 
+  filter(year!=2016)
+
+m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family=&quot;poisson&quot;, data=model_data2)
+
+tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.364752</td>
+<td align="right">0.030082</td>
+<td align="right">211.579987</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">-0.000147</td>
+<td align="right">0.000293</td>
+<td align="right">-0.501233</td>
+<td align="right">0.616207</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000024</td>
+<td align="right">0.000022</td>
+<td align="right">-1.102190</td>
+<td align="right">0.270379</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.007442</td>
+<td align="right">0.000775</td>
+<td align="right">-9.606042</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.787605</td>
+<td align="right">0.009234</td>
+<td align="right">85.298398</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>m2 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family=&quot;poisson&quot;, data=model_data2)
+
+tab&lt;-m2 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.326489</td>
+<td align="right">0.030901</td>
+<td align="right">204.737367</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.000349</td>
+<td align="right">0.000392</td>
+<td align="right">0.891382</td>
+<td align="right">0.372725</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co</td>
+<td align="right">-0.000026</td>
+<td align="right">0.000025</td>
+<td align="right">-1.016488</td>
+<td align="right">0.309397</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">0.000351</td>
+<td align="right">0.001699</td>
+<td align="right">0.206355</td>
+<td align="right">0.836514</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.787605</td>
+<td align="right">0.009234</td>
+<td align="right">85.298382</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">0.000005</td>
+<td align="right">0.000030</td>
+<td align="right">0.176713</td>
+<td align="right">0.859734</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">-0.000008</td>
+<td align="right">0.000002</td>
+<td align="right">-3.612006</td>
+<td align="right">0.000304</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>

@@ -21,11 +21,6 @@ knitr::opts_chunk$set(
 
 ```
 
-```{r}
-pal <- wes_palette("Zissou1", 100, type = "continuous")
-```
-
-
 
 ```{r message=FALSE}
 files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
@@ -180,7 +175,7 @@ We could use a rate for the population of beijing for each year (and month), but
 model_data<-model_data%>% 
   mutate(month=factor(month))
 
-summary(m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + month + year + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data))
+summary(m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + month + year + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data))
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
@@ -190,14 +185,14 @@ knitr::kable(tab, digits = 3)
 
 #Remove month and year
 ```{r}
-m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp, family="poisson", data=model_data)
+m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family="poisson", data=model_data)
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
 
 
 
-m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data)
+m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data)
 
 tab<-m2 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
@@ -210,7 +205,7 @@ knitr::kable(tab, digits = 6)
 model_data2<-model_data %>% 
   filter(year!=2016)
 
-m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp, family="poisson", data=model_data2)
+m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family="poisson", data=model_data2)
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
@@ -218,7 +213,7 @@ knitr::kable(tab, digits = 6)
 
 
 
-m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data2)
+m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data2)
 
 tab<-m2 %>% broom::tidy()
 knitr::kable(tab, digits = 6)

@@ -2,7 +2,7 @@
 title: "RC_exploratory_analyses"
 author: "Ray Chen"
 date: "11/26/2019"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}

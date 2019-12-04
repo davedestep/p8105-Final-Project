@@ -1,0 +1,108 @@
+---
+title: "Map of Average PM 2.5 in Beijing 2017"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(modelr)
+library(gridExtra)
+library(leaflet)
+library(wesanderson)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(ggrepel)
+library(tidyverse)
+library(haven)
+```
+
+```{r message=FALSE}
+
+files = list.files("./PRSA_Data_20130301-20170228", full.names = TRUE)
+
+all <- map_df(files, read_csv) %>% 
+  bind_rows() %>% 
+  janitor::clean_names() %>% 
+  select(-no) %>% 
+  mutate(
+    wd = as.factor(wd),
+    station = as.factor(station),
+    date = as.Date(str_c(year, '-', month, '-', day)),
+    datetime = as.POSIXct(str_c(year, '-', month, '-', day, ' ', "00:", hour,":00")),
+    season = case_when(
+      (month < 3) ~ "winter", #start of Spring is 3/20
+      (month == 3 & day < 20) ~ "winter",
+      (month < 6) ~ "spring", #start of Summer is 6/21
+      (month == 6 & day < 21) ~ "spring",
+      (month < 9) ~ "summer", #start of Fall is 9/22
+      (month == 9 & day < 22) ~ "summer",
+      (month < 12) ~ "fall", #start of Winter is 12/21
+      (month == 12 & day < 21) ~ "fall",
+      (month == 12 & day >= 21) ~ "winter"
+    ),
+    seasonal_year=if_else(month<4 & season=="winter" & year ==2014, 2013,
+                          if_else(month < 4 & season=="winter" & year ==2015, 2014,
+                           if_else(month < 4 & season=="winter" & year ==2016, 2015,
+                            if_else(month < 4 & season=="winter" & year ==2017, 2016, year)))),
+    season_and= paste(season, " ", seasonal_year)
+  )
+
+all_avg <- all %>%  
+  group_by(year, station) %>% 
+  summarize(avg_pm25=mean(pm2_5, na.rm = TRUE))
+
+stats <- all %>%
+  select(station) %>%
+  group_by(station) %>%
+  summarise(
+    n = n()
+  )
+
+a <- stats$station
+latitude <- c(40.00, 40.228599, 40.288817, 39.931018, 39.927513, 39.912014, 40.316977, 39.945236, 40.131396, 
+39.877853, 39.976773, 39.880519)
+
+
+longitude <- c(116.41, 116.216502, 116.239659, 116.424922, 116.357205, 116.189908, 116.631309, 116.474969, 116.658160, 116.423179, 116.292343, 116.368263)
+
+maps <- tibble( station = a, latitude = latitude, longitude = longitude)
+
+mapss <- all_avg %>%
+  left_join(maps, by = "station") %>%
+  mutate(
+    type = ifelse(avg_pm25 < 100, 1, 0),
+    color = ifelse(type == 1, "yellow", "red"),
+    avg_pm25 = round(avg_pm25, digits = 3)
+  )
+
+pal <- colorFactor(c("red", "yellow"),
+                   domain = unique(mapss$type))
+nums <- c("<100", ">=100")
+
+try <- mapss %>%
+  filter(
+    year == 2017
+ ) %>%
+leaflet() %>% 
+  addTiles() %>% 
+  #addLayersControl(
+   # baseGroups = c(mapss$year),
+  #  options = layersControlOptions(collapsed = FALSE)
+  #) %>%
+  addCircleMarkers(~longitude, ~latitude, label = paste(mapss$station," Average PM 2.5: ", mapss$avg_pm25), color = ~pal(type)) %>%
+  addLegend("bottomright", colors = c("yellow", "red"), labels = nums, 
+            title = "Average PM 2.5 for 2017", 
+            opacity = 1) 
+  
+
+try
+```
+

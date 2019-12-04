@@ -142,6 +142,23 @@ all_df %>%
   geom_boxplot()
 ```
 
+Looking at dewpoint by season and by years
+```{r}
+all_df %>% 
+ mutate(
+   fct_reorder(season, dewp)) %>% 
+ ggplot(aes(x = season, y = dewp)) + 
+ geom_boxplot()
+
+all_df %>% 
+  mutate(
+   year=factor(year)) %>% 
+ ggplot(aes(x = year, y = dewp)) + 
+ geom_boxplot()
+```
+
+
+
 Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot
 ```{r}
 all_df %>% 

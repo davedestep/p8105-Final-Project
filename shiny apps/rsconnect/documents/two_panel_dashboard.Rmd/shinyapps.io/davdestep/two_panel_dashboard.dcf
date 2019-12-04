@@ -5,8 +5,8 @@ account: davdestep
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1543556
-bundleId: 2630815
+bundleId: 2631631
 url: https://davdestep.shinyapps.io/two_panel_dashboard/
-when: 1575239662.60721
+when: 1575265424.12107
 asMultiple: FALSE
 asStatic: FALSE

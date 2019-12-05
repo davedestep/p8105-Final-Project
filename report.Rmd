@@ -509,9 +509,25 @@ The count data we are using is the number of people admitted for MI per month.
 
 ## Distribution of the counts
 ```{r}
+count<- cvd %>% 
+  group_by(admission_date_year, admission_date_month) %>% 
+  summarise(n = n()) %>% 
+  rename(year=admission_date_year) %>%
+  rename(month=admission_date_month)
+
+count2<-all_df %>%
+  group_by(year, month) %>% 
+  summarize(avg_pm2_5=mean(pm2_5, na.rm=TRUE),
+            avg_pm10=mean(pm10, na.rm=TRUE),
+            avg_co=mean(co, na.rm=TRUE),
+            avg_temp=mean(temp, na.rm=TRUE),
+            avg_no2=mean(no2, na.rm=TRUE))
+
+count3 <- left_join(count, count2, by=c("year", "month")) %>% 
+  na.omit() 
 
 
-model_data %>%
+count3 %>%
   ggplot(aes(x = n)) + geom_histogram(aes(color = "red")) + labs(title = "Distribution of Counts of MI Data")
 ```
 The counts appear to be bimodal, however no overdispersion is present.

@@ -44,19 +44,19 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 Human health is inextricably linked to the quality of the air we breath we every day. Outdoor air comprises a significant portion of our lifetime air exposure, and the quality of that air has been declining for some time. Air pollution is increasingly recognized as a factor contributing to global morbidity and mortality, particularly with respect to cardiovascular and respiratory health. In 2018, The World Health Organization released a report stating that:
 
-	→ 91% of the world population lived in places where WHO air quality guidelines were not met 
-	→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 201
-  → Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases 
+→ 91% of the world population lived in places where WHO air quality guidelines were not met 
+→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 201
+→ Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases 
 
 **From [WHO](https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health)
 
 # Goals
 There is a long way to go in improving ambient air quality, but there is a lot to be gained in doing so. Improved monitoring of factors that influence pollution, and increased awareness of associated health risks can advance the road to recovery. Through this project we strive to:
 
-	→ Replicate an air quality monitoring system that could be utilized by a government or health entity 
-	→ Assess meteorological data as a predictor of air quality
-	→ Identify temporal trends, if any 
-	→ Look for associations between air quality and cardiovascular health 
+→ Replicate an air quality monitoring system that could be utilized by a government or health entity 
+→ Assess meteorological data as a predictor of air quality
+→ Identify temporal trends, if any 
+→ Look for associations between air quality and cardiovascular health 
 
 # Related Work
 After finding the dataset, we performed a literature review and were inspired by several studies to examine predictors of PM 2.5 and whether pollutants affect CVD hospitalizations. There has been some evidence that air pollutants such as PM10, nitroden diaxide (NO2), and carbon monoxide (CO) contribute to cardiovascular disease and related deaths [Nature](https://www.nature.com/articles/jes201621.pdf?origin=ppub). We wanted to examine this relationship when taking into account meteorological and temporal factors, as there has been a link between time of year and temperature with the occurence of heart attack.    
@@ -638,7 +638,7 @@ After extensive visualization and modeling of variables in our data we have gain
 
 Further integration of health data into our analysis produced results that were somewhat less anticipated. Visual examination of plots gives the impression that there are slightly more MIs with increasing pollutants, including PM2.5, PM10, CO, and NO2. However, when modeling the data with Poisson regression it appears that there are no significant associations between PM2.5, PM10 when using the full dataset. We considered the year 2016 as an outlier and removed it from the model, when only including pollutants and gender, the pollutants were significant and positive (except PM 2.5), but we can not draw strong conclusions. 
 	
-This could be due to our model specifications. When examining the count distribution, the data appeared to be more Gaussian than poisson, and we may not have include the correct combination of covariates and interaction terms.
+This could be due to our model specifications. When examining the count distribution, the data appeared to be more Gaussian than poisson, and we may not have include the correct combination of covariates and interaction terms. A further problem was that we did not have acces to days of the month, so seasonal variables could not be used for the analysis, only months.
 	
 In the medical literature, clinicians have noted an increase in cardiovascular disease, and MIs in particular, during the winter months dating back to the 1930s. This finding has been validated across multiple databases and sites worldwide. However, the pathophysiologic mechanism driving this association remains somewhat unclear. Recent evidence has hypothesized that winter weather conditions and cold temperatures may induce physiologic stress including sympathetic activation (thereby increasing blood pressure and heart rate), hypercoagulability, inflammatory markers, and infection which mediate this increase in cardiovascular disease. Age and gender interactions with season and weather have been described. Although we do not find a clear association between air quality, temperature and incident MIs, there may be a number of possible explanations. We used air quality and cardiovascular outcome data from a single city, Beijing, which collected data from multiple sites across the city. Given that the cardiovascular data was collected from a subset of hospitals in Beijing, as not all hospitals were equipped with electronic health records during that time, and we do not have information on the data validation process or quality metrics (including the notable spike in MIs in 2016), the MI data may not be representative of either the general population in Beijing or the population around the air quality reporting sites specifically. In addition, atherosclerosis and coronary artery disease is generally a chronic, multi-factorial process where both risk and mitigating factors such as medications accumulate over time, so there may be unmeasured cardiovascular risk factors or other residual confounding to better explain the MI patterns in Beijing.
 

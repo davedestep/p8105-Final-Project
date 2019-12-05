@@ -351,7 +351,7 @@ div.tocify {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="www.youtube.com">Screencast</a>
+  <a href="https://www.youtube.com/watch?v=M3XAVKuDJAY">Screencast</a>
 </li>
 <li>
   <a href="report.html">Project Report</a>
@@ -401,18 +401,13 @@ div.tocify {
 <div id="motivation" class="section level1">
 <h1>Motivation</h1>
 <p>Human health is inextricably linked to the quality of the air we breath we every day. Outdoor air comprises a significant portion of our lifetime air exposure, and the quality of that air has been declining for some time. Air pollution is increasingly recognized as a factor contributing to global morbidity and mortality, particularly with respect to cardiovascular and respiratory health. In 2018, The World Health Organization released a report stating that:</p>
-<pre><code>→ 91% of the world population lived in places where WHO air quality guidelines were not met 
-→ Air pollution was estimated to cause 4.2 million premature deaths worldwide in 201</code></pre>
-<p>→ Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases</p>
+<p>→ 91% of the world population lived in places where WHO air quality guidelines were not met → Air pollution was estimated to cause 4.2 million premature deaths worldwide in 201 → Reduction in pollution would reduce the global burden of disease from heart disease, stroke, lung cancer, and chronic and acute respiratory diseases</p>
 <p>**From <a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health">WHO</a></p>
 </div>
 <div id="goals" class="section level1">
 <h1>Goals</h1>
 <p>There is a long way to go in improving ambient air quality, but there is a lot to be gained in doing so. Improved monitoring of factors that influence pollution, and increased awareness of associated health risks can advance the road to recovery. Through this project we strive to:</p>
-<pre><code>→ Replicate an air quality monitoring system that could be utilized by a government or health entity 
-→ Assess meteorological data as a predictor of air quality
-→ Identify temporal trends, if any 
-→ Look for associations between air quality and cardiovascular health </code></pre>
+<p>→ Replicate an air quality monitoring system that could be utilized by a government or health entity → Assess meteorological data as a predictor of air quality → Identify temporal trends, if any → Look for associations between air quality and cardiovascular health</p>
 </div>
 <div id="related-work" class="section level1">
 <h1>Related Work</h1>
@@ -554,7 +549,7 @@ missing %&gt;%
 ## 
 ## function (object, ...) 
 ## standardGeneric(&quot;summary&quot;)
-## &lt;environment: 0x000000001ee619c8&gt;
+## &lt;environment: 0x000000001ee4f700&gt;
 ## Methods may be defined for arguments: object
 ## Use  showMethods(&quot;summary&quot;)  for currently available ones.</code></pre>
 <pre class="r"><code>all_df %&gt;% 
@@ -1580,8 +1575,7 @@ mixed %&gt;% broom::tidy() %&gt;% knitr::kable(digits = 3)</code></pre>
 </div>
 <div id="is-pm-2.5-season-no2-or-co-associated-with-cvd" class="section level2">
 <h2>Is pm 2.5, season, NO2, or CO associated with CVD?</h2>
-<pre><code>We  used the following articles when preparing to analyze pollutions affect on AMI [1](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706), </code></pre>
-<p><a href="https://www.nature.com/articles/7500453.pdf?origin=ppub">2</a></p>
+<p>We used the following articles when preparing to analyze pollutions affect on AMI <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706">1</a>, <a href="https://www.nature.com/articles/7500453.pdf?origin=ppub">2</a></p>
 <pre class="r"><code>cvd&lt;-read_csv(&quot;./patient_mi_data/patients_mi.csv&quot;) %&gt;% janitor::clean_names()</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -1694,9 +1688,21 @@ count3 %&gt;%
 <p><img src="report_files/figure-html/unnamed-chunk-30-1.png" width="90%" /></p>
 <p>The counts appear to be normally distributed, no overdispersion appears to be present, although we have not formally checked.</p>
 <p>We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing’s population peaked at 21.73 million residents in 2016. <a href="https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth">Source</a>. For this reason (population numbers have been fairly flat) we decided to just use pure count data.</p>
+<p>The count data is in the following format:</p>
+<pre class="r"><code>head(model_data)</code></pre>
+<pre><code>## # A tibble: 6 x 10
+## # Groups:   year [1]
+##    year month avg_pm2_5 avg_pm10 avg_co avg_temp avg_no2 gender     n time 
+##   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;yea&gt;
+## 1  2013     3     105.     129.   1457.     5.99    67.9 female   511 Mar ~
+## 2  2013     3     105.     129.   1457.     5.99    67.9 male    1090 Mar ~
+## 3  2013     4      62.1     95.9   903.    12.4     46.3 female   519 Apr ~
+## 4  2013     4      62.1     95.9   903.    12.4     46.3 male    1135 Apr ~
+## 5  2013     5      81.8    131.    999.    21.7     50.6 female   439 May ~
+## 6  2013     5      81.8    131.    999.    21.7     50.6 male    1043 May ~</code></pre>
 </div>
-<div id="should-we-not-include-temp-most-is-significant-when-not-included" class="section level2">
-<h2>Should we not include temp? Most is significant when not included…</h2>
+<div id="should-we-not-include-temp-most-is-significant-when-not-included." class="section level2">
+<h2>Should we not include temp? Most is significant when not included.</h2>
 <pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family=&quot;poisson&quot;, data=model_data)
 
 tab&lt;-m1 %&gt;% broom::tidy()
@@ -2480,9 +2486,8 @@ knitr::kable(tab, digits = 6)</code></pre>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
 <p>After extensive visualization and modeling of variables in our data we have gained a number of valuable insights regarding Beijing air quality from 2013-2017. Of the meteorological predictors we examined, rain, wind, and temperature were found to be negatively associated with PM2.5. This is consistent with previous findings. There were also strong seasonal variations in air quality, likely attributable to changes in the aforementioned weather variables. PM2.5 was highest across winter and fall seasons, and lowest across spring and summer seasons, for all stations. In concert with the natural decrease of temperature and wind during the winter, we suspect that an upsurge in coal heating also explains the seasonal PM2.5 increase. Visualization of temporal trends demonstrates that pollution was highest in 2014 and 2017, and drastically lower in 2016. The lower average in 2013 may be partially attributable to the absence of data from two winter months. The stations with average PM2.5 concentrations greater than or equal to 100 ug/m3- Nongzhanguan, Dongsi, Wanshouxigong, Gucheng- were all located near the city center. Peripheral stations had relatively lower concentrations.</p>
-<pre><code>Further integration of health data into our analysis produced results that were somewhat less anticipated. Visual examination of plots gives the impression that there are slightly more MIs with increasing pollutants, including PM2.5, PM10, CO, and NO2. However, when modeling the data with Poisson regression it appears that there are no significant associations between PM2.5, PM10 when using the full dataset. We considered the year 2016 as an outlier and removed it from the model, when only including pollutants and gender, the pollutants were significant and positive (except PM 2.5), but we can not draw strong conclusions. 
-
-This could be due to our model specifications. When examining the count distribution, the data appeared to be more Gaussian than poisson, and we may not have include the correct combination of covariates and interaction terms.</code></pre>
+<p>Further integration of health data into our analysis produced results that were somewhat less anticipated. Visual examination of plots gives the impression that there are slightly more MIs with increasing pollutants, including PM2.5, PM10, CO, and NO2. However, when modeling the data with Poisson regression it appears that there are no significant associations between PM2.5, PM10 when using the full dataset. We considered the year 2016 as an outlier and removed it from the model, when only including pollutants and gender, the pollutants were significant and positive (except PM 2.5), but we can not draw strong conclusions.</p>
+<p>This could be due to our model specifications. When examining the count distribution, the data appeared to be more Gaussian than poisson, and we may not have include the correct combination of covariates and interaction terms. A further problem was that we did not have acces to days of the month, so seasonal variables could not be used for the analysis, only months.</p>
 <p>In the medical literature, clinicians have noted an increase in cardiovascular disease, and MIs in particular, during the winter months dating back to the 1930s. This finding has been validated across multiple databases and sites worldwide. However, the pathophysiologic mechanism driving this association remains somewhat unclear. Recent evidence has hypothesized that winter weather conditions and cold temperatures may induce physiologic stress including sympathetic activation (thereby increasing blood pressure and heart rate), hypercoagulability, inflammatory markers, and infection which mediate this increase in cardiovascular disease. Age and gender interactions with season and weather have been described. Although we do not find a clear association between air quality, temperature and incident MIs, there may be a number of possible explanations. We used air quality and cardiovascular outcome data from a single city, Beijing, which collected data from multiple sites across the city. Given that the cardiovascular data was collected from a subset of hospitals in Beijing, as not all hospitals were equipped with electronic health records during that time, and we do not have information on the data validation process or quality metrics (including the notable spike in MIs in 2016), the MI data may not be representative of either the general population in Beijing or the population around the air quality reporting sites specifically. In addition, atherosclerosis and coronary artery disease is generally a chronic, multi-factorial process where both risk and mitigating factors such as medications accumulate over time, so there may be unmeasured cardiovascular risk factors or other residual confounding to better explain the MI patterns in Beijing.</p>
 </div>
 

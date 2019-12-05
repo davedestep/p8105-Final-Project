@@ -4,7 +4,7 @@ navbar:
   title: "Home"
   right:
     - text: "Screencast"
-      href: www.youtube.com
+      href: https://www.youtube.com/watch?v=M3XAVKuDJAY
     - text: "Project Report"
       href: report.html
     - text: "Shiny Dashboard"

@@ -8,10 +8,12 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+<br>
 
-## We ball air qual-- Beijing Air Pollution Patrol
+## We Ball Air Qual-- Beijing Air Pollution Project
 </br>
 
+### Fall 2019
 ### Project Team:
 #### *David DeStephano dd2948, Connor Goldman cg3112, Sarah Munro sim2128, RuiJun Chen rc3179*
 </br>

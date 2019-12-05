@@ -243,6 +243,7 @@ all_df %>%
 
 
 ```
+
 Overall seems fairly similar across seasons, but technically highest in the winter, with a number of very high outlier values as well
 
 ### Average PM 25 by year for all stations
@@ -394,7 +395,8 @@ mixed %>% broom::tidy() %>% knitr::kable(digits = 3)
 ####################################################
 
 ## Is pm 2.5, season, NO2, or CO associated with CVD?
-	We  used the following articles when preparing to analyze pollutions affect on AMI [1](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706), 
+
+We  used the following articles when preparing to analyze pollutions affect on AMI [1](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706), 
 [2](https://www.nature.com/articles/7500453.pdf?origin=ppub)
 
 
@@ -535,7 +537,13 @@ The counts appear to be normally distributed, no overdispersion appears to be pr
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
 [Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
 
-## Should we not include temp? Most is significant when not included...
+The count data is in the following format:
+```{r}
+head(model_data)
+```
+
+
+## Should we not include temp? Most is significant when not included.
 ```{r}
 m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data)
 

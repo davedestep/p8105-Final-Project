@@ -63,7 +63,7 @@ After finding the dataset, we performed a literature review and were inspired by
 
 
 # Our Data
-Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from 12 sites in Beijing, China over the years 2013 - 2017. This data comes from [The UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/index.php). Air quality was measured as a concentration of particulate matter 2.5 (PM2,5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (<2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf). 
+Beijing is one of the industrial capitals of the world, and a notorious source of air pollution. For our primary analyses we looked at a dataset describing meteorological and air quality data from 12 sites in Beijing, China over the years 2013 - 2017. This data comes from [The UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/index.php). Air quality was measured as a concentration of particulate matter 2.5 (PM2.5) and particulate matter 10 (PM10). PM2.5 is associated with greater health risks, because the smaller size (<2.5um) makes it more efficient at penetrating deeper into the respiratory system. For this reason we chose to analyze PM2.5 as the outcome of interest. (https://www3.epa.gov/ttn/amtic/files/ambient/pm25/spec/drispec.pdf). 
 
 
 Our air pollution dataset included the following variables:
@@ -96,7 +96,6 @@ The following variables were included:
 * Admission date(year)	
 * Admission date(month)	
 * Main discharge diagnosis
-
 
 
 # Exploratory Analysis
@@ -188,17 +187,22 @@ missing %>%
 ```
 
 Our primary outcome of interest is PM2.5, and can be summarized as follows:
-`r all_df %>% pull(pm2_5) %>% summary`
 
-Looking at PM2.5 over time:
 ```{r}
+all_df %>% pull(pm2_5) %>% summary
+```
+
+###Looking at PM2.5 over time:
+```{r}
+
+summary
 all_df %>% 
   ggplot(aes(x = date, y = pm2_5)) +
   geom_point() +
   geom_smooth()
 ```
 
-Looking at PM2.5 over time by station:
+###Looking at PM2.5 over time by station:
 ```{r}
 all_df %>% 
   ggplot(aes(x = date, y = pm2_5)) +
@@ -207,7 +211,7 @@ all_df %>%
   facet_grid(~station)
 ```
 
-Looking at PM2.5 by seasons:
+###Looking at PM2.5 by seasons:
 ```{r}
 all_df %>% 
   mutate(
@@ -217,7 +221,7 @@ all_df %>%
   geom_boxplot()
 ```
 
-Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot
+###Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot
 ```{r}
 all_df %>% 
   mutate(
@@ -234,10 +238,12 @@ all_df %>%
   ggplot(aes(x = season, y = pm2_5)) + 
   geom_violin() + 
   ylim(0, 250)
+
+
 ```
 Overall seems fairly similar across seasons, but technically highest in the winter with a number of very high outlier values as well
 
-Average PM 25 by year for all stations
+###Average PM 25 by year for all stations
 ```{r}
 all_df %>%  
   group_by(year) %>% 
@@ -247,7 +253,7 @@ all_df %>%
 ```
 
 
-Average PM 25 by year for each station
+###Average PM 25 by year for each station
 ```{r}
 all_df %>%  
   group_by(year, station) %>% 
@@ -256,7 +262,9 @@ all_df %>%
   geom_line()
 ```
 
-Average PM 25 by year and season for each station
+We can see that each individual station seems to follow the same yearly average pm 2.5 trend
+
+###Average PM 25 by year and season for each station
 ```{r}
 all_df %>%  
   group_by(season, seasonal_year, station) %>% 
@@ -267,7 +275,7 @@ all_df %>%
   ggtitle("Average PM2.5 by Seasonal Years")
 ```
 
-Average PM 25 by year and season for each station
+###Average PM 25 by year and season for each station
 ```{r}
 all_df %>%  
   mutate(season_and=factor(season_and, levels = c("spring   2013", "summer   2013", "fall   2013", "winter   2013",

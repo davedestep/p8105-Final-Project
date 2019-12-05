@@ -15,6 +15,8 @@ library(lme4)
 library(lubridate)
 library(viridis)
 library(corrplot)
+library(ggpubr)
+library(zoo)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -413,20 +415,37 @@ cvd2<- cvd %>%
 pollution<-all_df %>%
   group_by(year, month) %>% 
   summarize(avg_pm2_5=mean(pm2_5, na.rm=TRUE),
+            avg_pm10=mean(pm10, na.rm=TRUE),
             avg_co=mean(co, na.rm=TRUE),
-            avg_temp=mean(temp, na.rm=TRUE))
+            avg_temp=mean(temp, na.rm=TRUE),
+            avg_no2=mean(no2, na.rm=TRUE))
 
 model_data <- left_join(pollution, cvd2, by=c("year", "month")) %>% 
   na.omit() 
+
+
 ```
 
 ```{r}
+model_data$time <- as.yearmon(paste(model_data$year, model_data$month), "%Y %m")
+
+# Sys.getlocale("LC_TIME")
+# 
+# model_data<-model_data %>%
+#    unite(time, c(month, year), sep = "-", remove = FALSE) %>%
+#    mutate(time = parse_date_time(time, "my"), local="English_United States.1252")
+
+```
+
+
+
+##Time Series of AMI Hospitalizations Grouping by Gender
+```{r}
 model_data %>%  
-  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  ggplot(aes(x=time, y=n, color=avg_pm2_5, group=gender)) +
   geom_line()+
   geom_point(aes(size = avg_co))+
   scale_color_viridis(option = "B")+
-  facet_wrap(year~.) +
   ggtitle("Number of MI's by PM2.5 and Year/Month") 
 
 
@@ -436,22 +455,39 @@ model_data %>%
 
 ```{r}
 model_data %>%  
-  ggplot(aes(x=month, y=n, color=avg_pm2_5, group=gender)) +
+  ggplot(aes(x=time, y=n, color=avg_pm2_5, group=gender)) +
   geom_line()+
   geom_point()+
   scale_color_viridis(option = "B")+
-  facet_wrap(year~.) +
   ggtitle("Average PM2.5 by Years")
 ```
 
 ```{r}
 model_data %>%  
-  ggplot(aes(x=month, y=n, color=avg_co, group=gender)) +
+  ggplot(aes(x=time, y=n, color=avg_pm10, group=gender)) +
   geom_line()+
   geom_point()+
   scale_color_viridis(option = "B")+
-  facet_wrap(year~.) +
+  ggtitle("Number of MI's by PM10 and Year/Month")
+```
+
+```{r}
+model_data %>%  
+  ggplot(aes(x=time, y=n, color=avg_co, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = "B")+
   ggtitle("Number of MI's by Carbon Monoxide and Year/Month")
+```
+
+
+```{r}
+model_data %>%  
+  ggplot(aes(x=time, y=n, color=avg_no2, group=gender)) +
+  geom_line()+
+  geom_point()+
+  scale_color_viridis(option = "B")+
+  ggtitle("Number of MI's by NO2 and Year/Month")
 ```
 
 
@@ -478,53 +514,67 @@ The count data we are using is the number of people admitted for MI per month.
 
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
 [Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
+
+##Should we not include temp? Most is significant when not included...
+```{r}
+m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data)
+
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 6)
+```
+
+##Including temp?
+```{r}
+summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family="poisson", data=model_data))
+
+#avg_pm2_5*avg_temp + avg_co*avg_temp
+
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 3)
+```
+
+##What about including month and year??
 ```{r}
 model_data<-model_data%>% 
   mutate(month=factor(month))
 
-summary(m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + month + year + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data))
+summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year + gender, family="poisson", data=model_data))
+
+#avg_pm2_5*avg_temp + avg_co*avg_temp
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
-
 ```
 
 
-#Remove month and year
+##Including both temp and months/years?
 ```{r}
-m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family="poisson", data=model_data)
+summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data))
+
+
 
 tab<-m1 %>% broom::tidy()
-knitr::kable(tab, digits = 6)
-
-
-
-m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data)
-
-tab<-m2 %>% broom::tidy()
-knitr::kable(tab, digits = 6)
-
+knitr::kable(tab, digits = 3)
 ```
 
 
-#Could it be that 2016 was an outlier and had a huge number of MI's?
+##Interactions?
+
+
+
+
+
+
+##Could it be that 2016 was an outlier and had a huge number of MI's?
 ```{r}
 model_data2<-model_data %>% 
   filter(year!=2016)
 
-m1 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family="poisson", data=model_data2)
+
+m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data2)
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
-
-
-
-
-m2 <- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender + avg_pm2_5*avg_temp + avg_co*avg_temp, family="poisson", data=model_data2)
-
-tab<-m2 %>% broom::tidy()
-knitr::kable(tab, digits = 6)
-
 ```
 
 

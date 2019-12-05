@@ -568,7 +568,7 @@ knitr::kable(tab, digits = 3)
 ```
 Talk about the effect of including month and year
 
-##Including both temp and months/years?
+## Including both temp and months/years?
 ```{r}
 summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data))
 

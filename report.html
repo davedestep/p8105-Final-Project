@@ -423,6 +423,7 @@ div.tocify {
 </div>
 <div id="initial-questions" class="section level1">
 <h1>Initial Questions</h1>
+<p>What meteorological factors are associated with increased PM 2.5 in different sites around Beijing. How are these numbers changing over time?</p>
 </div>
 <div id="our-data" class="section level1">
 <h1>Our Data</h1>
@@ -470,13 +471,17 @@ all_df = map_df(files, read_csv) %&gt;%
   bind_rows() %&gt;% 
   janitor::clean_names()</code></pre>
 <p>We identified a total of 420768 rows/observations, and a total of 18 variables or columns which include the following: no, year, month, day, hour, pm2_5, pm10, so2, no2, co, o3, temp, pres, dewp, rain, wd, wspm, station. We then wanted to characterize the amount of data present and missing for each variable:</p>
-<p>Total amount of data:</p>
+</div>
+<div id="total-amount-of-data" class="section level2">
+<h2>Total amount of data:</h2>
 <pre class="r"><code>colSums(!is.na(all_df))</code></pre>
 <pre><code>##      no    year   month     day    hour   pm2_5    pm10     so2     no2 
 ##  420768  420768  420768  420768  420768  412029  414319  411747  408652 
 ##      co      o3    temp    pres    dewp    rain      wd    wspm station 
 ##  400067  407491  420370  420375  420365  420378  418946  420450  420768</code></pre>
-<p>Amount of missing data for each variable:</p>
+</div>
+<div id="amount-of-missing-data-for-each-variable" class="section level2">
+<h2>Amount of missing data for each variable:</h2>
 <pre class="r"><code>colSums(is.na(all_df))</code></pre>
 <pre><code>##      no    year   month     day    hour   pm2_5    pm10     so2     no2 
 ##       0       0       0       0       0    8739    6449    9021   12116 
@@ -509,7 +514,9 @@ all_df = map_df(files, read_csv) %&gt;%
                             if_else(month &lt; 4 &amp; season==&quot;winter&quot; &amp; year ==2017, 2016, year)))),
     season_and= paste(season, &quot; &quot;, seasonal_year)
   )</code></pre>
-<p>Visualizing the missing data over time</p>
+</div>
+<div id="visualizing-the-missing-data-over-time" class="section level2">
+<h2>Visualizing the missing data over time</h2>
 <pre class="r"><code>missing = all_df %&gt;% 
   select(-year, -season, -seasonal_year, -season_and, -datetime, -month, -day, -hour) %&gt;% #the original data except the ones we know are complete
   is.na() %&gt;% 
@@ -529,7 +536,9 @@ missing %&gt;%
   labs(x = &quot;Variable&quot;,y = &quot;Date&quot;, title = &quot;Missing values over time&quot;) +
   coord_flip() </code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
-<p>And now visualizing missing data over time across stations:</p>
+</div>
+<div id="and-now-visualizing-missing-data-over-time-across-stations" class="section level2">
+<h2>And now visualizing missing data over time across stations:</h2>
 <pre class="r"><code>missing %&gt;% 
   ggplot(aes(x =date, y = name, fill = value)) + 
   geom_raster(alpha=0.8) + 
@@ -541,13 +550,14 @@ missing %&gt;%
 <pre class="r"><code>all_df %&gt;% pull(pm2_5) %&gt;% summary</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##    2.00   20.00   55.00   79.79  111.00  999.00    8739</code></pre>
-<p>###Looking at PM2.5 over time:</p>
+<div id="looking-at-pm2.5-over-time" class="section level3">
+<h3>Looking at PM2.5 over time:</h3>
 <pre class="r"><code>summary</code></pre>
 <pre><code>## standardGeneric for &quot;summary&quot; defined from package &quot;base&quot;
 ## 
 ## function (object, ...) 
 ## standardGeneric(&quot;summary&quot;)
-## &lt;environment: 0x000000001e57f028&gt;
+## &lt;environment: 0x000000001ee5d338&gt;
 ## Methods may be defined for arguments: object
 ## Use  showMethods(&quot;summary&quot;)  for currently available ones.</code></pre>
 <pre class="r"><code>all_df %&gt;% 
@@ -556,7 +566,9 @@ missing %&gt;%
   geom_smooth()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
-<p>###Looking at PM2.5 over time by station:</p>
+</div>
+<div id="looking-at-pm2.5-over-time-by-station" class="section level3">
+<h3>Looking at PM2.5 over time by station:</h3>
 <pre class="r"><code>all_df %&gt;% 
   ggplot(aes(x = date, y = pm2_5)) +
   geom_point() +
@@ -564,7 +576,9 @@ missing %&gt;%
   facet_grid(~station)</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
-<p>###Looking at PM2.5 by seasons:</p>
+</div>
+<div id="looking-at-pm2.5-by-seasons" class="section level3">
+<h3>Looking at PM2.5 by seasons:</h3>
 <pre class="r"><code>all_df %&gt;% 
   mutate(
     fct_reorder(season, pm2_5)
@@ -572,7 +586,9 @@ missing %&gt;%
   ggplot(aes(x = season, y = pm2_5)) + 
   geom_boxplot()</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
-<p>###Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot</p>
+</div>
+<div id="kind-of-hard-to-distinguish-will-try-limiting-scale-of-y-axis-and-try-a-violin-plot" class="section level3">
+<h3>Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot</h3>
 <pre class="r"><code>all_df %&gt;% 
   mutate(
     fct_reorder(season, pm2_5)
@@ -588,15 +604,19 @@ missing %&gt;%
   ggplot(aes(x = season, y = pm2_5)) + 
   geom_violin() + 
   ylim(0, 250)</code></pre>
-<p><img src="report_files/figure-html/unnamed-chunk-11-2.png" width="90%" /> Overall seems fairly similar across seasons, but technically highest in the winter with a number of very high outlier values as well</p>
-<p>###Average PM 25 by year for all stations</p>
+<p><img src="report_files/figure-html/unnamed-chunk-11-2.png" width="90%" /> Overall seems fairly similar across seasons, but technically highest in the winter, with a number of very high outlier values as well</p>
+</div>
+<div id="average-pm-25-by-year-for-all-stations" class="section level3">
+<h3>Average PM 25 by year for all stations</h3>
 <pre class="r"><code>all_df %&gt;%  
   group_by(year) %&gt;% 
   summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
   ggplot(aes(x=year, y=avg_pm25)) +
   geom_line()</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
-<p>###Average PM 25 by year for each station</p>
+</div>
+<div id="average-pm-25-by-year-for-each-station" class="section level3">
+<h3>Average PM 25 by year for each station</h3>
 <pre class="r"><code>all_df %&gt;%  
   group_by(year, station) %&gt;% 
   summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
@@ -604,7 +624,9 @@ missing %&gt;%
   geom_line()</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
 <p>We can see that each individual station seems to follow the same yearly average pm 2.5 trend</p>
-<p>###Average PM 25 by year and season for each station</p>
+</div>
+<div id="average-pm-25-by-year-and-season-for-each-station" class="section level3">
+<h3>Average PM 25 by year and season for each station</h3>
 <pre class="r"><code>all_df %&gt;%  
   group_by(season, seasonal_year, station) %&gt;% 
   summarize(avg_pm25=mean(pm2_5, na.rm = TRUE)) %&gt;% 
@@ -613,7 +635,9 @@ missing %&gt;%
   facet_wrap(seasonal_year~.) +
   ggtitle(&quot;Average PM2.5 by Seasonal Years&quot;)</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-14-1.png" width="90%" /></p>
-<p>###Average PM 25 by year and season for each station</p>
+</div>
+<div id="average-pm-25-by-year-and-season-for-each-station-1" class="section level3">
+<h3>Average PM 25 by year and season for each station</h3>
 <pre class="r"><code>all_df %&gt;%  
   mutate(season_and=factor(season_and, levels = c(&quot;spring   2013&quot;, &quot;summer   2013&quot;, &quot;fall   2013&quot;, &quot;winter   2013&quot;,
                                                   &quot;spring   2014&quot;, &quot;summer   2014&quot;, &quot;fall   2014&quot;, &quot;winter   2014&quot;,
@@ -634,6 +658,7 @@ all_df %&gt;%
   scale_color_gradient(low=&quot;blue&quot;, high=&quot;red&quot;)</code></pre>
 <p><img src="report_files/figure-html/unnamed-chunk-16-1.png" width="90%" /></p>
 </div>
+</div>
 <div id="motherload-of-all-scatterplots-plotting-everything" class="section level2">
 <h2>Motherload of all scatterplots (Plotting everything )</h2>
 <p>Looking at scatter plots of every variable against PM2.5 to look for potential correlation</p>
@@ -651,7 +676,9 @@ do.call(grid.arrange, plots)</code></pre>
 <img src="all_variables_plot.png" alt="all variables scatterplots" width="600" />
 <p class="caption">all variables scatterplots</p>
 </div>
-<p>##Pearson Correlation Coefficients:</p>
+</div>
+<div id="pearson-correlation-coefficients" class="section level2">
+<h2>Pearson Correlation Coefficients:</h2>
 <pre class="r"><code>all_df %&gt;% 
   select(-wd, -station, -date, -datetime, -season, -seasonal_year, -season_and, -hour, -year, -month, -day) %&gt;% 
   map(as.numeric) %&gt;% 
@@ -674,8 +701,14 @@ do.call(grid.arrange, plots)</code></pre>
 <p>Three models were developed for analysis of weather conditions and their association with PM2.5. A multivariable linear regression, a mixed model, and a Mixed Model for Longitudinal Continuous Data were developed to examine the variables of interest.</p>
 <p>Almost every variable is significant, however, station, windspeed, season, and windspeed all have high effect sizes. Rain, dewpoint, temp also have moderate effect sizes.</p>
 <p>CVD model… whatever we decide on</p>
-<p>##Is pm 2.5, season, NO2, or CO associated with CVD? Poisson regression.. Use the following articles: <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706</a> <a href="https://www.nature.com/articles/7500453.pdf?origin=ppub" class="uri">https://www.nature.com/articles/7500453.pdf?origin=ppub</a></p>
-<p>##What meteorological variables influence PM 2.5? ###Even though predictors are not independent, will model using linear regression before a longitudinal model</p>
+<div id="is-pm-2.5-season-no2-or-co-associated-with-cvd" class="section level2">
+<h2>Is pm 2.5, season, NO2, or CO associated with CVD?</h2>
+<p>Poisson regression.. Use the following articles: <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706" class="uri">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706</a> <a href="https://www.nature.com/articles/7500453.pdf?origin=ppub" class="uri">https://www.nature.com/articles/7500453.pdf?origin=ppub</a></p>
+</div>
+<div id="what-meteorological-variables-influence-pm-2.5" class="section level2">
+<h2>What meteorological variables influence PM 2.5?</h2>
+<div id="even-though-predictors-are-not-independent-will-model-using-linear-regression-before-a-longitudinal-model" class="section level3">
+<h3>Even though predictors are not independent, will model using linear regression before a longitudinal model</h3>
 <pre class="r"><code>###Remove timeseries variables:
 reg&lt;-all_df %&gt;% select(-date,-datetime, -month,-day,-hour)
 
@@ -1067,7 +1100,9 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>###Mixed Model</p>
+</div>
+<div id="mixed-model" class="section level3">
+<h3>Mixed Model</h3>
 <pre class="r"><code>all_df %&gt;% 
   lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + (1 | station), data = .) %&gt;% 
   broom::tidy() %&gt;% 
@@ -1295,6 +1330,7 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 <div id="mixed-model-for-longitudinal-continuous-data" class="section level3">
 <h3>Mixed Model for Longitudinal Continuous Data</h3>
 <pre class="r"><code>mixed&lt;-all_df %&gt;% 
@@ -1536,7 +1572,17 @@ mixed %&gt;% broom::tidy() %&gt;% knitr::kable(digits = 3)</code></pre>
 </div>
 <div id="section-1" class="section level52">
 <p></p>
-<p>#Linking to health data #################################################### ####################################################</p>
+</div>
+</div>
+</div>
+</div>
+<div id="linking-to-health-data" class="section level1">
+<h1>Linking to health data</h1>
+<div id="section-2" class="section level52">
+<p></p>
+</div>
+<div id="section-3" class="section level52">
+<p></p>
 <pre class="r"><code>cvd&lt;-read_csv(&quot;./patient_mi_data/patients_mi.csv&quot;) %&gt;% janitor::clean_names()</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -1568,7 +1614,9 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
 # model_data&lt;-model_data %&gt;%
 #    unite(time, c(month, year), sep = &quot;-&quot;, remove = FALSE) %&gt;%
 #    mutate(time = parse_date_time(time, &quot;my&quot;), local=&quot;English_United States.1252&quot;)</code></pre>
-<p>##Time Series of AMI Hospitalizations Grouping by Gender</p>
+</div>
+<div id="time-series-of-ami-hospitalizations-grouping-by-gender" class="section level2">
+<h2>Time Series of AMI Hospitalizations Grouping by Gender</h2>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=time, y=n, color=avg_pm2_5, group=gender)) +
   geom_line()+
@@ -1620,8 +1668,35 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
 <p><img src="report_files/figure-html/unnamed-chunk-29-1.png" width="90%" /></p>
 <p>We have to use month because we have no data on days of the month to separate analysis into seasons.</p>
 <p>The count data we are using is the number of people admitted for MI per month.</p>
+</div>
+<div id="distribution-of-the-counts" class="section level2">
+<h2>Distribution of the counts</h2>
+<pre class="r"><code>count&lt;- cvd %&gt;% 
+  group_by(admission_date_year, admission_date_month) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  rename(year=admission_date_year) %&gt;%
+  rename(month=admission_date_month)
+
+count2&lt;-all_df %&gt;%
+  group_by(year, month) %&gt;% 
+  summarize(avg_pm2_5=mean(pm2_5, na.rm=TRUE),
+            avg_pm10=mean(pm10, na.rm=TRUE),
+            avg_co=mean(co, na.rm=TRUE),
+            avg_temp=mean(temp, na.rm=TRUE),
+            avg_no2=mean(no2, na.rm=TRUE))
+
+count3 &lt;- left_join(count, count2, by=c(&quot;year&quot;, &quot;month&quot;)) %&gt;% 
+  na.omit() 
+
+
+count3 %&gt;%
+  ggplot(aes(x = n)) + geom_histogram(aes(color = &quot;red&quot;)) + labs(title = &quot;Distribution of Counts of MI Data&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="report_files/figure-html/unnamed-chunk-30-1.png" width="90%" /> The counts appear to be normally distributed, no overdispersion is present.</p>
 <p>We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing’s population peaked at 21.73 million residents in 2016. <a href="https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth">Source</a>. For this reason (population numbers have been fairly flat) we decided to just use pure count data.</p>
-<p>##Should we not include temp? Most is significant when not included…</p>
+</div>
+<div id="should-we-not-include-temp-most-is-significant-when-not-included" class="section level2">
+<h2>Should we not include temp? Most is significant when not included…</h2>
 <pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family=&quot;poisson&quot;, data=model_data)
 
 tab&lt;-m1 %&gt;% broom::tidy()
@@ -1681,7 +1756,9 @@ knitr::kable(tab, digits = 6)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>##Including temp?</p>
+</div>
+<div id="including-temp" class="section level2">
+<h2>Including temp?</h2>
 <pre class="r"><code>summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family=&quot;poisson&quot;, data=model_data))</code></pre>
 <pre><code>## 
 ## Call:
@@ -1777,7 +1854,9 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>##What about including month and year??</p>
+</div>
+<div id="what-about-including-month-and-year" class="section level2">
+<h2>What about including month and year??</h2>
 <pre class="r"><code>model_data&lt;-model_data%&gt;% 
   mutate(month=factor(month))
 
@@ -1962,9 +2041,18 @@ knitr::kable(tab, digits = 3)</code></pre>
 <td align="right">102.027</td>
 <td align="right">0.000</td>
 </tr>
+<tr class="odd">
+<td align="left">Talk about the</td>
+<td align="right">effect of</td>
+<td align="right">including mo</td>
+<td align="right">nth and year</td>
+<td align="right"></td>
+</tr>
 </tbody>
 </table>
-<p>##Including both temp and months/years?</p>
+</div>
+<div id="including-both-temp-and-monthsyears" class="section level2">
+<h2>Including both temp and months/years?</h2>
 <pre class="r"><code>summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family=&quot;poisson&quot;, data=model_data))</code></pre>
 <pre><code>## 
 ## Call:
@@ -2152,15 +2240,369 @@ knitr::kable(tab, digits = 3)</code></pre>
 <td align="right">102.027</td>
 <td align="right">0.000</td>
 </tr>
+<tr class="even">
+<td align="left">Interestingly,</td>
+<td align="right">all of the</td>
+<td align="right">variables a</td>
+<td align="right">re significa</td>
+<td align="right">nt here.</td>
+</tr>
 </tbody>
 </table>
-<p>##Interactions?</p>
-<p>##Could it be that 2016 was an outlier and had a huge number of MI’s?</p>
+</div>
+<div id="could-it-be-that-2016-was-an-outlier-and-had-a-huge-number-of-mis" class="section level2">
+<h2>Could it be that 2016 was an outlier and had a huge number of MI’s?</h2>
 <pre class="r"><code>model_data2&lt;-model_data %&gt;% 
   filter(year!=2016)
 
-
-m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family=&quot;poisson&quot;, data=model_data2)
+summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family=&quot;poisson&quot;, data=model_data2))</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + 
+##     year + avg_temp + gender, family = &quot;poisson&quot;, data = model_data2)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.8221  -0.5797   0.0454   0.5309   1.8530  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.124e+02  1.614e+01  -6.962 3.35e-12 ***
+## avg_pm2_5    2.493e-04  1.217e-03   0.205   0.8376    
+## avg_pm10    -7.680e-04  7.485e-04  -1.026   0.3049    
+## avg_co       5.905e-05  7.419e-05   0.796   0.4261    
+## avg_no2     -5.341e-04  1.974e-03  -0.271   0.7867    
+## month10      2.033e-01  9.042e-02   2.248   0.0246 *  
+## month11      9.216e-02  4.216e-02   2.186   0.0288 *  
+## month12      7.045e-03  2.687e-02   0.262   0.7932    
+## month2      -9.435e-02  4.456e-02  -2.117   0.0342 *  
+## month3       1.186e-01  5.654e-02   2.097   0.0360 *  
+## month4       2.083e-01  9.660e-02   2.156   0.0311 *  
+## month5       2.418e-01  1.282e-01   1.886   0.0593 .  
+## month6       1.191e-01  1.558e-01   0.765   0.4446    
+## month7       2.376e-01  1.750e-01   1.358   0.1746    
+## month8       2.499e-01  1.666e-01   1.500   0.1337    
+## month9       1.728e-01  1.293e-01   1.336   0.1815    
+## year         5.892e-02  7.989e-03   7.375 1.64e-13 ***
+## avg_temp    -1.317e-02  5.902e-03  -2.231   0.0257 *  
+## gendermale   7.876e-01  9.234e-03  85.298  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 8339.968  on 67  degrees of freedom
+## Residual deviance:   57.378  on 49  degrees of freedom
+## AIC: 669.66
+## 
+## Number of Fisher Scoring iterations: 3</code></pre>
+<pre class="r"><code>tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-112.383</td>
+<td align="right">16.142</td>
+<td align="right">-6.962</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.000</td>
+<td align="right">0.001</td>
+<td align="right">0.205</td>
+<td align="right">0.838</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm10</td>
+<td align="right">-0.001</td>
+<td align="right">0.001</td>
+<td align="right">-1.026</td>
+<td align="right">0.305</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.796</td>
+<td align="right">0.426</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_no2</td>
+<td align="right">-0.001</td>
+<td align="right">0.002</td>
+<td align="right">-0.271</td>
+<td align="right">0.787</td>
+</tr>
+<tr class="even">
+<td align="left">month10</td>
+<td align="right">0.203</td>
+<td align="right">0.090</td>
+<td align="right">2.248</td>
+<td align="right">0.025</td>
+</tr>
+<tr class="odd">
+<td align="left">month11</td>
+<td align="right">0.092</td>
+<td align="right">0.042</td>
+<td align="right">2.186</td>
+<td align="right">0.029</td>
+</tr>
+<tr class="even">
+<td align="left">month12</td>
+<td align="right">0.007</td>
+<td align="right">0.027</td>
+<td align="right">0.262</td>
+<td align="right">0.793</td>
+</tr>
+<tr class="odd">
+<td align="left">month2</td>
+<td align="right">-0.094</td>
+<td align="right">0.045</td>
+<td align="right">-2.117</td>
+<td align="right">0.034</td>
+</tr>
+<tr class="even">
+<td align="left">month3</td>
+<td align="right">0.119</td>
+<td align="right">0.057</td>
+<td align="right">2.097</td>
+<td align="right">0.036</td>
+</tr>
+<tr class="odd">
+<td align="left">month4</td>
+<td align="right">0.208</td>
+<td align="right">0.097</td>
+<td align="right">2.156</td>
+<td align="right">0.031</td>
+</tr>
+<tr class="even">
+<td align="left">month5</td>
+<td align="right">0.242</td>
+<td align="right">0.128</td>
+<td align="right">1.886</td>
+<td align="right">0.059</td>
+</tr>
+<tr class="odd">
+<td align="left">month6</td>
+<td align="right">0.119</td>
+<td align="right">0.156</td>
+<td align="right">0.765</td>
+<td align="right">0.445</td>
+</tr>
+<tr class="even">
+<td align="left">month7</td>
+<td align="right">0.238</td>
+<td align="right">0.175</td>
+<td align="right">1.358</td>
+<td align="right">0.175</td>
+</tr>
+<tr class="odd">
+<td align="left">month8</td>
+<td align="right">0.250</td>
+<td align="right">0.167</td>
+<td align="right">1.500</td>
+<td align="right">0.134</td>
+</tr>
+<tr class="even">
+<td align="left">month9</td>
+<td align="right">0.173</td>
+<td align="right">0.129</td>
+<td align="right">1.336</td>
+<td align="right">0.181</td>
+</tr>
+<tr class="odd">
+<td align="left">year</td>
+<td align="right">0.059</td>
+<td align="right">0.008</td>
+<td align="right">7.375</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.013</td>
+<td align="right">0.006</td>
+<td align="right">-2.231</td>
+<td align="right">0.026</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.788</td>
+<td align="right">0.009</td>
+<td align="right">85.298</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Now it appears</td>
+<td align="right">that neith</td>
+<td align="right">er of the tw</td>
+<td align="right">o pollution</td>
+<td align="right">measures are significantly associated with MI.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="what-if-we-do-not-include-month-and-year" class="section level2">
+<h2>What if we do not include month and year?</h2>
+<pre class="r"><code>tab&lt;-m1 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-112.383</td>
+<td align="right">16.142</td>
+<td align="right">-6.962</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">0.000</td>
+<td align="right">0.001</td>
+<td align="right">0.205</td>
+<td align="right">0.838</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm10</td>
+<td align="right">-0.001</td>
+<td align="right">0.001</td>
+<td align="right">-1.026</td>
+<td align="right">0.305</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.796</td>
+<td align="right">0.426</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_no2</td>
+<td align="right">-0.001</td>
+<td align="right">0.002</td>
+<td align="right">-0.271</td>
+<td align="right">0.787</td>
+</tr>
+<tr class="even">
+<td align="left">month10</td>
+<td align="right">0.203</td>
+<td align="right">0.090</td>
+<td align="right">2.248</td>
+<td align="right">0.025</td>
+</tr>
+<tr class="odd">
+<td align="left">month11</td>
+<td align="right">0.092</td>
+<td align="right">0.042</td>
+<td align="right">2.186</td>
+<td align="right">0.029</td>
+</tr>
+<tr class="even">
+<td align="left">month12</td>
+<td align="right">0.007</td>
+<td align="right">0.027</td>
+<td align="right">0.262</td>
+<td align="right">0.793</td>
+</tr>
+<tr class="odd">
+<td align="left">month2</td>
+<td align="right">-0.094</td>
+<td align="right">0.045</td>
+<td align="right">-2.117</td>
+<td align="right">0.034</td>
+</tr>
+<tr class="even">
+<td align="left">month3</td>
+<td align="right">0.119</td>
+<td align="right">0.057</td>
+<td align="right">2.097</td>
+<td align="right">0.036</td>
+</tr>
+<tr class="odd">
+<td align="left">month4</td>
+<td align="right">0.208</td>
+<td align="right">0.097</td>
+<td align="right">2.156</td>
+<td align="right">0.031</td>
+</tr>
+<tr class="even">
+<td align="left">month5</td>
+<td align="right">0.242</td>
+<td align="right">0.128</td>
+<td align="right">1.886</td>
+<td align="right">0.059</td>
+</tr>
+<tr class="odd">
+<td align="left">month6</td>
+<td align="right">0.119</td>
+<td align="right">0.156</td>
+<td align="right">0.765</td>
+<td align="right">0.445</td>
+</tr>
+<tr class="even">
+<td align="left">month7</td>
+<td align="right">0.238</td>
+<td align="right">0.175</td>
+<td align="right">1.358</td>
+<td align="right">0.175</td>
+</tr>
+<tr class="odd">
+<td align="left">month8</td>
+<td align="right">0.250</td>
+<td align="right">0.167</td>
+<td align="right">1.500</td>
+<td align="right">0.134</td>
+</tr>
+<tr class="even">
+<td align="left">month9</td>
+<td align="right">0.173</td>
+<td align="right">0.129</td>
+<td align="right">1.336</td>
+<td align="right">0.181</td>
+</tr>
+<tr class="odd">
+<td align="left">year</td>
+<td align="right">0.059</td>
+<td align="right">0.008</td>
+<td align="right">7.375</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_temp</td>
+<td align="right">-0.013</td>
+<td align="right">0.006</td>
+<td align="right">-2.231</td>
+<td align="right">0.026</td>
+</tr>
+<tr class="odd">
+<td align="left">gendermale</td>
+<td align="right">0.788</td>
+<td align="right">0.009</td>
+<td align="right">85.298</td>
+<td align="right">0.000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family=&quot;poisson&quot;, data=model_data2)
 
 tab&lt;-m1 %&gt;% broom::tidy()
 knitr::kable(tab, digits = 6)</code></pre>
@@ -2217,9 +2659,132 @@ knitr::kable(tab, digits = 6)</code></pre>
 <td align="right">85.298203</td>
 <td align="right">0.000000</td>
 </tr>
+<tr class="odd">
+<td align="left">Now all of the</td>
+<td align="right">variables a</td>
+<td align="right">re significa</td>
+<td align="right">ntly associat</td>
+<td align="right">ed with MI.</td>
+</tr>
 </tbody>
 </table>
 </div>
+<div id="what-if-we-add-interaction-of-temperature-with-relevant-variables" class="section level2">
+<h2>What if we add interaction of temperature with relevant variables?</h2>
+<pre class="r"><code>m2 &lt;- glm(n ~  avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + gender + avg_temp*avg_pm2_5 + avg_temp*avg_pm10 + avg_temp*avg_co + avg_temp*avg_no2, family=&quot;poisson&quot;, data=model_data2)
+
+tab&lt;-m2 %&gt;% broom::tidy()
+knitr::kable(tab, digits = 6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">6.255528</td>
+<td align="right">0.074958</td>
+<td align="right">83.453634</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5</td>
+<td align="right">-0.000339</td>
+<td align="right">0.000779</td>
+<td align="right">-0.434447</td>
+<td align="right">0.663964</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm10</td>
+<td align="right">0.000679</td>
+<td align="right">0.000861</td>
+<td align="right">0.788775</td>
+<td align="right">0.430243</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co</td>
+<td align="right">-0.000016</td>
+<td align="right">0.000037</td>
+<td align="right">-0.417864</td>
+<td align="right">0.676047</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_no2</td>
+<td align="right">0.000594</td>
+<td align="right">0.001743</td>
+<td align="right">0.340874</td>
+<td align="right">0.733198</td>
+</tr>
+<tr class="even">
+<td align="left">gendermale</td>
+<td align="right">0.787605</td>
+<td align="right">0.009234</td>
+<td align="right">85.298203</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_temp</td>
+<td align="right">0.002728</td>
+<td align="right">0.003612</td>
+<td align="right">0.755368</td>
+<td align="right">0.450028</td>
+</tr>
+<tr class="even">
+<td align="left">avg_pm2_5:avg_temp</td>
+<td align="right">0.000021</td>
+<td align="right">0.000053</td>
+<td align="right">0.384101</td>
+<td align="right">0.700903</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_pm10:avg_temp</td>
+<td align="right">-0.000027</td>
+<td align="right">0.000052</td>
+<td align="right">-0.528269</td>
+<td align="right">0.597312</td>
+</tr>
+<tr class="even">
+<td align="left">avg_co:avg_temp</td>
+<td align="right">-0.000009</td>
+<td align="right">0.000003</td>
+<td align="right">-3.020829</td>
+<td align="right">0.002521</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_no2:avg_temp</td>
+<td align="right">0.000010</td>
+<td align="right">0.000104</td>
+<td align="right">0.095229</td>
+<td align="right">0.924133</td>
+</tr>
+<tr class="even">
+<td align="left">We can see that all o</td>
+<td align="right">f the variab</td>
+<td align="right">les, apart f</td>
+<td align="right">rom the inte</td>
+<td align="right">raction of temperature and CO are no longer significant. It is possible that this study does not have enough power to assess interactions, since we only have month wide data. This is especially true when we filter out 2016.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="we-will-assess-model-fit-by-comparing-our-two-most-probably-models-in-anova" class="section level2">
+<h2>We will assess model fit by comparing our two most probably models in ANOVA</h2>
+<pre class="r"><code>anova(m1,m2)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + gender
+## Model 2: n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + gender + avg_temp * 
+##     avg_pm2_5 + avg_temp * avg_pm10 + avg_temp * avg_co + avg_temp * 
+##     avg_no2
+##   Resid. Df Resid. Dev Df Deviance
+## 1        62     328.33            
+## 2        57     241.77  5   86.562</code></pre>
 </div>
 </div>
 <div id="discussion" class="section level1">

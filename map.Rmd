@@ -108,3 +108,6 @@ try
 ```
 
 Although this is only reflective of the average PM 2.5 values for 2017, this map shows that the sites with the highest pollutant count are  found in the city center of Beijing. Further studies should seek to investigate the relationship between proximity to city center and pollution rates.
+
+These PM 2.5 cutoff points were selected based one recommendations from the World Air Quality Index project.
+(https://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/)

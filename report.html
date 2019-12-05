@@ -547,7 +547,7 @@ missing %&gt;%
 ## 
 ## function (object, ...) 
 ## standardGeneric(&quot;summary&quot;)
-## &lt;environment: 0x000000001df16d38&gt;
+## &lt;environment: 0x000000001e57f028&gt;
 ## Methods may be defined for arguments: object
 ## Use  showMethods(&quot;summary&quot;)  for currently available ones.</code></pre>
 <pre class="r"><code>all_df %&gt;% 
@@ -1568,31 +1568,23 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
 # model_data&lt;-model_data %&gt;%
 #    unite(time, c(month, year), sep = &quot;-&quot;, remove = FALSE) %&gt;%
 #    mutate(time = parse_date_time(time, &quot;my&quot;), local=&quot;English_United States.1252&quot;)</code></pre>
-</div>
-<div id="time-series-of-ami-hospitalizations-grouping-by-gender" class="section level2">
-<h2>Time Series of AMI Hospitalizations Grouping by Gender</h2>
+<p>##Time Series of AMI Hospitalizations Grouping by Gender</p>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=time, y=n, color=avg_pm2_5, group=gender)) +
   geom_line()+
   geom_point(aes(size = avg_co))+
   scale_color_viridis(option = &quot;B&quot;)+
   ggtitle(&quot;Number of MI&#39;s by PM2.5 and Year/Month&quot;) </code></pre>
-<<<<<<< HEAD
-=======
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type yearmon. Defaulting to continuous.</code></pre>
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
-<p><img src="report_files/figure-html/unnamed-chunk-23-1.png" width="90%" /></p>
+<p><img src="report_files/figure-html/unnamed-chunk-24-1.png" width="90%" /></p>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=time, y=n, color=avg_pm2_5, group=gender)) +
   geom_line()+
   geom_point()+
   scale_color_viridis(option = &quot;B&quot;)+
   ggtitle(&quot;Average PM2.5 by Years&quot;)</code></pre>
-<<<<<<< HEAD
-=======
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type yearmon. Defaulting to continuous.</code></pre>
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
-<p><img src="report_files/figure-html/unnamed-chunk-24-1.png" width="90%" /></p>
+<p><img src="report_files/figure-html/unnamed-chunk-25-1.png" width="90%" /></p>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=time, y=n, color=avg_pm10, group=gender)) +
   geom_line()+
@@ -1600,18 +1592,15 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
   scale_color_viridis(option = &quot;B&quot;)+
   ggtitle(&quot;Number of MI&#39;s by PM10 and Year/Month&quot;)</code></pre>
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type yearmon. Defaulting to continuous.</code></pre>
-<p><img src="report_files/figure-html/unnamed-chunk-25-1.png" width="90%" /></p>
+<p><img src="report_files/figure-html/unnamed-chunk-26-1.png" width="90%" /></p>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=time, y=n, color=avg_co, group=gender)) +
   geom_line()+
   geom_point()+
   scale_color_viridis(option = &quot;B&quot;)+
   ggtitle(&quot;Number of MI&#39;s by Carbon Monoxide and Year/Month&quot;)</code></pre>
-<<<<<<< HEAD
-<p><img src="report_files/figure-html/unnamed-chunk-25-1.png" width="90%" /></p>
-=======
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type yearmon. Defaulting to continuous.</code></pre>
-<p><img src="report_files/figure-html/unnamed-chunk-26-1.png" width="90%" /></p>
+<p><img src="report_files/figure-html/unnamed-chunk-27-1.png" width="90%" /></p>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=time, y=n, color=avg_no2, group=gender)) +
   geom_line()+
@@ -1619,8 +1608,7 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
   scale_color_viridis(option = &quot;B&quot;)+
   ggtitle(&quot;Number of MI&#39;s by NO2 and Year/Month&quot;)</code></pre>
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type yearmon. Defaulting to continuous.</code></pre>
-<p><img src="report_files/figure-html/unnamed-chunk-27-1.png" width="90%" /></p>
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
+<p><img src="report_files/figure-html/unnamed-chunk-28-1.png" width="90%" /></p>
 <p>It does appear the hospitalizations are higher in winter months. Unfortunately, we will not be able to draw strong conclusions about the effect pollution on heart attacks since it is so strongly correlated with the month/season. We can try to control for temperature instead of month?</p>
 <pre class="r"><code>model_data %&gt;%  
   ggplot(aes(x=month, y=n, color=avg_temp, group=gender)) +
@@ -1629,17 +1617,11 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
   scale_color_viridis(option = &quot;B&quot;)+
   facet_wrap(year~.) +
   ggtitle(&quot;Number of MI&#39;s by Temperature and Year/Month&quot;)</code></pre>
-<<<<<<< HEAD
-<p><img src="report_files/figure-html/unnamed-chunk-26-1.png" width="90%" /></p>
-=======
-<p><img src="report_files/figure-html/unnamed-chunk-28-1.png" width="90%" /></p>
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
+<p><img src="report_files/figure-html/unnamed-chunk-29-1.png" width="90%" /></p>
 <p>We have to use month because we have no data on days of the month to separate analysis into seasons.</p>
 <p>The count data we are using is the number of people admitted for MI per month.</p>
 <p>We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing’s population peaked at 21.73 million residents in 2016. <a href="https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth">Source</a>. For this reason (population numbers have been fairly flat) we decided to just use pure count data.</p>
-</div>
-<div id="should-we-not-include-temp-most-is-significant-when-not-included" class="section level2">
-<h2>Should we not include temp? Most is significant when not included…</h2>
+<p>##Should we not include temp? Most is significant when not included…</p>
 <pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family=&quot;poisson&quot;, data=model_data)
 
 tab&lt;-m1 %&gt;% broom::tidy()
@@ -1699,9 +1681,7 @@ knitr::kable(tab, digits = 6)</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="including-temp" class="section level2">
-<h2>Including temp?</h2>
+<p>##Including temp?</p>
 <pre class="r"><code>summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family=&quot;poisson&quot;, data=model_data))</code></pre>
 <pre><code>## 
 ## Call:
@@ -1797,9 +1777,7 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="what-about-including-month-and-year" class="section level2">
-<h2>What about including month and year??</h2>
+<p>##What about including month and year??</p>
 <pre class="r"><code>model_data&lt;-model_data%&gt;% 
   mutate(month=factor(month))
 
@@ -1986,16 +1964,7 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tr>
 </tbody>
 </table>
-<<<<<<< HEAD
-<p>#Remove month and year</p>
-<pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family=&quot;poisson&quot;, data=model_data)
-
-tab&lt;-m1 %&gt;% broom::tidy()
-knitr::kable(tab, digits = 6)</code></pre>
-=======
-</div>
-<div id="including-both-temp-and-monthsyears" class="section level2">
-<h2>Including both temp and months/years?</h2>
+<p>##Including both temp and months/years?</p>
 <pre class="r"><code>summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family=&quot;poisson&quot;, data=model_data))</code></pre>
 <pre><code>## 
 ## Call:
@@ -2039,7 +2008,6 @@ knitr::kable(tab, digits = 6)</code></pre>
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <pre class="r"><code>tab&lt;-m1 %&gt;% broom::tidy()
 knitr::kable(tab, digits = 3)</code></pre>
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
 <table>
 <thead>
 <tr class="header">
@@ -2142,33 +2110,12 @@ knitr::kable(tab, digits = 3)</code></pre>
 <td align="right">-1.963</td>
 <td align="right">0.050</td>
 </tr>
-<<<<<<< HEAD
-</tbody>
-</table>
-<p>#Could it be that 2016 was an outlier and had a huge number of MI’s?</p>
-<pre class="r"><code>model_data2&lt;-model_data %&gt;% 
-  filter(year!=2016)
-
-m1 &lt;- glm(n ~ avg_pm2_5 + avg_co + avg_temp + gender, family=&quot;poisson&quot;, data=model_data2)
-
-tab&lt;-m1 %&gt;% broom::tidy()
-knitr::kable(tab, digits = 6)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">estimate</th>
-<th align="right">std.error</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-=======
 <tr class="even">
 <td align="left">month7</td>
 <td align="right">-0.180</td>
 <td align="right">0.129</td>
 <td align="right">-1.400</td>
 <td align="right">0.162</td>
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
 </tr>
 <tr class="odd">
 <td align="left">month8</td>
@@ -2207,12 +2154,8 @@ knitr::kable(tab, digits = 6)</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="interactions" class="section level2">
-<h2>Interactions?</h2>
-</div>
-<div id="could-it-be-that-2016-was-an-outlier-and-had-a-huge-number-of-mis" class="section level2">
-<h2>Could it be that 2016 was an outlier and had a huge number of MI’s?</h2>
+<p>##Interactions?</p>
+<p>##Could it be that 2016 was an outlier and had a huge number of MI’s?</p>
 <pre class="r"><code>model_data2&lt;-model_data %&gt;% 
   filter(year!=2016)
 
@@ -2278,10 +2221,7 @@ knitr::kable(tab, digits = 6)</code></pre>
 </table>
 </div>
 </div>
-<<<<<<< HEAD
 </div>
-=======
->>>>>>> e0f48aca41664b545ae79de4bdeb0b3d52e2b1c4
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
 <p>Insights</p>

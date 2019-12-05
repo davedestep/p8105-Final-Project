@@ -18,6 +18,7 @@ library(corrplot)
 library(ggpubr)
 library(zoo)
 
+
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -61,7 +62,7 @@ There is a long way to go in improving ambient air quality, but there is a lot t
 After finding the dataset, we performed a literature review and were inspired by several studies to examine predictors of PM 2.5 and whether pollutants affect CVD hospitalizations. There has been some evidence that air pollutants such as PM10, nitroden diaxide (NO2), and carbon monoxide (CO) contribute to cardiovascular disease and related deaths [Nature](https://www.nature.com/articles/jes201621.pdf?origin=ppub). We wanted to examine this relationship when taking into account meteorological and temporal factors, as there has been a link between time of year and temperature with the occurence of heart attack.    
 
 # Initial Questions
-
+What meteorological factors are associated with increased PM 2.5 in different sites around Beijing. How are these numbers changing over time?
 
 
 # Our Data
@@ -114,12 +115,12 @@ all_df = map_df(files, read_csv) %>%
 
 We identified a total of `r all_df %>% nrow()` rows/observations, and a total of `r all_df %>% ncol()` variables or columns which include the following: `r all_df %>% tbl_vars()`. We then wanted to characterize the amount of data present and missing for each variable:
 
-Total amount of data:
+## Total amount of data:
 ```{r}
 colSums(!is.na(all_df))
 ```
 
-Amount of missing data for each variable:
+## Amount of missing data for each variable:
 ```{r}
 colSums(is.na(all_df))
 ```
@@ -156,7 +157,7 @@ all_df =
   )
 ```
 
-Visualizing the missing data over time
+## Visualizing the missing data over time
 ```{r}
 missing = all_df %>% 
   select(-year, -season, -seasonal_year, -season_and, -datetime, -month, -day, -hour) %>% #the original data except the ones we know are complete
@@ -178,7 +179,7 @@ missing %>%
   coord_flip() 
 ```
 
-And now visualizing missing data over time across stations:
+## And now visualizing missing data over time across stations:
 ```{r}
 missing %>% 
   ggplot(aes(x =date, y = name, fill = value)) + 
@@ -189,12 +190,11 @@ missing %>%
 ```
 
 Our primary outcome of interest is PM2.5, and can be summarized as follows:
-
 ```{r}
 all_df %>% pull(pm2_5) %>% summary
 ```
 
-###Looking at PM2.5 over time:
+### Looking at PM2.5 over time:
 ```{r}
 
 summary
@@ -204,7 +204,7 @@ all_df %>%
   geom_smooth()
 ```
 
-###Looking at PM2.5 over time by station:
+### Looking at PM2.5 over time by station:
 ```{r}
 all_df %>% 
   ggplot(aes(x = date, y = pm2_5)) +
@@ -213,7 +213,7 @@ all_df %>%
   facet_grid(~station)
 ```
 
-###Looking at PM2.5 by seasons:
+### Looking at PM2.5 by seasons:
 ```{r}
 all_df %>% 
   mutate(
@@ -223,7 +223,7 @@ all_df %>%
   geom_boxplot()
 ```
 
-###Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot
+### Kind of hard to distinguish, will try limiting scale of y-axis and try a violin plot
 ```{r}
 all_df %>% 
   mutate(
@@ -245,7 +245,7 @@ all_df %>%
 ```
 Overall seems fairly similar across seasons, but technically highest in the winter with a number of very high outlier values as well
 
-###Average PM 25 by year for all stations
+### Average PM 25 by year for all stations
 ```{r}
 all_df %>%  
   group_by(year) %>% 
@@ -255,7 +255,7 @@ all_df %>%
 ```
 
 
-###Average PM 25 by year for each station
+### Average PM 25 by year for each station
 ```{r}
 all_df %>%  
   group_by(year, station) %>% 
@@ -266,7 +266,7 @@ all_df %>%
 
 We can see that each individual station seems to follow the same yearly average pm 2.5 trend
 
-###Average PM 25 by year and season for each station
+### Average PM 25 by year and season for each station
 ```{r}
 all_df %>%  
   group_by(season, seasonal_year, station) %>% 
@@ -277,7 +277,7 @@ all_df %>%
   ggtitle("Average PM2.5 by Seasonal Years")
 ```
 
-###Average PM 25 by year and season for each station
+### Average PM 25 by year and season for each station
 ```{r}
 all_df %>%  
   mutate(season_and=factor(season_and, levels = c("spring   2013", "summer   2013", "fall   2013", "winter   2013",
@@ -318,7 +318,7 @@ do.call(grid.arrange, plots)
 ```
 ![all variables scatterplots](all_variables_plot.png){width=600px}
 
-##Pearson Correlation Coefficients:
+## Pearson Correlation Coefficients:
 
 ```{r}
 all_df %>% 
@@ -351,14 +351,14 @@ Rain, dewpoint, temp also have moderate effect sizes.
  
 CVD model… whatever we decide on
 
-##Is pm 2.5, season, NO2, or CO associated with CVD?
+## Is pm 2.5, season, NO2, or CO associated with CVD?
 Poisson regression..
 	Use the following articles:
 		https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706
 https://www.nature.com/articles/7500453.pdf?origin=ppub
 
-##What meteorological variables influence PM 2.5?
-###Even though predictors are not independent, will model using linear regression before a longitudinal model  
+## What meteorological variables influence PM 2.5?
+### Even though predictors are not independent, will model using linear regression before a longitudinal model  
 ```{r}
 ###Remove timeseries variables:
 reg<-all_df %>% select(-date,-datetime, -month,-day,-hour)
@@ -371,7 +371,7 @@ knitr::kable(tab, digits = 3)
 ```
 
 
-###Mixed Model
+### Mixed Model
 ```{r}
 all_df %>% 
   lme4::lmer(pm2_5 ~ year + season + so2 + no2 + co + o3 + temp + dewp + rain + wd + wspm + (1 | station), data = .) %>% 
@@ -399,7 +399,7 @@ mixed %>% broom::tidy() %>% knitr::kable(digits = 3)
 
 ####################################################
 ####################################################
-#Linking to health data
+# Linking to health data
 ####################################################
 ####################################################
 
@@ -439,7 +439,7 @@ model_data$time <- as.yearmon(paste(model_data$year, model_data$month), "%Y %m")
 
 
 
-##Time Series of AMI Hospitalizations Grouping by Gender
+## Time Series of AMI Hospitalizations Grouping by Gender
 ```{r}
 model_data %>%  
   ggplot(aes(x=time, y=n, color=avg_pm2_5, group=gender)) +
@@ -515,7 +515,7 @@ The count data we are using is the number of people admitted for MI per month.
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
 [Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
 
-##Should we not include temp? Most is significant when not included...
+## Should we not include temp? Most is significant when not included...
 ```{r}
 m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data)
 
@@ -523,7 +523,7 @@ tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
 ```
 
-##Including temp?
+## Including temp?
 ```{r}
 summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family="poisson", data=model_data))
 
@@ -533,7 +533,7 @@ tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
 ```
 
-##What about including month and year??
+## What about including month and year??
 ```{r}
 model_data<-model_data%>% 
   mutate(month=factor(month))
@@ -545,7 +545,7 @@ summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year + g
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
 ```
-
+Talk about the effect of including month and year
 
 ##Including both temp and months/years?
 ```{r}
@@ -556,19 +556,25 @@ summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +av
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
 ```
+Interestingly, all of the variables are significant here.
 
-
-##Interactions?
-
-
-
-
-
-
-##Could it be that 2016 was an outlier and had a huge number of MI's?
+## Could it be that 2016 was an outlier and had a huge number of MI's?
 ```{r}
 model_data2<-model_data %>% 
   filter(year!=2016)
+
+summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data2))
+
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 3)
+
+```
+Now it appears that neither of the two pollution measures are significantly associated with MI.
+
+## What if we do not include month and year?
+```{r}
+tab<-m1 %>% broom::tidy()
+knitr::kable(tab, digits = 3)
 
 
 m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data2)
@@ -576,14 +582,19 @@ m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
 ```
+Now all of the variables are significantly associated with MI.
 
 
+## What if we add interaction of temperature with relevant variables?
+```{r}
+m2 <- glm(n ~  avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + gender + avg_temp*avg_pm2_5 + avg_temp*avg_pm10 + avg_temp*avg_co + avg_temp*avg_no2, family="poisson", data=model_data2)
 
-	
-	
-	
-	
-	
+tab<-m2 %>% broom::tidy()
+knitr::kable(tab, digits = 6)
+```
+We can see that all of the variables, apart from the interaction of temperature and CO are no longer significant. It is possible that this study does not have enough power to assess interactions, since we only have month wide data. This is especially true when we filter out 2016.
+
+
 	
 # Discussion
 Insights

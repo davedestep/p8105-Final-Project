@@ -530,7 +530,7 @@ count3 <- left_join(count, count2, by=c("year", "month")) %>%
 count3 %>%
   ggplot(aes(x = n)) + geom_histogram(aes(color = "red")) + labs(title = "Distribution of Counts of MI Data")
 ```
-The counts appear to be bimodal, however no overdispersion is present.
+The counts appear to be normally distributed, no overdispersion is present.
 
 
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.

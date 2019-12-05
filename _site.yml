@@ -14,7 +14,7 @@ navbar:
     - icon: fa-github fa-lg
       href: https://github.com/davedestep/p8105-Final-Project 
     - icon: fa-envelope fa-lg
-      href: mailto:<***@cumc.columbia.edu>
+      href: mailto:<dd2948@cumc.columbia.edu>
 output:
   html_document:
     theme: sandstone

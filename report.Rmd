@@ -507,6 +507,16 @@ We have to use month because we have no data on days of the month to separate an
 
 The count data we are using is the number of people admitted for MI per month.
 
+## Distribution of the counts
+```{r}
+
+
+model_data %>%
+  ggplot(aes(x = n)) + geom_histogram(aes(color = "red")) + labs(title = "Distribution of Counts of MI Data")
+```
+The counts appear to be bimodal, however no overdispersion is present.
+
+
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
 [Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
 

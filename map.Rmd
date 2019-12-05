@@ -22,6 +22,7 @@ library(data.table)
 library(ggrepel)
 library(tidyverse)
 library(haven)
+library(stringr)
 ```
 
 ```{r message=FALSE}
@@ -97,7 +98,7 @@ leaflet() %>%
    # baseGroups = c(mapss$year),
   #  options = layersControlOptions(collapsed = FALSE)
   #) %>%
-  addCircleMarkers(~longitude, ~latitude, label = paste(mapss$station," Average PM 2.5: ", mapss$avg_pm25), color = ~pal(type)) %>%
+  addCircleMarkers(~longitude, ~latitude, label = paste(mapss$station,'Average PM 2.5: ', mapss$avg_pm25), color = ~pal(type)) %>%
   addLegend("bottomright", colors = c("yellow", "red"), labels = nums, 
             title = "Average PM 2.5 for 2017", 
             opacity = 1) 
@@ -106,3 +107,4 @@ leaflet() %>%
 try
 ```
 
+Although this is only reflective of the average PM 2.5 values for 2017, this map shows that the sites with the highest pollutant count are  found in the city center of Beijing. Further studies should seek to investigate the relationship between proximity to city center and pollution rates.

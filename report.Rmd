@@ -507,7 +507,7 @@ The count data we are using is the number of people admitted for MI per month.
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
 [Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
 
-#Should we not include temp? Most is significant when not included...
+##Should we not include temp? Most is significant when not included...
 ```{r}
 m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data)
 
@@ -515,7 +515,7 @@ tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
 ```
 
-#Including temp?
+##Including temp?
 ```{r}
 summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family="poisson", data=model_data))
 
@@ -525,7 +525,7 @@ tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
 ```
 
-#What about including month and year??
+##What about including month and year??
 ```{r}
 model_data<-model_data%>% 
   mutate(month=factor(month))
@@ -539,7 +539,7 @@ knitr::kable(tab, digits = 3)
 ```
 
 
-#Including both temp and months/years?
+##Including both temp and months/years?
 ```{r}
 summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data))
 
@@ -550,14 +550,14 @@ knitr::kable(tab, digits = 3)
 ```
 
 
-#Interactions?
+##Interactions?
 
 
 
 
 
 
-#Could it be that 2016 was an outlier and had a huge number of MI's?
+##Could it be that 2016 was an outlier and had a huge number of MI's?
 ```{r}
 model_data2<-model_data %>% 
   filter(year!=2016)

@@ -1633,9 +1633,8 @@ model_data &lt;- left_join(pollution, cvd2, by=c(&quot;year&quot;, &quot;month&q
 <p>The count data we are using is the number of people admitted for MI per month.</p>
 <p>We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing’s population peaked at 21.73 million residents in 2016. <a href="https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth">Source</a>. For this reason (population numbers have been fairly flat) we decided to just use pure count data.</p>
 </div>
-</div>
-<div id="should-we-not-include-temp-most-is-significant-when-not-included" class="section level1">
-<h1>Should we not include temp? Most is significant when not included…</h1>
+<div id="should-we-not-include-temp-most-is-significant-when-not-included" class="section level2">
+<h2>Should we not include temp? Most is significant when not included…</h2>
 <pre class="r"><code>m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family=&quot;poisson&quot;, data=model_data)
 
 tab&lt;-m1 %&gt;% broom::tidy()
@@ -1696,8 +1695,8 @@ knitr::kable(tab, digits = 6)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="including-temp" class="section level1">
-<h1>Including temp?</h1>
+<div id="including-temp" class="section level2">
+<h2>Including temp?</h2>
 <pre class="r"><code>summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family=&quot;poisson&quot;, data=model_data))</code></pre>
 <pre><code>## 
 ## Call:
@@ -1794,8 +1793,8 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="what-about-including-month-and-year" class="section level1">
-<h1>What about including month and year??</h1>
+<div id="what-about-including-month-and-year" class="section level2">
+<h2>What about including month and year??</h2>
 <pre class="r"><code>model_data&lt;-model_data%&gt;% 
   mutate(month=factor(month))
 
@@ -1983,8 +1982,8 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="including-both-temp-and-monthsyears" class="section level1">
-<h1>Including both temp and months/years?</h1>
+<div id="including-both-temp-and-monthsyears" class="section level2">
+<h2>Including both temp and months/years?</h2>
 <pre class="r"><code>summary(m1 &lt;- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family=&quot;poisson&quot;, data=model_data))</code></pre>
 <pre><code>## 
 ## Call:
@@ -2175,11 +2174,11 @@ knitr::kable(tab, digits = 3)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="interactions" class="section level1">
-<h1>Interactions?</h1>
+<div id="interactions" class="section level2">
+<h2>Interactions?</h2>
 </div>
-<div id="could-it-be-that-2016-was-an-outlier-and-had-a-huge-number-of-mis" class="section level1">
-<h1>Could it be that 2016 was an outlier and had a huge number of MI’s?</h1>
+<div id="could-it-be-that-2016-was-an-outlier-and-had-a-huge-number-of-mis" class="section level2">
+<h2>Could it be that 2016 was an outlier and had a huge number of MI’s?</h2>
 <pre class="r"><code>model_data2&lt;-model_data %&gt;% 
   filter(year!=2016)
 
@@ -2243,6 +2242,7 @@ knitr::kable(tab, digits = 6)</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>

@@ -243,6 +243,7 @@ all_df %>%
 
 
 ```
+
 Overall seems fairly similar across seasons, but technically highest in the winter, with a number of very high outlier values as well
 
 ### Average PM 25 by year for all stations
@@ -332,16 +333,15 @@ all_df %>%
 ```
 
 
+## Findings
+We looked at correlations between PM 2.5 and the meteorological variables, including dewpoint, windspeed.
+
+We also calulcated spearman's correlation coefficients to evaluate the inter-relations between air pollutants and weather conditions.
+
 Temperature is correlated with our pollutant concentration, which are all also correlated with eachother, while windspeed has the most effect on decreasing the concentration of these pollutants.
 
 Variables which seem correlated with PM2.5 include (not surprisingly) PM10, but also rain, wind speed, o3 all seem to be strongly correlated. In addition, no2, so2, and possibly temperature, pressure and dew point but in a non-linear fashion
 
-## Findings
-We looked at correlations between PM2.5 and the meteorological variables, including dewpoint, windspeed...
-Correlations..
-Scatterplots
-Spearman's correlation coefficients to evaluate the inter-relations between air pollutants and weather conditions
-Ray
  
 # Additional Analysis
 Three models were developed for analysis of weather conditions and their association with PM2.5. A multivariable linear regression, a mixed model, and a Mixed Model for Longitudinal Continuous Data were developed to examine the variables of interest.
@@ -349,13 +349,7 @@ Three models were developed for analysis of weather conditions and their associa
 Almost every variable is significant, however, station, windspeed, season, and windspeed all have high effect sizes.
 Rain, dewpoint, temp also have moderate effect sizes.
  
-CVD model… whatever we decide on
 
-## Is pm 2.5, season, NO2, or CO associated with CVD?
-Poisson regression..
-	Use the following articles:
-		https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706
-https://www.nature.com/articles/7500453.pdf?origin=ppub
 
 ## What meteorological variables influence PM 2.5?
 ### Even though predictors are not independent, will model using linear regression before a longitudinal model  
@@ -399,6 +393,12 @@ mixed %>% broom::tidy() %>% knitr::kable(digits = 3)
 # Linking to health data
 ####################################################
 ####################################################
+
+## Is pm 2.5, season, NO2, or CO associated with CVD?
+
+We  used the following articles when preparing to analyze pollutions affect on AMI [1](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204706), 
+[2](https://www.nature.com/articles/7500453.pdf?origin=ppub)
+
 
 ```{r}
 cvd<-read_csv("./patient_mi_data/patients_mi.csv") %>% janitor::clean_names()
@@ -503,7 +503,7 @@ model_data %>%
 ```
 
 
-We have to use month because we have no data on days of the month to separate analysis into seasons.
+For the analysis we have to use month because we have no data on days of the month to separate analysis into seasons.
 
 The count data we are using is the number of people admitted for MI per month.
 
@@ -530,13 +530,20 @@ count3 <- left_join(count, count2, by=c("year", "month")) %>%
 count3 %>%
   ggplot(aes(x = n)) + geom_histogram(aes(color = "red")) + labs(title = "Distribution of Counts of MI Data")
 ```
-The counts appear to be normally distributed, no overdispersion is present.
+
+The counts appear to be normally distributed, no overdispersion appears to be present, although we have not formally checked.
 
 
 We could use a rate for the population of beijing for each year (and month), but from 2014 to 2018, the annual growth rate has been 0.3 percent. Beijing's population peaked at 21.73 million residents in 2016.
 [Source](https://www.newgeography.com/content/006258-beijing-and-shanghai-limit-population-growth). For this reason (population numbers have been fairly flat) we decided to just use pure count data.
 
-## Should we not include temp? Most is significant when not included...
+The count data is in the following format:
+```{r}
+head(model_data)
+```
+
+
+## Should we not include temp? Most is significant when not included.
 ```{r}
 m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data)
 
@@ -546,7 +553,7 @@ knitr::kable(tab, digits = 6)
 
 ## Including temp?
 ```{r}
-summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family="poisson", data=model_data))
+m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + avg_temp + gender, family="poisson", data=model_data)
 
 #avg_pm2_5*avg_temp + avg_co*avg_temp
 
@@ -559,18 +566,19 @@ knitr::kable(tab, digits = 3)
 model_data<-model_data%>% 
   mutate(month=factor(month))
 
-summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year + gender, family="poisson", data=model_data))
+m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year + gender, family="poisson", data=model_data)
 
 #avg_pm2_5*avg_temp + avg_co*avg_temp
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
 ```
-Talk about the effect of including month and year
+
+
 
 ## Including both temp and months/years?
 ```{r}
-summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data))
+m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data)
 
 
 
@@ -579,31 +587,30 @@ knitr::kable(tab, digits = 3)
 ```
 Interestingly, all of the variables are significant here.
 
-## Could it be that 2016 was an outlier and had a huge number of MI's?
+## 2016 is an outlier with a large number of MI's. 
+2016 may be skewing our result so a seperate set of analyses was completed excluding 2016.
 ```{r}
 model_data2<-model_data %>% 
   filter(year!=2016)
 
-summary(m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data2))
+m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + month + year +avg_temp + gender, family="poisson", data=model_data2)
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 3)
 
 ```
+
 Now it appears that neither of the two pollution measures are significantly associated with MI.
 
 ## What if we do not include month and year?
 ```{r}
-tab<-m1 %>% broom::tidy()
-knitr::kable(tab, digits = 3)
-
-
 m1 <- glm(n ~ avg_pm2_5 + avg_pm10 + avg_co + avg_no2  + gender, family="poisson", data=model_data2)
 
 tab<-m1 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
 ```
-Now all of the variables are significantly associated with MI.
+
+Now all of the variables are significantly associated with MI. This may be the most parsimonious model, but we can not make any causal asumptions.
 
 
 ## What if we add interaction of temperature with relevant variables?
@@ -613,14 +620,25 @@ m2 <- glm(n ~  avg_pm2_5 + avg_pm10 + avg_co + avg_no2 + gender + avg_temp*avg_p
 tab<-m2 %>% broom::tidy()
 knitr::kable(tab, digits = 6)
 ```
+
 We can see that all of the variables, apart from the interaction of temperature and CO are no longer significant. It is possible that this study does not have enough power to assess interactions, since we only have month wide data. This is especially true when we filter out 2016.
 
 
 
 ## We will assess model fit by comparing our two most probably models in ANOVA
+
+The full model formally has a better fit, but is also more difficult to intepret.
 ```{r}
-anova(m1,m2)
+anova(m1,m2, test = "Chisq")
 ```
 
 # Discussion
-Insights
+
+After extensive visualization and modeling of variables in our data we have gained a number of valuable insights regarding Beijing air quality from 2013-2017. Of the meteorological predictors we examined, rain, wind, and temperature were found to be negatively associated with PM2.5. This is consistent with previous findings. There were also strong seasonal variations in air quality, likely attributable to changes in the aforementioned weather variables. PM2.5 was highest across winter and fall seasons, and lowest across spring and summer seasons, for all stations. In concert with the natural decrease of temperature and wind during the winter, we suspect that an upsurge in coal heating also explains the seasonal PM2.5 increase. Visualization of temporal trends demonstrates that pollution was highest in 2014 and 2017, and drastically lower in 2016. The lower average in 2013 may be partially attributable to the absence of data from two winter months. The stations with average PM2.5 concentrations greater than or equal to 100 ug/m3- Nongzhanguan, Dongsi, Wanshouxigong, Gucheng- were all located near the city center. Peripheral stations had relatively lower concentrations. 
+
+Further integration of health data into our analysis produced results that were somewhat less anticipated. Visual examination of plots gives the impression that there are slightly more MIs with increasing pollutants, including PM2.5, PM10, CO, and NO2. However, when modeling the data with Poisson regression it appears that there are no significant associations between PM2.5, PM10 when using the full dataset. We considered the year 2016 as an outlier and removed it from the model, when only including pollutants and gender, the pollutants were significant and positive (except PM 2.5), but we can not draw strong conclusions. 
+	
+This could be due to our model specifications. When examining the count distribution, the data appeared to be more Gaussian than poisson, and we may not have include the correct combination of covariates and interaction terms.
+	
+In the medical literature, clinicians have noted an increase in cardiovascular disease, and MIs in particular, during the winter months dating back to the 1930s. This finding has been validated across multiple databases and sites worldwide. However, the pathophysiologic mechanism driving this association remains somewhat unclear. Recent evidence has hypothesized that winter weather conditions and cold temperatures may induce physiologic stress including sympathetic activation (thereby increasing blood pressure and heart rate), hypercoagulability, inflammatory markers, and infection which mediate this increase in cardiovascular disease. Age and gender interactions with season and weather have been described. Although we do not find a clear association between air quality, temperature and incident MIs, there may be a number of possible explanations. We used air quality and cardiovascular outcome data from a single city, Beijing, which collected data from multiple sites across the city. Given that the cardiovascular data was collected from a subset of hospitals in Beijing, as not all hospitals were equipped with electronic health records during that time, and we do not have information on the data validation process or quality metrics (including the notable spike in MIs in 2016), the MI data may not be representative of either the general population in Beijing or the population around the air quality reporting sites specifically. In addition, atherosclerosis and coronary artery disease is generally a chronic, multi-factorial process where both risk and mitigating factors such as medications accumulate over time, so there may be unmeasured cardiovascular risk factors or other residual confounding to better explain the MI patterns in Beijing.
+
